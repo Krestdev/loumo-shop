@@ -19,7 +19,17 @@ const Loading = ({ status }: { status?: "failed" | "loading" }) => {
   }, []);
 
   return (
-    <div className="flex items-center justify-center font-bold absolute inset-1/2 -translate-x-1/5 rounded-lg px-12 p-4 w-fit border-gray-500 border shadow">
+    <div className="h-screen w-full flex items-center justify-center flex-col gap-4 font-bold rounded-lg px-12 p-4 border-gray-500">
+      <video
+        src="/loading.webm"
+        className="aspect-video object-contain w-full max-w[250px] h-[150px]"
+        loop
+        autoPlay
+        muted
+        playsInline
+      >
+        <source src="/loading.webm" type="video/webm" />
+      </video>
       <p>{message}</p>
     </div>
   );

@@ -1,10 +1,12 @@
 import api from "@/providers/axios";
-import { Order } from "@/types/types";
+import { Order, OrderItem } from "@/types/types";
 
 export default class OrderQuery {
   route = "/orders";
   create = async (
-    data: Omit<Order, "id"> & { addressId: number; userId: number }
+    data: Omit<Order, "id" | "orderItems"> & {
+      orderItems?: Omit<OrderItem, "id" | "orderId">[];
+    }
   ): Promise<Order> => {
     return api.post(`${this.route}`, data).then((response) => response.data);
   };
