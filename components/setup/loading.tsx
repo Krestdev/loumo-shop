@@ -19,8 +19,8 @@ const Loading = ({ status }: { status?: "failed" | "loading" }) => {
   }, []);
 
   return (
-    <div className="flex items-center justify-center font-bold absolute inset-1/2 -translate-x-1/5 rounded-lg px-12 p-4 w-fit min-w-[100px] border-gray-500 border shadow">
-      {message}
+    <div className="flex items-center justify-center font-bold absolute inset-1/2 -translate-x-1/5 rounded-lg px-12 p-4 w-fit border-gray-500 border shadow">
+      <p>{message}</p>
     </div>
   );
 };
