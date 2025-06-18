@@ -195,3 +195,13 @@ export type Topic = {
   name: string;
   faqs: Faq[];
 };
+
+export type Setting = {
+  id: number;
+  name: string;
+  content?: string;
+  value?: number;
+  note?: string;
+  section: String;
+  date?: Date;
+};

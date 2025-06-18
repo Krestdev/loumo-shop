@@ -25,7 +25,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
     return (
       <div>
         <div className="max-w-3xl mx-auto mt-10">
-          <h1 className="text-xl font-bold mb-4">Product Data</h1>
+          <h1 className="text-xl font-bold mb-4">Order Detail Data</h1>
           <JsonView src={orderData.data} />
         </div>
       </div>
