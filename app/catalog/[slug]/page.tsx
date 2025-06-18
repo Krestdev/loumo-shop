@@ -2,13 +2,14 @@
 import Loading from "@/components/setup/loading";
 import ProductQuery from "@/queries/product";
 import { useQuery } from "@tanstack/react-query";
-import JsonView from "react18-json-view";
+import React from "react";
 
-const Page = () => {
+const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
+  const { slug } = await params;
   const product = new ProductQuery();
   const productData = useQuery({
-    queryKey: ["productFetchAll"],
-    queryFn: () => product.getAll(),
+    queryKey: ["productData"],
+    queryFn: () => product.getOne(Number(slug)),
   });
 
   if (productData.isLoading) {
@@ -20,14 +21,7 @@ const Page = () => {
   }
 
   if (productData.isSuccess) {
-    return (
-      <div>
-        <div className="max-w-3xl mx-auto mt-10">
-          <h1 className="text-xl font-bold mb-4">Product Data</h1>
-          <JsonView src={productData.data} />
-        </div>
-      </div>
-    );
+    return <div>{JSON.stringify(productData.data)}</div>;
   }
 
   return <Loading />;
