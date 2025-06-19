@@ -52,14 +52,14 @@
   --card-foreground: oklch(0.13 0.028 261.692);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.13 0.028 261.692);
-  --primary: oklch(0.21 0.034 264.665);
+  --primary: oklch(0.589 0.100276 202.6893);
   --primary-foreground: oklch(0.985 0.002 247.839);
-  --secondary: oklch(0.967 0.003 264.542);
-  --secondary-foreground: oklch(0.21 0.034 264.665);
+  --secondary: oklch(0.3725 0.065251 213.2423);
+  --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.967 0.003 264.542);
   --muted-foreground: oklch(0.551 0.027 264.364);
-  --accent: oklch(0.967 0.003 264.542);
-  --accent-foreground: oklch(0.21 0.034 264.665);
+  --accent: oklch(0.6105 0.1053 217.81);
+  --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.928 0.006 264.531);
   --input: oklch(0.928 0.006 264.531);
@@ -121,6 +121,24 @@
     @apply bg-background font-sans text-foreground;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold font-mono-semi;
+    @apply leading-[125%];
+  }
+  h2, h3, h4, h5, h6 {
+    @apply font-mono-semi;
+  }
+  h1 {
+    @apply font-mono-bold tracking-[-2%] text-[clamp(1.75rem,5vw,3rem)] ;
+  }
+  h3 {
+    @apply text-primary text-[clamp(1.5rem,5vw,2.25rem)]; /** H3 should be category title */
+  }
+}
+
+@layer components {
+  .hero-text{
+    @apply text-[clamp(2rem,5vw,3.75rem)]; /** Hero text size should be h1 */
+  }
+  .category-title{
+    @apply text-[clamp(1.5rem,5vw,2.25rem)] font-semibold tracking-normal; /** Category title size should be h1 */
   }
 }
