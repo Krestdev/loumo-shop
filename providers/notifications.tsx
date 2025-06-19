@@ -4,10 +4,10 @@ import { ToastContainer } from "react-toastify";
 
 const NotificationProvider = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div>
+    <React.Fragment>
       {children}
       <ToastContainer />
-    </div>
+    </React.Fragment>
   );
 };
 
