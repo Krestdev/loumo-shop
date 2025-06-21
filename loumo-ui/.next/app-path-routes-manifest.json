@@ -1,16 +1,17 @@
 {
+  "/api/health/route": "/api/health",
   "/favicon.ico/route": "/favicon.ico",
-  "/_not-found/page": "/_not-found",
   "/auth/login/page": "/auth/login",
-  "/cart/page": "/cart",
   "/auth/register/page": "/auth/register",
   "/catalog/[slug]/page": "/catalog/[slug]",
+  "/_not-found/page": "/_not-found",
   "/condition/page": "/condition",
   "/catalog/page": "/catalog",
+  "/cart/page": "/cart",
   "/page": "/",
-  "/faq/page": "/faq",
   "/contact/page": "/contact",
   "/profile/history/[id]/page": "/profile/history/[id]",
+  "/faq/page": "/faq",
   "/profile/page": "/profile",
   "/profile/history/page": "/profile/history"
 }

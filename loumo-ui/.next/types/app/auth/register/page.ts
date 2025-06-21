@@ -1,4 +1,4 @@
-// File: C:\Users\kenfa\Documents\KrestHoldingPro\loumo\loumo-shop\app\auth\register\page.tsx
+// File: C:\Users\kenfa\Documents\KrestHoldingPro\loumo\loumo-shop\loumo-ui\app\auth\register\page.tsx
 import * as entry from '../../../../../app/auth/register/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

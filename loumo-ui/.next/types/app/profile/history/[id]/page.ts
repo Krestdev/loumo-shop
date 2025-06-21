@@ -1,4 +1,4 @@
-// File: C:\Users\kenfa\Documents\KrestHoldingPro\loumo\loumo-shop\app\profile\history\[id]\page.tsx
+// File: C:\Users\kenfa\Documents\KrestHoldingPro\loumo\loumo-shop\loumo-ui\app\profile\history\[id]\page.tsx
 import * as entry from '../../../../../../app/profile/history/[id]/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
