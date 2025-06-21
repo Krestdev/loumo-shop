@@ -1,0 +1,16 @@
+{
+  "/favicon.ico/route": "/favicon.ico",
+  "/_not-found/page": "/_not-found",
+  "/auth/login/page": "/auth/login",
+  "/cart/page": "/cart",
+  "/auth/register/page": "/auth/register",
+  "/catalog/[slug]/page": "/catalog/[slug]",
+  "/condition/page": "/condition",
+  "/catalog/page": "/catalog",
+  "/page": "/",
+  "/faq/page": "/faq",
+  "/contact/page": "/contact",
+  "/profile/history/[id]/page": "/profile/history/[id]",
+  "/profile/page": "/profile",
+  "/profile/history/page": "/profile/history"
+}
