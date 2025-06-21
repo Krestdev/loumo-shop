@@ -1,5 +1,6 @@
 export type Address = {
-  name: string;
+  street: string;
+  local: string;
   id: number;
   createdAt: Date;
   updatedAt: Date;
@@ -116,6 +117,7 @@ export type Product = {
 
 export type ProductVariant = {
   name: string;
+  imgUrl?: string;
   id: number;
   weight: number;
   status: boolean;
@@ -174,6 +176,7 @@ export type User = {
   roleId: number | null;
   role?: Role;
   orders?: Order[];
+  favorite?: Product[];
   logs?: Log[];
   notifications?: NotificationT[];
   addresses?: Address[];

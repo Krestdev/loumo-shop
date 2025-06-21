@@ -23,6 +23,14 @@ export default class UserQuery {
   getOne = async (id: number): Promise<User> => {
     return api.get(`${this.route}/${id}`).then((response) => response.data);
   };
+  addProductsToFavorite = async (
+    id: number,
+    productIds: number[]
+  ): Promise<User> => {
+    return api
+      .patch(`${this.route}/${id}`, { productIds })
+      .then((response) => response.data);
+  };
   register = async (
     data: Omit<User, "id"> & {
       addressList?: number[];
