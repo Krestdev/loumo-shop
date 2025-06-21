@@ -3,15 +3,15 @@
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/auth/login/page": "app/auth/login/page.js",
   "/auth/register/page": "app/auth/register/page.js",
-  "/catalog/[slug]/page": "app/catalog/[slug]/page.js",
   "/_not-found/page": "app/_not-found/page.js",
-  "/condition/page": "app/condition/page.js",
-  "/catalog/page": "app/catalog/page.js",
   "/cart/page": "app/cart/page.js",
-  "/page": "app/page.js",
+  "/catalog/page": "app/catalog/page.js",
+  "/catalog/[slug]/page": "app/catalog/[slug]/page.js",
+  "/condition/page": "app/condition/page.js",
   "/contact/page": "app/contact/page.js",
-  "/profile/history/[id]/page": "app/profile/history/[id]/page.js",
   "/faq/page": "app/faq/page.js",
+  "/page": "app/page.js",
   "/profile/page": "app/profile/page.js",
-  "/profile/history/page": "app/profile/history/page.js"
+  "/profile/history/page": "app/profile/history/page.js",
+  "/profile/history/[id]/page": "app/profile/history/[id]/page.js"
 }

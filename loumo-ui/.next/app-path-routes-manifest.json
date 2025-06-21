@@ -3,15 +3,15 @@
   "/favicon.ico/route": "/favicon.ico",
   "/auth/login/page": "/auth/login",
   "/auth/register/page": "/auth/register",
-  "/catalog/[slug]/page": "/catalog/[slug]",
   "/_not-found/page": "/_not-found",
-  "/condition/page": "/condition",
-  "/catalog/page": "/catalog",
   "/cart/page": "/cart",
-  "/page": "/",
+  "/catalog/page": "/catalog",
+  "/catalog/[slug]/page": "/catalog/[slug]",
+  "/condition/page": "/condition",
   "/contact/page": "/contact",
-  "/profile/history/[id]/page": "/profile/history/[id]",
   "/faq/page": "/faq",
+  "/page": "/",
   "/profile/page": "/profile",
-  "/profile/history/page": "/profile/history"
+  "/profile/history/page": "/profile/history",
+  "/profile/history/[id]/page": "/profile/history/[id]"
 }
