@@ -1,3 +1,4 @@
+"use client";
 import Loading from "@/components/setup/loading";
 import OrderQuery from "@/queries/order";
 import { useQuery } from "@tanstack/react-query";
