@@ -1,4 +1,4 @@
-// File: C:\Users\kenfa\Documents\KrestHoldingPro\loumo\loumo-shop\app\layout.tsx
+// File: C:\Users\kenfa\Documents\KrestHoldingPro\loumo\loumo-shop\loumo-ui\app\layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

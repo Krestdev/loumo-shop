@@ -23,6 +23,12 @@ export default class ProductQuery {
     return api.get(`${this.route}/${id}`).then((response) => response.data);
   };
 
+  getOneBySlug = async (slug: string): Promise<Product> => {
+    return api
+      .get(`${this.route}/slug/${slug}`)
+      .then((response) => response.data);
+  };
+
   update = async (
     id: number,
     data: Partial<Omit<Product, "id">> & { categoryId?: number }

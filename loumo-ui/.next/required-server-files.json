@@ -95,7 +95,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "C:\\Users\\kenfa\\Documents\\KrestHoldingPro\\loumo\\loumo-shop",
+    "outputFileTracingRoot": "C:\\Users\\kenfa\\Documents\\KrestHoldingPro\\loumo\\loumo-shop\\loumo-ui",
     "experimental": {
       "nodeMiddleware": false,
       "cacheLife": {
@@ -278,10 +278,10 @@
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.ts",
     "turbopack": {
-      "root": "C:\\Users\\kenfa\\Documents\\KrestHoldingPro\\loumo\\loumo-shop"
+      "root": "C:\\Users\\kenfa\\Documents\\KrestHoldingPro\\loumo\\loumo-shop\\loumo-ui"
     }
   },
-  "appDir": "C:\\Users\\kenfa\\Documents\\KrestHoldingPro\\loumo\\loumo-shop",
+  "appDir": "C:\\Users\\kenfa\\Documents\\KrestHoldingPro\\loumo\\loumo-shop\\loumo-ui",
   "relativeAppDir": "",
   "files": [
     ".next\\routes-manifest.json",
