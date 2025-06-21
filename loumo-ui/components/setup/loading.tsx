@@ -16,7 +16,7 @@ const Loading = ({ status }: { status?: "failed" | "loading" }) => {
         setMessage("An unexpected error occured");
         break;
     }
-  }, []);
+  }, [status]);
 
   return (
     <div className="h-screen w-full flex items-center justify-center flex-col gap-4 font-bold rounded-lg px-12 p-4 border-gray-500">

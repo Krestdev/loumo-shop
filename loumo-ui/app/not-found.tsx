@@ -1,13 +1,10 @@
 "use client";
 
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import Link from "next/link";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 export default function NotFound() {
-  const router = useRouter();
-
   useEffect(() => {
     document.title = "Page Not Found | Loumo";
   }, []);
@@ -22,11 +19,12 @@ export default function NotFound() {
         />
         {/* <h1 className="mb-4">404 Not found page going here</h1> */}
         <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-          Oops! This page doesn’t exist.
+          {"Oops! This page doesn’t exist."}
         </h2>
         <p className="text-gray-500 mb-6">
-          The page you're looking for might have been removed, renamed, or is
-          temporarily unavailable.
+          {
+            "The page you're looking for might have been removed, renamed, or is temporarily unavailable."
+          }
         </p>
 
         <Link

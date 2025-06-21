@@ -1,8 +1,8 @@
 "use client";
 import { useStore } from "@/providers/datastore";
 import UserQuery from "@/queries/user";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 const Page = () => {
   const user = new UserQuery();
@@ -24,7 +24,7 @@ const Page = () => {
     return () => {
       setToken();
     };
-  }, [userData.data]);
+  }, [userData.data, setUser, userData.isSuccess]);
 
   return (
     <div>

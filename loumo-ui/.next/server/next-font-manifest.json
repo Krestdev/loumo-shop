@@ -1,1 +1,17 @@
-{"pages":{},"app":{},"appUsingSizeAdjust":false,"pagesUsingSizeAdjust":false}
+{
+  "app": {
+    "[project]/app/auth/login/page": [
+      "static/media/rP2Yp2ywxg089UriI5_g4vlH9VoD8Cmcqbu0_K6z9mXg-s.p.40e38601.woff2",
+      "static/media/Aileron_SemiBold-s.p.da2068d4.otf",
+      "static/media/Aileron_Bold-s.p.f60f178d.otf"
+    ],
+    "[project]/app/page": [
+      "static/media/rP2Yp2ywxg089UriI5_g4vlH9VoD8Cmcqbu0_K6z9mXg-s.p.40e38601.woff2",
+      "static/media/Aileron_SemiBold-s.p.da2068d4.otf",
+      "static/media/Aileron_Bold-s.p.f60f178d.otf"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pages": {},
+  "pagesUsingSizeAdjust": false
+}

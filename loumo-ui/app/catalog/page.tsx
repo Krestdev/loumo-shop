@@ -47,7 +47,7 @@ const Page = () => {
             </div>
           )}
           {currentOrderItems.map((coi) => {
-            return <JsonView src={coi} />;
+            return <JsonView key={coi.id} src={coi} />;
           })}
         </div>
         <div className="max-w-3xl mx-auto mt-10">
