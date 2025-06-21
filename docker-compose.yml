@@ -1,0 +1,36 @@
+services:
+  loumo:
+    container_name: loumo
+    build:
+      context: ./loumo-ui
+      dockerfile: Dockerfile
+    command: sh -c "npm run build"
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: "http://localhost:5000/api/"
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+  mongo:
+    container_name: mongo
+    image: mongo:6
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: loumo-db
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+    attachable: true
+
+volumes:
+  mongo-data: {}
+# correct deployment
