@@ -2,8 +2,7 @@
 import Loading from "@/components/setup/loading";
 import UserQuery from "@/queries/user";
 import { User } from "@/types/types";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import JsonView from "react18-json-view";
 
 const Page = () => {

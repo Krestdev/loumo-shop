@@ -3,7 +3,7 @@ import Loading from "@/components/setup/loading";
 import { useStore } from "@/providers/datastore";
 import ProductQuery from "@/queries/order";
 import { Order, OrderItem } from "@/types/types";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import JsonView from "react18-json-view";
 
 const Page = () => {
@@ -53,6 +53,9 @@ const Page = () => {
         <div className="max-w-3xl mx-auto mt-10">
           <h1 className="text-xl font-bold mb-4">Product Data</h1>
           <JsonView src={productData.data} />
+          <button type="button" onClick={handleSubmitOrder}>
+            make order
+          </button>
         </div>
       </div>
     );

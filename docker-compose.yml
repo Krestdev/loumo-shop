@@ -1,6 +1,6 @@
 services:
-  loumo:
-    container_name: loumo
+  loumo_ui:
+    container_name: loumo_ui
     build:
       context: ./loumo-ui
       dockerfile: Dockerfile

@@ -5,8 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import JsonView from "react18-json-view";
 
-const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
-  const { slug } = await params;
+const Page = ({ slug }: { slug: string }) => {
   const product = new ProductQuery();
   const productData = useQuery({
     queryKey: ["productData"],
