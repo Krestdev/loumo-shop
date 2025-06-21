@@ -1,6 +1,6 @@
 # Dockerfile
 # Use an official Node.js runtime as the base image
-FROM node:20-alpine
+FROM node:22-alpine
 
 # Set the working directory
 WORKDIR /app
@@ -9,16 +9,16 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-# RUN npm install
+RUN npm install
 
 # Copy the rest of the application files
 COPY . .
 
 # Build the Next.js app
-RUN npm run build
+# RUN npm run build
 
 # Expose the port Next.js runs on
 EXPOSE 3000
 
 # Start the Next.js app
-RUN npm run start
+# RUN npm run start
