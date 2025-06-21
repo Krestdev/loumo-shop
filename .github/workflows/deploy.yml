@@ -98,7 +98,7 @@ jobs:
                 break
               fi
               echo "⏳ Waiting for app to be ready... ($i/10)"
-              sleep 6
+              sleep 12
             done
 
             if curl --fail http://localhost:3000/api/health; then
