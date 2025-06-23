@@ -1,14 +1,9 @@
 "use client";
 import { useStore } from "@/providers/datastore";
 import UserQuery from "@/queries/user";
-<<<<<<< HEAD:app/auth/login/page.tsx
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import JsonView from "react18-json-view";
-=======
-import { useMutation } from "@tanstack/react-query";
-import { useEffect } from "react";
->>>>>>> 32c9bc60907ef40b6eab8a244335b767ca2fcb9d:loumo-ui/app/auth/login/page.tsx
 
 const Page = () => {
   const user = new UserQuery();
