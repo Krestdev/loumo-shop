@@ -1,4 +1,5 @@
 "use client";
+import Home from "@/components/Home/Home";
 import Loading from "@/components/setup/loading";
 import ProductQuery from "@/queries/product";
 import { useQuery } from "@tanstack/react-query";
@@ -22,6 +23,7 @@ const Page = () => {
   if (productData.isSuccess) {
     return (
       <div>
+        <Home />
         <div className="max-w-3xl mx-auto mt-10">
           <h1 className="mb-4">Product Data</h1>
           <JsonView src={productData.data} />

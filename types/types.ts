@@ -33,6 +33,7 @@ export type Category = {
   weight: number;
   status: boolean;
   products?: Product[];
+  imgUrl?: string;
 };
 
 export type Delivery = {

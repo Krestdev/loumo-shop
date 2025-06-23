@@ -1,5 +1,33 @@
 {
+  "Header": {
+    "search": "Search",
+    "address": "Delivery address",
+    "login": "Login",
+    "profile": "Profile"
+  },
   "HomePage": {
-    "title": "Hello world!"
+    "title": "Loumo Shop",
+    "Hero": {
+      "notification": "Free Delivery on your first order ! Register now and start buying.",
+      "title": "One click away from your Local Store.",
+      "allButton": "All products",
+      "RegisterButton": "Register Now"
+    },
+    "GridProducts": {
+      "star": "Featured Products",
+      "promotions": "Promotions",
+      "addToCart": "Add to Cart",
+      "new": "New"
+    },
+    "Step": {
+      "step": "Step",
+      "title": "How does it work",
+      "title1": "Select your delivery area",
+      "title2": "Add items to your cart",
+      "title3": "Place your order and earn points",
+      "descrip1": "Tell us where you want your order delivered. We will only show you products available in your area.",
+      "descrip2": "Browse our wide range of bulk food products and add everything you need to your cart.",
+      "descrip3": "Confirm your order, choose the delivery time, and start earning loyalty points with every purchase."
+    }
   }
 }
