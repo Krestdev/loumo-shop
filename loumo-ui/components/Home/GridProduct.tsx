@@ -14,14 +14,12 @@ const GridProduct = ({ title, products, isLoading, isSuccess }: Props) => {
     return (
         <div className='max-w-[1400px] w-full px-7 py-12 flex flex-col gap-7 '>
             <h1 className='category-title'>{title}</h1>
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 h-[410px] overflow-hidden'>
+            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 lg:h-[410px] overflow-hidden'>
                 {isLoading && Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="w-[252px] h-[450px] rounded-none" />)}
                 {
                     isSuccess &&
                     products?.map((x, i) => (
-                        <div key={i }>
-                            <ProductComp product={x} />
-                        </div>
+                        <ProductComp product={x} key={i} />
                     ))
                 }
             </div>

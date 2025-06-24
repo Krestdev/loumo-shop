@@ -5,8 +5,34 @@
     "login": "Login",
     "profile": "Profile"
   },
+  "Footer": {
+    "Info": {
+      "fast": "Fast delivery",
+      "fastDesc": "We deliver in under 3 hours",
+      "mobile": "Mobile payment",
+      "mobileDesc": "We support Orange and MTN MOMO for payments",
+      "support": "Support",
+      "supportDesc": "24/7 live chat to answer all your questions"
+    },
+    "Help": {
+      "help": "Help",
+      "faq": "FAQ",
+      "fees": "Delivery fees",
+      "policy": "Return policy",
+      "contact": "Contact"
+    },
+    "About": {
+      "about": "About",
+      "term": "Terms and conditions",
+      "privacy": "Privacy policy"
+    },
+    "category": "Categories",
+    "followUs": "Follow us",
+    "copyright": "Copyright © 2025 KrestDev. All rights reserved."
+  },
   "HomePage": {
     "title": "Loumo Shop",
+    "reviews": "Reviews",
     "Hero": {
       "notification": "Free Delivery on your first order ! Register now and start buying.",
       "title": "One click away from your Local Store.",

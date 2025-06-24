@@ -3,13 +3,14 @@
 import React, { useEffect, useState } from 'react'
 import { Input } from './ui/input'
 import { useTranslations } from 'next-intl'
-import { LucideMapPin, LucideShoppingCart, LucideUserCircle, Search } from 'lucide-react'
+import { LucideMapPin, LucideMenu, LucideShoppingCart, LucideUserCircle, Search } from 'lucide-react'
 import { useStore } from '@/providers/datastore'
 import LocalSwitcher from './localSwitcher'
 import { Button } from './ui/button'
 import { useRouter } from 'next/navigation'
 import CategoriesNav from './CategoriesNav'
 import { Skeleton } from './ui/skeleton'
+import { Menu } from './menu'
 
 const Header = () => {
 
@@ -28,6 +29,11 @@ const Header = () => {
         <div className='w-full flex flex-col items-center sticky top-0 z-50 bg-background border-b'>
             <div className='flex flex-row items-center gap-4 md:gap-10 px-4 md:px-7 max-w-[1400px] w-full h-[60px]'>
                 {/* Logo */}
+                <Menu>
+                    <Button variant={"ghost"}>
+                        <LucideMenu size={20} />
+                    </Button>
+                </Menu>
                 <div className='flex items-center gap-4 w-full'>
                     <img
                         onClick={() => router.push("/")}
@@ -37,7 +43,7 @@ const Header = () => {
                     />
 
                     {/* Barre de recherche */}
-                    <div className='relative flex flex-row items-center w-full hidden md:block'>
+                    <div className='relative hidden md:flex flex-row items-center w-full'>
                         <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
                         <Input
                             type="search"
@@ -56,7 +62,7 @@ const Header = () => {
                             <div className='flex flex-col w-full overflow-hidden'>
                                 <p className='text-xs text-muted-foreground'>{t("address")}</p>
                                 <p className='text-sm truncate'>
-                                    {user?.addresses?.[0]?.name}
+                                    {user?.addresses?.[0]?.street}
                                 </p>
                             </div>
                         </div>
@@ -64,6 +70,9 @@ const Header = () => {
 
                     <LocalSwitcher />
 
+                    <Button variant={"ghost"} className='flex sm:hidden'>
+                        <LucideUserCircle size={36} />
+                    </Button>
                     {/* Panier */}
                     <Button
                         variant="ghost"
@@ -103,7 +112,19 @@ const Header = () => {
                     )}
                 </div>
             </div>
-
+            {isClient && (user?.addresses?.length ?? 0) > 0 && (
+                <div className='flex md:hidden items-center justify-center px-7 py-2 gap-2 w-full mx-auto bg-secondary'>
+                    <div className='flex items-center gap-2'>
+                        <LucideMapPin size={24} className='text-white flex-shrink-0' />
+                        <div className='flex flex-row w-full overflow-hidden'>
+                            <p className='text-xs text-white'>{t("address")}</p>
+                            <p className='text-sm truncate'>
+                                {user?.addresses?.[0]?.street}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )}
             <CategoriesNav />
         </div>
     )

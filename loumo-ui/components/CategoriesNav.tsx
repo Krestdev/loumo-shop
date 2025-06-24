@@ -11,6 +11,7 @@ import { Skeleton } from './ui/skeleton';
 
 const CategoriesNav = () => {
     
+    const pathname = usePathname();
     const category = new CategoryQuery();
     const categoryData = useQuery({
         queryKey: ["categoryFetchAll"],
@@ -25,7 +26,6 @@ const CategoriesNav = () => {
         return <Loading status={"failed"} />;
     }
 
-    const pathname = usePathname();
     const path = pathname.split("/");
 
     function isActive(id:number):boolean{
@@ -44,7 +44,7 @@ const CategoriesNav = () => {
     }
 
     return (
-        <div className='w-full border-y border-y-input flex justify-center'>
+        <div className='hidden md:flex justify-center w-full border-y border-y-input'>
             <section className="grid place-items-center overflow-x-auto scrollbar-hide">
                 <div className="inline-flex gap-3">
                     {categoryData.isLoading && Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="w-20 h-10 rounded-none" />)}

@@ -8,9 +8,9 @@ const HowStep = () => {
     const step = useStep();
     const t = useTranslations("HomePage.Step");
   return (
-    <div className='flex flex-col gap-7 px-7 py-24 max-w-[1400px] w-full'>
+    <div className='flex flex-col gap-7 px-7 py-10 lg:py-24 max-w-[1400px] w-full'>
       <h1 className='category-title'>{t("title")}</h1>
-      <div className='flex flex-col md:flex-row gap-10'>
+      <div className='grid grid-cols-1 md:grid-cols-3 gap-10'>
         {
             step.map((x,i) => (
                 <div key={i} className='flex flex-col gap-5 px-7 py-8 rounded-[20px] border border-input max-w-[340px] w-full'>
