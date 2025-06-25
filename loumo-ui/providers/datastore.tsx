@@ -21,7 +21,10 @@ type Store = {
 
   currentOrderItems: OrderItem[];
 
-  addOrderItem: (item: { variant: ProductVariant; note: string }) => void;
+  addOrderItem: (
+    item: { variant: ProductVariant; note: string },
+    quantity: number
+  ) => void;
   incrementOrderItem: (variantId: number) => void;
   decrementOrderItem: (variantId: number) => void;
   removeOrderItem: (variantId: number) => void;
@@ -54,7 +57,7 @@ export const useStore = create<Store>()(
       orderNote: "",
       orderAddressId: null,
 
-      addOrderItem: ({ variant, note }) => {
+      addOrderItem: ({ variant, note }, quantity = 1) => {
         const existing = get().currentOrderItems.find(
           (x) => x.productVariantId === variant.id
         );
@@ -65,8 +68,8 @@ export const useStore = create<Store>()(
               x.productVariantId === variant.id
                 ? {
                     ...x,
-                    quantity: x.quantity + 1,
-                    total: (x.quantity + 1) * (variant.price || 0),
+                    quantity: x.quantity + quantity,
+                    total: (x.quantity + quantity) * (variant.price || 0),
                   }
                 : x
             ),
@@ -80,7 +83,7 @@ export const useStore = create<Store>()(
             note,
             productVariant: variant,
             productVariantId: variant.id,
-            quantity: 1,
+            quantity: quantity,
             total: price,
             deliveryId: null,
           };
@@ -142,18 +145,18 @@ export const useStore = create<Store>()(
         }),
     }),
     {
-  name: "ecommerce-store",
-  storage: createJSONStorage(() => localStorage),
-  partialize: (state) => ({
-    ...state,
-    user: null, // Ne pas persister les infos utilisateur (stockez plutôt un token)
-    orders: [], // Les commandes passées devraient être rechargées depuis le serveur
-    categories: [], // Les catégories peuvent changer fréquemment
-    orderAddressId: null, // Les préférences d'adresse peuvent changer
-    // Conserver uniquement le panier en cours et la note
-    currentOrderItems: state.currentOrderItems,
-    orderNote: state.orderNote
-  })
-}
+      name: "ecommerce-store",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        ...state,
+        user: null, // Ne pas persister les infos utilisateur (stockez plutôt un token)
+        orders: [], // Les commandes passées devraient être rechargées depuis le serveur
+        categories: [], // Les catégories peuvent changer fréquemment
+        orderAddressId: null, // Les préférences d'adresse peuvent changer
+        // Conserver uniquement le panier en cours et la note
+        currentOrderItems: state.currentOrderItems,
+        orderNote: state.orderNote,
+      }),
+    }
   )
 );
