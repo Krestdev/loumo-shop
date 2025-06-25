@@ -68,7 +68,9 @@ const Header = () => {
                         </div>
                     )}
 
-                    <LocalSwitcher />
+                    <span className='hidden md:flex'>
+                        <LocalSwitcher />
+                    </span>
 
                     <Button variant={"ghost"} className='flex sm:hidden'>
                         <LucideUserCircle size={36} />

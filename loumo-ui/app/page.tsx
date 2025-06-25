@@ -24,10 +24,10 @@ const Page = () => {
     return (
       <div>
         <Home />
-        {/* <div className="max-w-3xl mx-auto mt-10">
+        <div className="max-w-3xl mx-auto mt-10">
           <h1 className="mb-4">Product Data</h1>
           <JsonView src={productData.data} />
-        </div> */}
+        </div>
       </div>
     );
   }

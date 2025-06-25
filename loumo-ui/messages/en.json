@@ -3,7 +3,9 @@
     "search": "Search",
     "address": "Delivery address",
     "login": "Login",
-    "profile": "Profile"
+    "profile": "Profile",
+    "register": "Register",
+    "or": "OR"
   },
   "Footer": {
     "Info": {
@@ -54,6 +56,19 @@
       "descrip1": "Tell us where you want your order delivered. We will only show you products available in your area.",
       "descrip2": "Browse our wide range of bulk food products and add everything you need to your cart.",
       "descrip3": "Confirm your order, choose the delivery time, and start earning loyalty points with every purchase."
+    }
+  },
+  "Catalog": {
+    "Filters": {
+      "filters": "Filters",
+      "priceRange": "Price Range",
+      "category": "Category",
+      "find": "Find",
+      "show": "Show only available products"
+    },
+    "Cart": {
+      "add": "Add to cart",
+      "close": "Fermer"
     }
   }
 }

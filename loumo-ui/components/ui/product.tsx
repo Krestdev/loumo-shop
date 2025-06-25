@@ -7,13 +7,14 @@ import React, { useState } from 'react'
 import { Button } from './button'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { AddToCard } from '../Catalog/AddToCard'
 interface Props {
-    product: Product
+    product: Product | undefined
 }
 const ProductComp = ({ product }: Props) => {
     const t = useTranslations("HomePage.GridProducts")
     const [favorites, setFavorites] = useState<{ [id: number]: boolean }>({});
-    const [variant, setVariant] = useState(product.variants && product.variants[0]);
+    const [variant, setVariant] = useState(product && product.variants && product.variants[0]);
     const router = useRouter();
 
     const toggleFavorite = (id: number) => {
@@ -24,7 +25,7 @@ const ProductComp = ({ product }: Props) => {
     };
 
     return (
-        variant &&
+        product && variant &&
         <div className='flex flex-col gap-4 h-fit'>
             <div className='relative flex gap-3 w-full h-auto'>
                 <div className='absolute z-10 top-2 left-2 right-2 flex items-center justify-between'>
@@ -66,7 +67,9 @@ const ProductComp = ({ product }: Props) => {
                         <p className='text-[12px] text-gray-500 line-through'>{`1 FCFA`}</p>
                     </div>
                 </div>
-                <Button variant={"default"}>{t("addToCart")}</Button>
+                <AddToCard product={product}>
+                    <Button variant={"default"}>{t("addToCart")}</Button>
+                </AddToCard>
             </div>
         </div>
     )

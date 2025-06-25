@@ -4,27 +4,48 @@ import ProductComp from '../ui/product'
 import { Skeleton } from '../ui/skeleton'
 
 interface Props {
-    title: string,
-    products: Product[] | undefined,
-    isLoading: boolean
-    isSuccess: boolean
+    title: string;
+    products: (Product | undefined)[] | Product[] | undefined;
+    isLoading: boolean;
+    isSuccess: boolean;
+    className?: string;
+    price?: number;
 }
 
-const GridProduct = ({ title, products, isLoading, isSuccess }: Props) => {
+const GridProduct = ({
+    title,
+    products,
+    isLoading,
+    isSuccess,
+    className = "px-7 py-12 gap-7",
+    price
+}: Props) => {
+    
+    // 🔍 On filtre les produits qui ont au moins un variant visible selon le prix et le status
+    const filteredProducts = price !== undefined
+        ? products?.filter(product =>
+            product?.variants?.some(variant =>
+                variant.status === true && variant.price <= price
+            )
+        )
+        : products;
+
     return (
-        <div className='max-w-[1400px] w-full px-7 py-12 flex flex-col gap-7 '>
+        <div className={`max-w-[1400px] w-full flex flex-col ${className}`}>
             <h1 className='category-title'>{title}</h1>
             <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 lg:h-[410px] overflow-hidden'>
-                {isLoading && Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="w-[252px] h-[450px] rounded-none" />)}
+                {isLoading && Array.from({ length: 5 }).map((_, i) => (
+                    <Skeleton key={i} className="w-[252px] h-[450px] rounded-none" />
+                ))}
                 {
                     isSuccess &&
-                    products?.map((x, i) => (
-                        <ProductComp product={x} key={i} />
+                    filteredProducts?.map((product, i) => (
+                        <ProductComp product={product} key={i} />
                     ))
                 }
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default GridProduct
+export default GridProduct;

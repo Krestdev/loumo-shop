@@ -5,11 +5,12 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import CategoryQuery from "@/queries/category"
 import { useQuery } from "@tanstack/react-query"
 import CategoryCard from "./CategoryCard"
+import type { EmblaCarouselType } from 'embla-carousel'
 
 
 
 export function CAtegoryMenu() {
-    const [emblaRef, setEmblaRef] = React.useState<any>(null)
+    const [emblaRef, setEmblaRef] = React.useState<EmblaCarouselType | null >(null)
     const category = new CategoryQuery()
     const categoryData = useQuery({
         queryKey: ["categoryFetchAll"],
@@ -40,7 +41,7 @@ export function CAtegoryMenu() {
                     startIndex: 0, 
                     inViewThreshold: 0.5, 
                 }}
-                setApi={setEmblaRef}
+                setApi={(api) => setEmblaRef(api ?? null)}
                 className="w-full relative"
             >
                 <CarouselContent className="flex">
