@@ -3,6 +3,7 @@ import Home from "@/components/Home/Home";
 import Loading from "@/components/setup/loading";
 import ProductQuery from "@/queries/product";
 import { useQuery } from "@tanstack/react-query";
+import JsonView from "react18-json-view";
 // import JsonView from "react18-json-view";
 
 const Page = () => {
