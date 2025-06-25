@@ -1,8 +1,8 @@
 "use client";
 import { useStore } from "@/providers/datastore";
 import UserQuery from "@/queries/user";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useEffect } from "react";
 import JsonView from "react18-json-view";
 
 const Page = () => {
@@ -12,7 +12,7 @@ const Page = () => {
     mutationFn: (data: { email: string; password: string }) => user.login(data),
   });
 
-  const { setUser, resetUser } = useStore();
+  const { setUser } = useStore();
 
   useEffect(() => {
     const setToken = () => {
@@ -21,7 +21,7 @@ const Page = () => {
         localStorage.setItem("token", userData.data?.token);
       }
     };
-    
+
     return () => {
       setToken();
     };
@@ -39,7 +39,7 @@ const Page = () => {
       >
         login
       </button>
-      <JsonView src={userData.data}/>
+      <JsonView src={userData.data} />
     </div>
   );
 };

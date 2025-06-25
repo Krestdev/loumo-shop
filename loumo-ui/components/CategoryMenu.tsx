@@ -1,16 +1,15 @@
-"use client"
+"use client";
 
 import * as React from "react"
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
 import CategoryQuery from "@/queries/category"
 import { useQuery } from "@tanstack/react-query"
 import CategoryCard from "./CategoryCard"
-import type { EmblaCarouselType } from 'embla-carousel'
 
 
 
 export function CAtegoryMenu() {
-    const [emblaRef, setEmblaRef] = React.useState<EmblaCarouselType | null >(null)
+    const [emblaRef, setEmblaRef] = React.useState<any>(null)
     const category = new CategoryQuery()
     const categoryData = useQuery({
         queryKey: ["categoryFetchAll"],
@@ -18,43 +17,43 @@ export function CAtegoryMenu() {
     })
     const categories = categoryData.data?.slice(0, 6) || []
 
-    React.useEffect(() => {
-        if (!emblaRef) return
+  React.useEffect(() => {
+    if (!emblaRef) return;
 
-        const interval = setInterval(() => {
-            if (emblaRef.canScrollNext()) {
-                emblaRef.scrollNext()
-            } else {
-                emblaRef.scrollTo(0)
-            }
-        }, 5000)
+    const interval = setInterval(() => {
+      if (emblaRef.canScrollNext()) {
+        emblaRef.scrollNext();
+      } else {
+        emblaRef.scrollTo(0);
+      }
+    }, 5000);
 
-        return () => clearInterval(interval)
-    }, [emblaRef])
+    return () => clearInterval(interval);
+  }, [emblaRef]);
 
-    return (
-        <div className="max-w-[1400px] w-full px-7 py-8 overflow-hidden">
-            <Carousel
-                opts={{
-                    align: "center",
-                    loop: true,
-                    startIndex: 0, 
-                    inViewThreshold: 0.5, 
-                }}
-                setApi={(api) => setEmblaRef(api ?? null)}
-                className="w-full relative"
+  return (
+    <div className="max-w-[1400px] w-full px-7 py-8 overflow-hidden">
+      <Carousel
+        opts={{
+          align: "center",
+          loop: true,
+          startIndex: 0,
+          inViewThreshold: 0.5,
+        }}
+        setApi={setEmblaRef}
+        className="w-full relative"
+      >
+        <CarouselContent className="flex">
+          {categories.map((category, index) => (
+            <CarouselItem
+              key={index}
+              className="basis-[50%] sm:basis-[30%] lg:basis-[16.7%] flex-shrink-0"
             >
-                <CarouselContent className="flex">
-                    {categories.map((category, index) => (
-                        <CarouselItem
-                            key={index}
-                            className="basis-[50%] sm:basis-[30%] lg:basis-[16.7%] flex-shrink-0"
-                        >
-                            <CategoryCard category={category} />
-                        </CarouselItem>
-                    ))}
-                </CarouselContent>
-            </Carousel>
-        </div>
-    )
+              <CategoryCard category={category} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+    </div>
+  );
 }

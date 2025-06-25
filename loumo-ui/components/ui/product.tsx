@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Product } from '@/types/types'
 import { LucideCylinder, LucideDatabase, LucideHeart, LucidePlus } from 'lucide-react'
@@ -17,12 +17,12 @@ const ProductComp = ({ product }: Props) => {
     const [variant, setVariant] = useState(product && product.variants && product.variants[0]);
     const router = useRouter();
 
-    const toggleFavorite = (id: number) => {
-        setFavorites(prev => ({
-            ...prev,
-            [id]: !prev[id]
-        }));
-    };
+  const toggleFavorite = (id: number) => {
+    setFavorites((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
     return (
         product && variant &&
@@ -73,6 +73,6 @@ const ProductComp = ({ product }: Props) => {
             </div>
         </div>
     )
-}
+};
 
-export default ProductComp
+export default ProductComp;
