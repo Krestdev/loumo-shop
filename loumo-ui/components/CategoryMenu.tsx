@@ -8,7 +8,7 @@ import CategoryCard from "./CategoryCard"
 
 
 
-export function CAtegoryMenu() {
+export function CategoryMenu() {
     const [emblaRef, setEmblaRef] = React.useState<any>(null)
     const category = new CategoryQuery()
     const categoryData = useQuery({

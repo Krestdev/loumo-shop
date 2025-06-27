@@ -20,15 +20,12 @@ const GridProduct = ({
     className = "px-7 py-12 gap-7",
     price
 }: Props) => {
-    
-    // 🔍 On filtre les produits qui ont au moins un variant visible selon le prix et le status
-    const filteredProducts = price !== undefined
-        ? products?.filter(product =>
-            product?.variants?.some(variant =>
-                variant.status === true && variant.price <= price
-            )
-        )
-        : products;
+
+    // 🔍 On filtre les produits qui ont au moins un variant  selon le prix et le status
+    const filteredProducts = products?.filter(
+        (product) => product?.variants && product.variants.length > 0
+    ) ?? [];
+
 
     return (
         <div className={`max-w-[1400px] w-full flex flex-col ${className}`}>
@@ -39,9 +36,11 @@ const GridProduct = ({
                 ))}
                 {
                     isSuccess &&
-                    filteredProducts?.map((product, i) => (
-                        <ProductComp product={product} key={i} />
-                    ))
+                        filteredProducts && filteredProducts.length > 0 ?
+                        filteredProducts.map((product, i) => (
+                            <ProductComp product={product} key={i} />
+                        )) :
+                        <p>{"Aucun produit trouvé"}</p>
                 }
             </div>
         </div>

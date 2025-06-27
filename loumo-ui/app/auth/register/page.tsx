@@ -1,9 +1,9 @@
 "use client";
-import Loading from "@/components/setup/loading";
+
+import SignInForm from "@/components/Auth/SignInForm";
 import UserQuery from "@/queries/user";
 import { User } from "@/types/types";
 import { useMutation } from "@tanstack/react-query";
-import JsonView from "react18-json-view";
 
 const Page = () => {
   const user = new UserQuery();
@@ -16,26 +16,11 @@ const Page = () => {
     ) => user.register(data),
   });
 
-  if (userData.isPending) {
-    return <Loading status={"loading"} />;
-  }
-
-  if (userData.isError) {
-    return <Loading status={"failed"} />;
-  }
-
-  if (userData.isSuccess) {
     return (
       <div>
-        <div className="max-w-3xl mx-auto mt-10">
-          <h1 className="text-xl font-bold mb-4">Product Data</h1>
-          <JsonView src={userData.data} />
-        </div>
+        <SignInForm />
       </div>
     );
-  }
-
-  return <Loading />;
 };
 
 export default Page;

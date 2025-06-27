@@ -1,15 +1,18 @@
 "use client";
+import CartComp from "@/components/Cart/CartComp";
 import Loading from "@/components/setup/loading";
+import { Button } from "@/components/ui/button";
 import { useStore } from "@/providers/datastore";
-import ProductQuery from "@/queries/order";
+import OrderQuery from "@/queries/order";
 import { Order, OrderItem } from "@/types/types";
 import { useMutation } from "@tanstack/react-query";
 import JsonView from "react18-json-view";
 
 const Page = () => {
-  const order = new ProductQuery();
+
+  const order = new OrderQuery();
   const productData = useMutation({
-    mutationKey: ["orderCreate"],
+    mutationKey: ["product"],
     mutationFn: (
       newOrder: Omit<Order, "id" | "orderItems"> & {
         orderItems: Omit<OrderItem, "id" | "orderId">[];
@@ -34,34 +37,22 @@ const Page = () => {
           deliveryId: item.deliveryId,
         })),
       };
-
       productData.mutate(payload);
     }
   };
 
-  if (productData.isPending) {
-    return <Loading status={"loading"} />;
-  }
-
-  if (productData.isError) {
-    return <Loading status={"failed"} />;
-  }
-
-  if (productData.isSuccess) {
     return (
-      <div>
-        <div className="max-w-3xl mx-auto mt-10">
+      <div className="w-full flex justify-center">
+        <CartComp />
+        {/* <div className="max-w-3xl mx-auto mt-10">
           <h1 className="text-xl font-bold mb-4">Product Data</h1>
           <JsonView src={productData.data} />
-          <button type="button" onClick={handleSubmitOrder}>
+          <Button onClick={handleSubmitOrder}>
             make order
-          </button>
-        </div>
+          </Button>
+        </div> */}
       </div>
     );
-  }
-
-  return <Loading />;
 };
 
 export default Page;

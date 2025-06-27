@@ -1,14 +1,15 @@
 "use client";
-import Filter from "@/components/Catalog/Filter";
-import GridProduct from "@/components/Home/GridProduct";
-import Loading from "@/components/setup/loading";
-import { Input } from "@/components/ui/input";
-import { useStore } from "@/providers/datastore";
-import CategoryQuery from "@/queries/category";
-import { Category } from "@/types/types";
+
+import React, { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
-import JsonView from "react18-json-view";
+import CategoryQuery from "@/queries/category";
+import { Category, Product } from "@/types/types";
+import { Input } from "@/components/ui/input";
+import GridProduct from "@/components/Home/GridProduct";
+import Filter from "@/components/Catalog/Filter";
+import Loading from "@/components/setup/loading";
+import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
 
 const Page = () => {
   const category = new CategoryQuery();
@@ -17,101 +18,131 @@ const Page = () => {
     queryFn: () => category.getAll(),
   });
 
-  const { addOrderItem, removeOrderItem, currentOrderItems } = useStore();
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+  const [price, setPrice] = useState(10000);
+  const [availableOnly, setAvailableOnly] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const t = useTranslations("Catalog.Filters")
 
-  if (categoryData.isLoading) {
-    return <Loading status={"loading"} />;
-  }
+  const allProducts: Product[] =
+    categoryData.data?.flatMap((cat) => cat.products ?? []) ?? [];
 
-  if (categoryData.isError) {
-    return <Loading status={"failed"} />;
-  }
-
-  const handleFilter = (filters: {
+  const useFilteredProducts = ({
+    allProducts,
+    price,
+    selectedCategories,
+    availableOnly,
+    searchTerm,
+  }: {
+    allProducts: Product[];
     price: number;
-    category: Category[];
+    selectedCategories: Category[];
     availableOnly: boolean;
+    searchTerm: string;
   }) => {
-    console.log("Filters applied:", filters);
+    const selectedCategoryIds = selectedCategories.map((cat) => cat.id);
+    const filtered = useMemo(() => {
+      if (!allProducts || allProducts.length === 0) return [];
+
+      let filteredData = allProducts;
+
+      // 1. Filtrer les produits avec au moins une variante
+      filteredData = filteredData.filter(
+        (product) => product.variants && product.variants.length > 0
+      );
+
+      // 2. Filtrer par catégorie
+      if (selectedCategoryIds.length > 0) {
+        filteredData = filteredData.filter((product) =>
+          product.categoryId !== null && selectedCategoryIds.includes(product.categoryId)
+        );
+      }
+
+      // 3. Filtrer par prix et disponibilité
+      filteredData = filteredData.filter((product) =>
+        product.variants?.some((variant) => {
+          const matchesPrice = variant.price <= price;
+          const matchesAvailability = !availableOnly;
+          return matchesPrice && matchesAvailability;
+        })
+      );
+
+      // 4. Filtrer par recherche textuelle
+      if (searchTerm.trim() !== "") {
+        const search = searchTerm.trim().toLowerCase();
+        filteredData = filteredData.filter((product) =>
+          product.name.toLowerCase().includes(search)
+        );
+      }
+
+      console.log(filteredData);
+
+      return filteredData;
+    }, [allProducts, price, selectedCategoryIds, availableOnly, searchTerm]);
+
+    return filtered;
   };
 
-  if (categoryData.isSuccess) {
-    const data = categoryData.data?.[0]?.products?.[0]?.variants;
-    return (
-      <div className="flex justify-center w-full">
-        <div className="flex flex-col gap-5 px-7 py-8 max-w-[1400px] w-full">
-          <div>
-            {"Home > Products"}
-          </div>
-          <p className="text-secondary text-[36px] w-full text-center">
-            {"All Products"}
-          </p>
-          <div className="w-full flex justify-center">
-            <Input
-              type="search"
-              placeholder={"Search a product"}
-              className="max-w-[360px] w-full"
+
+  const filteredProducts = useFilteredProducts({
+    allProducts,
+    price,
+    selectedCategories,
+    availableOnly,
+    searchTerm,
+  });
+
+  if (categoryData.isLoading) return <Loading status="loading" />;
+  if (categoryData.isError) return <Loading status="failed" />;
+
+  const categoriesWithProducts = categoryData.data && categoryData.data.filter((cat) =>
+    cat.products?.some((product) => product.variants && product.variants.length > 0)
+  );
+
+  return (
+    <div className="flex justify-center w-full">
+      <div className="flex flex-col gap-5 px-7 py-8 max-w-[1400px] w-full">
+        <div>{"Home > Products"}</div>
+
+        <p className="text-secondary text-[36px] w-full text-center">{t("allProducts")}</p>
+
+        {/* Search */}
+        <div className="flex justify-center">
+        <div className="relative max-w-[360px] w-full">
+          <Input
+            type="search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search a product"
+            className="h-10"
             />
-          </div>
+          <Button className="absolute h-8 right-1 top-1">{t("search")}</Button>
+        </div>
+            </div>
 
-          <div className="px-7 flex flex-row items-start justify-start gap-5">
-            {/* Filtre */}
-            <Filter
-              maxPrice={10000}
-              categories={categoryData.data.filter(category =>
-                category.products?.some(product => product.variants && product.variants.length > 0)
-              )}
-              onFilter={handleFilter}
-              selectedCategories={selectedCategories}
-              setSelectedCategories={setSelectedCategories}
-            />
-            {/* Grille de produit filtré */}
-            <GridProduct
-              title={""}
-              products={selectedCategories.length > 0 ? selectedCategories.flatMap(x => x.products)
-                : categoryData.data.flatMap(x => x.products)}
-              isLoading={categoryData.isLoading}
-              isSuccess={categoryData.isSuccess}
-              className="px-0 py-0"
-            />
-          </div>
+        <div className="px-7 flex flex-row items-start justify-start gap-5">
+          <Filter
+            maxPrice={10000}
+            categories={categoriesWithProducts!}
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
+            price={price}
+            setPrice={setPrice}
+            availableOnly={availableOnly}
+            setAvailableOnly={setAvailableOnly}
+          />
 
-
-
-          <div className="flex flex-col gap-4 max-w-3xl mx-auto mt-10">
-            {data && (
-              <div className="flex gap-2">
-                <p>add to cart :</p>{" "}
-                <button
-                  type="button"
-                  className=" border rounded-lg"
-                  onClick={() => addOrderItem({ variant: data[0], note: "" })}
-                >
-                  Add
-                </button>
-              </div>
-            )}
-            {data && (
-              <div className="flex gap-2">
-                <p>remove from cart :</p>{" "}
-                <button onClick={() => removeOrderItem(data[0].id)}>Add</button>
-              </div>
-            )}
-            {currentOrderItems.map((coi) => {
-              return <JsonView key={coi.id} src={coi} />;
-            })}
-          </div>
-          <div className="max-w-3xl mx-auto mt-10">
-            <h1 className="text-xl font-bold mb-4">Category Catalogue Data</h1>
-            <JsonView src={categoryData.data} />
-          </div>
+          <GridProduct
+            title=""
+            products={filteredProducts}
+            isLoading={categoryData.isLoading}
+            isSuccess={categoryData.isSuccess}
+            className="px-0 py-0"
+          />
         </div>
       </div>
-    );
-  }
-
-  return <Loading />;
+    </div>
+  );
 };
 
 export default Page;

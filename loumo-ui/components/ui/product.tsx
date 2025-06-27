@@ -67,7 +67,7 @@ const ProductComp = ({ product }: Props) => {
                         <p className='text-[12px] text-gray-500 line-through'>{`1 FCFA`}</p>
                     </div>
                 </div>
-                <AddToCard product={product}>
+                <AddToCard product={product} variant={undefined}>
                     <Button variant={"default"}>{t("addToCart")}</Button>
                 </AddToCard>
             </div>

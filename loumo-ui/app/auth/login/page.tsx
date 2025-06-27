@@ -1,4 +1,5 @@
 "use client";
+import LoginForm from "@/components/Auth/LoginForm";
 import { useStore } from "@/providers/datastore";
 import UserQuery from "@/queries/user";
 import { useMutation } from "@tanstack/react-query";
@@ -29,17 +30,7 @@ const Page = () => {
 
   return (
     <div>
-      <button
-        onClick={() =>
-          userData.mutate({
-            email: "john@example.com",
-            password: "password123",
-          })
-        }
-      >
-        login
-      </button>
-      <JsonView src={userData.data} />
+      <LoginForm />
     </div>
   );
 };

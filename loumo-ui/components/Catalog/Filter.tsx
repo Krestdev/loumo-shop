@@ -10,64 +10,46 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "../ui/button";
 import { useTranslations } from "next-intl";
-import { Category } from "@/types/types";
+import { Category, Product, ProductVariant } from "@/types/types";
 
-type FilterSidebarProps = {
-    maxPrice: number;
+interface FilterProps {
     categories: Category[];
-    selectedCategories: Category[]
-    setSelectedCategories: React.Dispatch<React.SetStateAction<Category[]>>
-    onFilter: (filters: {
-        price: number;
-        category: Category[]; // plusieurs catégories possibles
-        availableOnly: boolean;
-    }) => void;
-};
+    selectedCategories: Category[];
+    setSelectedCategories: (categories: Category[]) => void;
+    price: number;
+    setPrice: (price: number) => void;
+    availableOnly: boolean;
+    setAvailableOnly: (value: boolean) => void;
+    maxPrice: number;
+}
 
 export default function Filter({
+    price,
+    setPrice,
+    availableOnly,
+    setAvailableOnly,
     maxPrice,
     categories,
-    onFilter,
     selectedCategories,
     setSelectedCategories
-}: FilterSidebarProps) {
-    const [price, setPrice] = useState(maxPrice / 2);
-    const [availableOnly, setAvailableOnly] = useState(false);
+}: FilterProps) {
     const t = useTranslations("Catalog.Filters");
 
-    // 🔄 filtre direct : disponibilité
-    useEffect(() => {
-        onFilter({
-            price,
-            category: selectedCategories,
-            availableOnly,
-        });
-    }, [availableOnly]);
-
-    // 🔄 filtre direct : catégorie
-    useEffect(() => {
-        onFilter({
-            price,
-            category: selectedCategories,
-            availableOnly,
-        });
-    }, [selectedCategories]);
-
-    // ✅ filtre au clic pour le prix
-    const handleSubmit = () => {
-        onFilter({
-            price,
-            category: selectedCategories,
-            availableOnly,
-        });
+    const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPrice(Number(e.target.value));
     };
 
-    const toggleCategory = (cat: Category) => {
-        setSelectedCategories((prev) =>
-            prev.includes(cat)
-                ? prev.filter((c) => c !== cat)
-                : [...prev, cat]
-        );
+    const handleAvailabilityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setAvailableOnly(e.target.checked);
+    };
+
+    const handleCategoryChange = (category: Category) => {
+        const isSelected = selectedCategories.some((cat) => cat.id === category.id);
+        if (isSelected) {
+            setSelectedCategories(selectedCategories.filter((cat) => cat.id !== category.id));
+        } else {
+            setSelectedCategories([...selectedCategories, category]);
+        }
     };
 
     return (
@@ -97,13 +79,14 @@ export default function Filter({
                                 max={maxPrice}
                                 step={500}
                                 value={price}
-                                onChange={(e) =>
+                                onChange={(e) => {
                                     setPrice(Number(e.target.value))
+                                    handlePriceChange
+                                }
                                 }
                                 className="px-0 w-[124px] h-[8px] bg-[#C8102E]"
                             />
                             <Button
-                                onClick={handleSubmit}
                                 variant={"outline"}
                                 className="rounded-sm"
                             >
@@ -119,19 +102,24 @@ export default function Filter({
                         {t("category")}
                     </AccordionTrigger>
                     <AccordionContent className="flex flex-col gap-[6px] px-5 py-2">
-                        {categories.map((cat, i) => (
-                            <label
-                                key={i}
-                                className="flex items-center gap-2 text-sm"
-                            >
-                                <input
-                                    type="checkbox"
-                                    checked={selectedCategories.includes(cat)}
-                                    onChange={() => toggleCategory(cat)}
-                                />
-                                {cat.name}
-                            </label>
-                        ))}
+                        {categories
+                            .filter(category =>
+                                category.products?.some(product => product.variants && product.variants.length > 0)
+                            )
+                            .map((category) => (
+                                <label
+                                    key={category.id}
+                                    className="flex items-center gap-2 text-sm"
+                                >
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedCategories.some((cat) => cat.id === category.id)}
+                                        onChange={() => handleCategoryChange(category)}
+                                    />
+                                    {category.name}
+                                </label>
+                            ))}
+
                     </AccordionContent>
                 </AccordionItem>
             </Accordion>
@@ -139,10 +127,9 @@ export default function Filter({
             {/* Filtre par disponibilité */}
             <div className="flex gap-2 px-5 py-2 items-center text-sm border-t">
                 <input
-                    id="availableOnly"
                     type="checkbox"
                     checked={availableOnly}
-                    onChange={() => setAvailableOnly((prev) => !prev)}
+                    onChange={handleAvailabilityChange}
                 />
                 <label htmlFor="availableOnly">{t("show")}</label>
             </div>

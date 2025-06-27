@@ -8,7 +8,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Product } from "@/types/types"
+import { Product, ProductVariant } from "@/types/types"
 import { LucideDatabase, LucideShoppingCart } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
@@ -19,25 +19,24 @@ import { useStore } from "@/providers/datastore"
 interface Props {
     children: React.JSX.Element
     product: Product | undefined
+    variant: ProductVariant | undefined
 }
 
-export function AddToCard({ children, product }: Props) {
+export function AddToCard({ children, product, variant }: Props) {
 
-    const { addOrderItem, removeOrderItem, currentOrderItems } = useStore();
+    const { addOrderItem } = useStore();
     const t = useTranslations("Catalog.Cart")
-    const [variant, setVariant] = useState(product?.variants?.[0])
+    const [variants, setVariant] = useState(variant)
     const [quantity, setQuantity] = useState(1)
 
     const increment = () => setQuantity(q => q + 1)
     const decrement = () => setQuantity(q => (q > 1 ? q - 1 : 1))
 
     const addToCart = () => {
-        console.log("Ajouter au panier :", { productId: product?.id, variant, quantity })
-        addOrderItem({ variant: variant!, note: "" })
+        console.log("Ajouter au panier :", { productId: product?.id, variants, quantity })
+        addOrderItem({ variant: variants!, note: "" }, quantity)
         console.log("Ajouté avec succès");
-        
     }
-
     return (
         <Dialog>
             <DialogTrigger className="w-full" asChild>
@@ -48,8 +47,8 @@ export function AddToCard({ children, product }: Props) {
                     <DialogTitle>{t("add")}</DialogTitle>
                 </DialogHeader>
                 <div className="flex flex-row gap-3">
-                    {variant?.imgUrl ? (
-                        <img src={variant.imgUrl} alt={variant.name} className="w-[75px] h-auto aspect-square" />
+                    {variants?.imgUrl ? (
+                        <img src={variants.imgUrl} alt={variants.name} className="w-[75px] h-auto aspect-square" />
                     ) : (
                         <div className='flex items-center justify-center w-[75px] h-[75px] aspect-square bg-gray-100 text-white'>
                             <LucideDatabase size={40} />
@@ -65,7 +64,7 @@ export function AddToCard({ children, product }: Props) {
                                     type="button"
                                     onClick={() => setVariant(va)}
                                     className='px-2 py-1 h-[26px]'
-                                    variant={variant?.id === va.id ? "default" : "ghost"}
+                                    variant={variants?.id === va.id ? "default" : "ghost"}
                                 >
                                     {va.name}
                                 </Button>
@@ -81,17 +80,17 @@ export function AddToCard({ children, product }: Props) {
                         </div>
 
                         <div className='flex gap-1 items-center'>
-                            <p className='text-[20px] font-bold'>{`${variant?.price} FCFA`}</p>
+                            <p className='text-[20px] font-bold'>{`${variants?.price} FCFA`}</p>
                             {/* Vous pouvez afficher l'ancien prix ici si nécessaire */}
                         </div>
 
                         <div className="flex flex-row items-center gap-2">
                             <Button type="button" onClick={decrement} variant="outline" className="w-8 h-8 p-0">-</Button>
                             <Input
-                                type="number"
+                                // type="number"
                                 value={quantity}
                                 onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value || "1")))}
-                                className="w-12 text-center"
+                                className="w-12 text-center px-0"
                             />
                             <Button type="button" onClick={increment} variant="outline" className="w-8 h-8 p-0">+</Button>
                         </div>
