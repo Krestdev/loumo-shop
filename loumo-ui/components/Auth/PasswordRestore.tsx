@@ -19,8 +19,9 @@ import { useTranslations } from "next-intl"
 import { useMutation } from "@tanstack/react-query"
 import UserQuery from "@/queries/user"
 import { useRouter } from "next/navigation"
-import { useTransition } from "react"
+import { useEffect, useState, useTransition } from "react"
 import { Loader } from "lucide-react"
+import Confirm from "./Confirm"
 
 const formSchema = z
     .object({
@@ -34,6 +35,8 @@ export default function PasswordRestore() {
     const router = useRouter()
     const user = new UserQuery()
     const [isPending, startTransition] = useTransition()
+    const [page, setPage] = useState<"email" | "conf">("email")
+    const [email, setEmail] = useState("")
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
@@ -42,12 +45,12 @@ export default function PasswordRestore() {
         },
     })
 
-    const userRegister = useMutation({
-        mutationKey: ["register"],
-        mutationFn: (data: any) => user.register(data),
-        onSuccess: () => {
-            router.push("/auth/login")
-        },
+    const passwordRestore = useMutation({
+        mutationKey: ["restore"],
+        mutationFn: (data: any) => user.request(data),
+        // onSuccess: () => {
+        //     router.push("/auth/login")
+        // },
         onError: (err) => {
             console.error("Erreur d'inscription", err)
         },
@@ -55,13 +58,18 @@ export default function PasswordRestore() {
 
     const onSubmit = (values: FormData) => {
         startTransition(() => {
-            userRegister.mutate({
+            setEmail(values.email),
+            console.log(email);
+            
+            passwordRestore.mutate({
                 email: values.email.toLowerCase(),
             })
+            setPage("conf")
         })
     }
 
     return (
+        page === "email" ?
         <Form {...form}>
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -89,12 +97,13 @@ export default function PasswordRestore() {
                         )}
                     />
 
-                    <Button disabled={isPending || userRegister.isPending} type="submit" className="w-full">
-                        {isPending || userRegister.isPending && <Loader className='animate-spin mr-2' size={16} />}
+                    <Button disabled={isPending || passwordRestore.isPending} type="submit" className="w-full">
+                        {isPending || passwordRestore.isPending && <Loader className='animate-spin mr-2' size={16} />}
                         {t("check")}
                     </Button>
                 </div>
             </form>
-        </Form>
+        </Form> :
+        <Confirm email={email} />
     )
 }

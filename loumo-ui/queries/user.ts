@@ -49,7 +49,6 @@ export default class UserQuery {
   };
 
   verify = async (
-    id: number,
     data: Partial<{ email: string; otp: string }>
   ): Promise<User> => {
     return api
@@ -58,7 +57,6 @@ export default class UserQuery {
   };
 
   request = async (
-    id: number,
     data: Partial<{ email: string; otp: string }>
   ): Promise<User> => {
     return api
@@ -67,7 +65,6 @@ export default class UserQuery {
   };
 
   verifyReset = async (
-    id: number,
     data: Partial<{ email: string; otp: string }>
   ): Promise<User> => {
     return api
@@ -76,7 +73,6 @@ export default class UserQuery {
   };
 
   reset = async (
-    id: number,
     data: Partial<{ email: string; otp: string; newPassword: string }>
   ): Promise<User> => {
     return api

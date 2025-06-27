@@ -136,13 +136,17 @@
     "accept": "By continuing, you agree to Loumo's terms and conditions.",
     "forgot": "Forgot password?",
     "alreaddy": "Do you have an account?",
-    "login": "Log in"
+    "login": "Log in",
+    "verified": "Email verified"
   },
   "Password": {
     "resetPassword": "Password recovery",
     "description": "Forgot your password? No worries. Enter your email below and we'll send you a link to reset it.",
     "email":"Email address *",
-    "check": "Check"
+    "check": "Check",
+    "confTitle": "Email confirmation",
+    "confirmed": "We sent you an email on",
+    "instruction": "open the email and click verify"
   },
   "ChangePassword": {
     "change": "Change Password",
