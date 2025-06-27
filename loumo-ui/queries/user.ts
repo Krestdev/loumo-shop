@@ -38,12 +38,52 @@ export default class UserQuery {
   ): Promise<User> => {
     return api.post(`${this.route}`, data).then((response) => response.data);
   };
+
   update = async (
     id: number,
     data: Partial<{ email: string; password: string; name: string }>
   ): Promise<User> => {
-    return api.put(`${this.route}/${id}`).then((response) => response.data);
+    return api
+      .put(`${this.route}/${id}`, data)
+      .then((response) => response.data);
   };
+
+  verify = async (
+    id: number,
+    data: Partial<{ email: string; otp: string }>
+  ): Promise<User> => {
+    return api
+      .post(`${this.route}/verify`, data)
+      .then((response) => response.data);
+  };
+
+  request = async (
+    id: number,
+    data: Partial<{ email: string; otp: string }>
+  ): Promise<User> => {
+    return api
+      .post(`${this.route}/request`, data)
+      .then((response) => response.data);
+  };
+
+  verifyReset = async (
+    id: number,
+    data: Partial<{ email: string; otp: string }>
+  ): Promise<User> => {
+    return api
+      .post(`${this.route}/verifyReset`, data)
+      .then((response) => response.data);
+  };
+
+  reset = async (
+    id: number,
+    data: Partial<{ email: string; otp: string; newPassword: string }>
+  ): Promise<User> => {
+    return api
+      .post(`${this.route}/reset`, data)
+      .then((response) => response.data);
+  };
+
   delete = async (id: number) => {
     return api.delete(`${this.route}/${id}`).then((response) => response);
   };
