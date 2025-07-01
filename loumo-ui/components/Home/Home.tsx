@@ -16,6 +16,9 @@ const Home = () => {
     queryFn: () => product.getAll(),
   });
 
+  console.log(productData.data);
+  
+
   return (
     <div className='w-full flex flex-col items-center'>
       <HeroSection />

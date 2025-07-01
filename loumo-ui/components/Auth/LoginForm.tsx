@@ -130,12 +130,17 @@ export default function LoginForm() {
                   <FormItem className="w-full">
                     <FormLabel>{t("phone")}</FormLabel>
                     <FormControl>
-                      <Input
-                        type="tel"
-                        placeholder="ex: 677 77 88 88"
-                        {...field}
-                        className="w-full"
-                      />
+                      <div className="w-full relative">
+                        <Input
+                          type="tel"
+                          placeholder="ex: 677 77 88 88"
+                          {...field}
+                          className="w-full pl-14"
+                        />
+                        <div className="absolute bg-accent/20 rounded-l-[20px] top-[0%] h-9 flex items-center justify-center px-2 -z-10">
+                          <p className="text-gray-900">{"+237"}</p>
+                        </div>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

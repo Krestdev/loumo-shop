@@ -73,6 +73,9 @@ export type Order = {
   orderItems?: OrderItem[];
   payment?: Payment[];
   delivery?: Delivery[];
+  createdAt: Date;
+  total: number;
+  status: string;
 };
 
 export type OrderItem = {
@@ -125,7 +128,7 @@ export type ProductVariant = {
   price: number;
   productId: number;
   product?: Product;
-  stock: Stock;
+  stock: Stock[];
 };
 
 export type Promotion = {
@@ -181,6 +184,7 @@ export type User = {
   logs?: Log[];
   notifications?: NotificationT[];
   addresses?: Address[];
+  fidelity?: number;
   lastLogin: Date | null;
   createdAt: Date;
   updatedAt: Date;

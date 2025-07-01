@@ -2,6 +2,7 @@
 
 import { useStore } from "@/providers/datastore";
 import {
+  LucideChevronDown,
   LucideMapPin,
   LucideMenu,
   LucideShoppingCart,
@@ -17,12 +18,19 @@ import { Menu } from "./menu";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Skeleton } from "./ui/skeleton";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 
 const Header = () => {
   const t = useTranslations("Header");
-  const { user, currentOrderItems } = useStore();
+  const { user, currentOrderItems, logout } = useStore();
   const router = useRouter();
-  const [isClient, setIsClient] = React.useState(false);
+  const [isClient, setIsClient] = React.useState(true);
 
   React.useEffect(() => {
     setIsClient(true);
@@ -102,14 +110,17 @@ const Header = () => {
           {!isClient ? (
             <Skeleton className="h-9 w-24 rounded-md" />
           ) : user ? (
-            <Button
-              onClick={() => router.push("/profile")}
-              variant="outline"
-              className="hidden sm:flex items-center gap-2"
-            >
-              <LucideUserCircle size={18} />
-              <span>{t("profile")}</span>
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="text-nowrap flex gap-2 items-center border border-input px-3 py-2 rounded-[20px] cursor-pointer hover:bg-gray-50">
+                  {t("myAccount")}
+                  <LucideChevronDown size={16} className="" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onClick={() => router.push("/profile")}>{t("profile")}</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push("/profile/history")}>{t("history")}</DropdownMenuItem>
+                <DropdownMenuItem onClick={logout}>{t("logOut")}</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <Button
               onClick={() => router.push("/auth/login")}

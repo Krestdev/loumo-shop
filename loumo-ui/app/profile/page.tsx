@@ -1,4 +1,5 @@
 "use client";
+import Profile from "@/components/Profile/Profile";
 import Loading from "@/components/setup/loading";
 import UserQuery from "@/queries/user";
 import { useQuery } from "@tanstack/react-query";
@@ -21,11 +22,12 @@ const Page = () => {
 
   if (userData.isSuccess) {
     return (
-      <div>
-        <div className="max-w-3xl mx-auto mt-10">
+      <div className="w-full flex justify-center">
+        <Profile user={userData.data} />
+        {/* <div className="max-w-3xl mx-auto mt-10">
           <h1 className="text-xl font-bold mb-4">Profile Data</h1>
           <JsonView src={userData.data} />
-        </div>
+        </div> */}
       </div>
     );
   }

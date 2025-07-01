@@ -85,10 +85,10 @@ const Footer = () => {
                         <div className='flex flex-col gap-5'>
                             <p className='text-[16px] text-gray-50 font-semibold'>{t("Help.help")}</p>
                             <div className='flex flex-col gap-3'>
-                                <Link href={""} className='text-[14px] font-medium text-gray-50' >{t("Help.faq")}</Link>
+                                <Link href={"/faq"} className='text-[14px] font-medium text-gray-50' >{t("Help.faq")}</Link>
                                 <Link href={""} className='text-[14px] font-medium text-gray-50' >{t("Help.fees")}</Link>
-                                <Link href={""} className='text-[14px] font-medium text-gray-50' >{t("Help.policy")}</Link>
-                                <Link href={""} className='text-[14px] font-medium text-gray-50' >{t("Help.contact")}</Link>
+                                <Link href={"/policy"} className='text-[14px] font-medium text-gray-50' >{t("Help.policy")}</Link>
+                                <Link href={"/contact"} className='text-[14px] font-medium text-gray-50' >{t("Help.contact")}</Link>
                             </div>
                         </div>
                         <div className='flex flex-col gap-5'>

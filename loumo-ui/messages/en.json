@@ -3,9 +3,12 @@
     "search": "Search",
     "address": "Delivery address",
     "login": "Login",
-    "profile": "Profile",
     "register": "Register",
-    "or": "OR"
+    "or": "OR",
+    "myAccount": "My account",
+    "profile": "Profile",
+    "history": "History",
+    "logOut": "Log Out"
   },
   "Footer": {
     "Info": {
@@ -45,7 +48,8 @@
       "star": "Featured Products",
       "promotions": "Promotions",
       "addToCart": "Add to Cart",
-      "new": "New"
+      "new": "New",
+      "outOfStock": "Out of stock"
     },
     "Step": {
       "step": "Step",
@@ -154,5 +158,56 @@
     "newPassword": "New Password",
     "cfPassword":"Confirm password",
     "verify": "Verify"
+  },
+  "Contact": {
+    "title": "Contact us",
+    "description": "We're here to help! If you have any questions about your order, delivery, payment, or how our platform works, please don't hesitate to contact us.",
+    "contactUs": "Contact our team",
+    "email": "Email",
+    "phone": "Phone & Whatsapp",
+    "office": "Head office",
+    "hours": "Heures d'ouverture",
+    "followUs": "Follow us"
+  },
+  "FAQ": {
+    "title": "Frequently Asked Questions (FAQ)"
+  },
+  "Profile": {
+    "overview": "Overview",
+    "loyalty": "Loyalty point",
+    "orders": "Orders",
+    "lastOrder": "Last Order",
+    "information": "Personal Information",
+    "name": "Name",
+    "edit": "Edit",
+    "editTitle": "Edit personal informations",
+    "editDescription": "Fill the form to update your informations",
+    "fullName": "Full Name *",
+    "phoneNumber": "Phone Number",
+    "save": "Save",
+    "close": "Close",
+    "email": "Email",
+    "phone": "Phone",
+    "updatePassword": "Update Password",
+    "deliveryAddress":"Delivery Address",
+    "address": "Address",
+    "addAddress": "Add an Address",
+    "noAddress": "No address registered",
+    "delete": "Delete",
+    "Orders": {
+      "orders": "Orders",
+      "all": "All",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "reference": "Reference",
+      "date": "Date",
+      "amount": "Amount",
+      "status": "Status",
+      "items": "Items",
+      "actions": "Actions",
+      "view": "View",
+      "emptyTable": "Empty Table"
+    }
+
   }
 }

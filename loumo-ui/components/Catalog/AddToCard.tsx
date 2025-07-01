@@ -37,6 +37,7 @@ export function AddToCard({ children, product, variant }: Props) {
         addOrderItem({ variant: variants!, note: "" }, quantity)
         console.log("Ajouté avec succès");
     }
+    
     return (
         <Dialog>
             <DialogTrigger className="w-full" asChild>

@@ -146,7 +146,7 @@ export const useStore = create<Store>()(
   storage: createJSONStorage(() => localStorage),
   partialize: (state) => ({
     ...state,
-    user: null, 
+    user: state.user, 
     orders: [], 
     categories: [], 
     orderAddressId: null, 
