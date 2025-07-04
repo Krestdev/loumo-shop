@@ -3,11 +3,14 @@
 import { AddToCard } from "@/components/Catalog/AddToCard";
 import ReviewsProduct from "@/components/Catalog/ReviewsProduct";
 import GridProduct from "@/components/Home/GridProduct";
+import { AddAddress } from "@/components/select-address";
 import Loading from "@/components/setup/loading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useStore } from "@/providers/datastore";
+import CategoryQuery from "@/queries/category";
 import ProductQuery from "@/queries/product";
+import PromotionQuery from "@/queries/promotion";
 import { ProductVariant } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import { LucideDatabase, LucideHeart, LucideShoppingCart } from "lucide-react";
@@ -15,27 +18,47 @@ import { useTranslations } from "next-intl";
 import React, { useState, useEffect } from "react";
 
 const ProductDetails = ({ slug }: { slug: string }) => {
+
   const product = new ProductQuery();
+  const promotion = new PromotionQuery();
+  const category = new CategoryQuery();
+
+  const { user } = useStore();
+
   const productData = useQuery({
     queryKey: ["productData", slug],
-    queryFn: () => product.getOneBySlug(slug).then(res => {
-      setCurrentvar(res.variants?.[0].id)
-      return res
-    }),
+    queryFn: () => product.getOneBySlug(slug),
+  });
 
+
+  const promotionData = useQuery({
+    queryKey: ["promotionFetchAll"],
+    queryFn: () => promotion.getAll(),
+  });
+
+  const categoryData = useQuery({
+    queryKey: ["categoryFetchAll"],
+    queryFn: () => category.getAll(),
   });
 
   const [currentvar, setCurrentvar] = useState<number>();
-  const [quantity, setQuantity] = useState(1)
-  const { addOrderItem } = useStore()
-  const t = useTranslations("Catalog.ProductDetail")
+  const [quantity, setQuantity] = useState(1);
+  const t = useTranslations("Catalog.ProductDetail");
   const [favorites, setFavorites] = useState<{ [id: number]: boolean }>({});
+  const env = process.env.NEXT_PUBLIC_API_BASE_URL
+
   const toggleFavorite = (id: number) => {
     setFavorites((prev) => ({
       ...prev,
       [id]: !prev[id],
     }));
   };
+
+  useEffect(() => {
+    if (productData.data?.variants?.length) {
+      setCurrentvar(productData.data.variants[0].id);
+    }
+  }, [productData.data]);
 
   if (productData.isLoading) {
     return <Loading status="loading" />;
@@ -45,65 +68,72 @@ const ProductDetails = ({ slug }: { slug: string }) => {
     return <Loading status="failed" />;
   }
 
-  const increment = () => setQuantity(q => q + 1)
-  const decrement = () => setQuantity(q => (q > 1 ? q - 1 : 1))
+  const increment = () => setQuantity((q) => q + 1);
+  const decrement = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
 
-  const productItem = productData.data?.variants?.find(x => x.id == currentvar);
+  const productItem = productData.data?.variants?.find((x) => x.id === currentvar);
+  const similaire = categoryData.data?.filter((x) => x.id === productData.data?.categoryId && x.id !== productData.data?.id)
 
-  const addToCart = () => {
-    console.log("Ajouter au panier :", { productItem, quantity })
-    addOrderItem({ variant: productItem!, note: "" })
-    console.log("Ajouté avec succès");
-  }
+  const autreCat = categoryData.data?.find(x => x.id !== productData.data?.categoryId)
+  const autre = categoryData.data?.filter(x => x.id === autreCat?.id).flatMap(x => x.products)
 
-  const similaire = productData.data?.category?.products?.filter(x => x.id != productData.data.id)
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-24 max-w-[1400px] w-full py-7">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-24 max-w-[1400px] w-full px-6 py-7">
         <div className="flex flex-col gap-7">
-          {productItem && (
-            false ?
-              <img
-                src={productItem?.imgUrl}
-                alt={productItem?.name}
-                className="w-full h-auto aspect-[4/3] rounded-[20px]"
-              /> :
-              <div className='flex items-center justify-center w-full h-auto aspect-[4/3] rounded-[20px] object-cover bg-gray-100 text-white'>
-                <LucideDatabase size={150} />
-              </div>
+          {productItem?.imgUrl ? (
+            <img
+              src={`${env}${productItem.imgUrl}`}
+              alt={productItem.name}
+              onError={(e) => (e.currentTarget.src = "/fallback.jpg")}
+              className="w-full h-auto aspect-[4/3] rounded-[20px]"
+            />
+          ) : (
+            <div className="flex items-center justify-center w-full h-auto aspect-[4/3] rounded-[20px] object-cover bg-gray-100 text-white">
+              <LucideDatabase size={150} />
+            </div>
           )}
-          <section className="grid overflow-x-auto scrollbar-hide">
+          <section className="grid overflow-x-auto">
             <div className="inline-flex gap-5">
               {productData.data?.variants?.map((x: ProductVariant, i: number) => (
-                <img
+                <div
                   key={i}
-                  src={x.imgUrl}
-                  alt={x.name}
-                  className={`max-w-[120px] w-full h-auto aspect-[4/3] rounded-[6px] cursor-pointer ${productItem === x ? "ring-2 ring-primary" : ""
-                    }`}
                   onClick={() => setCurrentvar(x.id)}
-                />
+                  className={`p-1 rounded-[8px] cursor-pointer ${currentvar === x.id ? "ring-2 ring-primary" : ""}`}
+                >
+                  <img
+                    src={`${env}${x.imgUrl}` || "/placeholder.jpg"}
+                    onError={(e) => (e.currentTarget.src = "/fallback.jpg")}
+                    alt={x.name}
+                    className="max-w-[120px] w-full h-auto aspect-[4/3] rounded-[6px]"
+                  />
+                </div>
               ))}
             </div>
           </section>
         </div>
-        <div className="flex flex-col gap-7 ">
+        <div className="flex flex-col gap-7">
           <div className="flex flex-col gap-4 pb-5 border-b border-gray-200">
-            <h3 className="text-black">{productItem?.name}</h3>
+            <h3 className="text-black">{productData.data?.name}</h3>
             <div className="flex flex-col gap-3">
               <p>{t("options")}</p>
               <div className="flex flex-col gap-4">
                 <section className="grid overflow-x-auto pb-1">
                   <div className="inline-flex gap-5">
-                    {
-                      productData.data?.variants?.map((x: ProductVariant, i: number) => (
-                        <div onClick={() => setCurrentvar(x.id)} className={`cursor-pointer flex flex-col items-center justify-center rounded-[6px] px-3 py-2 w-[153.33px] h-[64px] ${productItem === x ? "bg-primary text-white" : "bg-white text-black border border-gray-300"}`}>
-                          <p className="text-[18px]">{`${x.weight} KG`}</p>
-                          <p className="text-[18px]">{`${x.price} FCFA`}</p>
-                        </div>
-                      ))
-                    }
+                    {productData.data?.variants?.map((x: ProductVariant, i: number) => (
+                      <div
+                        key={i}
+                        onClick={() => setCurrentvar(x.id)}
+                        className={`cursor-pointer flex flex-col items-center justify-center rounded-[6px] px-3 py-2 w-[153.33px] h-[64px] ${currentvar === x.id
+                          ? "bg-primary text-white"
+                          : "bg-white text-black border border-gray-300"
+                          }`}
+                      >
+                        <p className="text-[18px]">{`${x.weight} KG`}</p>
+                        <p className="text-[18px]">{`${x.price} FCFA`}</p>
+                      </div>
+                    ))}
                   </div>
                 </section>
                 <div className="flex items-center gap-4">
@@ -111,28 +141,52 @@ const ProductDetails = ({ slug }: { slug: string }) => {
                   <p className="text-[24px] text-gray-500 font-normal line-through">{`10000 FCFA`}</p>
                 </div>
                 <div className="flex flex-row items-center gap-2">
-                  <Button type="button" onClick={decrement} variant="outline" className="w-8 h-8 p-0">-</Button>
+                  <Button type="button" onClick={decrement} variant="outline" className="w-8 h-8 p-0">
+                    -
+                  </Button>
                   <Input
                     // type="number"
+                    min={1}
                     value={quantity}
                     onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value || "1")))}
                     className="w-12 text-center"
                   />
-                  <Button type="button" onClick={increment} variant="outline" className="w-8 h-8 p-0">+</Button>
+                  <Button type="button" onClick={increment} variant="outline" className="w-8 h-8 p-0">
+                    +
+                  </Button>
                 </div>
                 <div className="w-full grid grid-cols-2 items-center gap-4">
-                  <AddToCard product={productData.data} variant={productItem}>
-                    <Button className="h-12 rounded-[24px]">
-                      <LucideShoppingCart />
-                      {t("addToCart")}
-                    </Button>
-                  </AddToCard>
+                  {user?.addresses && user.addresses.length > 0 ?
+                    <AddToCard
+                      promotions={promotionData.data}
+                      product={productData.data}
+                      variant={productItem}
+                      setVariant={(v) => {
+                        if (typeof v === "function") {
+                          const current = productData.data?.variants?.find(x => x.id === currentvar);
+                          const result = v(current);
+                          if (result?.id) setCurrentvar(result.id);
+                        } else if (v?.id) {
+                          setCurrentvar(v.id);
+                        }
+                      }}
+                      initialQuantity={quantity}
+                    >
+                      <Button className="h-12 rounded-[24px]">
+                        <LucideShoppingCart />
+                        {t("addToCart")}
+                      </Button>
+                    </AddToCard> :
+                    <AddAddress>
+                      <Button className="h-12 rounded-[24px]">{t("addToCart")}</Button>
+                    </AddAddress>
+                  }
                   <Button
                     variant={"outline"}
                     className={`h-12 rounded-[24px] ${productData.data && favorites[productData.data.id]
-                        ? "bg-red-500 hover:bg-red-500/80 hover:text-white text-white"
-                        : "bg-white/50 text-gray-600"
-                      } `}
+                      ? "bg-red-500 hover:bg-red-500/80 hover:text-white text-white"
+                      : "bg-white/50 text-gray-600"
+                      }`}
                     onClick={() => productData.data && toggleFavorite(productData.data.id)}
                   >
                     <LucideHeart />
@@ -140,12 +194,10 @@ const ProductDetails = ({ slug }: { slug: string }) => {
                   </Button>
                 </div>
               </div>
-
             </div>
           </div>
-          <p className="font-semibold text-secondary text-[20px]">
-            {t("about")}
-          </p>
+
+          <p className="font-semibold text-secondary text-[20px]">{t("about")}</p>
           <div className="flex flex-col gap-5">
             <span className="flex gap-3">
               <p className="text-secondary text-[14px] font-semibold">{t("weight")}</p>
@@ -153,26 +205,33 @@ const ProductDetails = ({ slug }: { slug: string }) => {
             </span>
             <span className="flex gap-3">
               <p className="text-secondary text-[14px] font-semibold">{t("categories")}</p>
-              <p className="text-gray-700 text-[16px] font-normal">{productData.data?.category?.name}</p>
+              <p className="text-gray-700 text-[16px] font-normal">{similaire && similaire?.length > 0 ? similaire[0].name : ""}</p>
             </span>
             <span className="flex flex-col gap-2">
               <p className="text-secondary text-[14px] font-semibold">{t("description")}</p>
-              {/* <p className="text-gray-700 text-[16px] font-normal">{productItem.description}</p> */}
+              {/* <p className="text-gray-700 text-[16px] font-normal">{productItem?.description || t("noDescription")}</p> */}
             </span>
             <span className="flex flex-col gap-2">
               <p className="text-secondary text-[14px] font-semibold">{t("ingredient")}</p>
-              {/* <p className="text-gray-700 text-[16px] font-normal">{productItem.description}</p> */}
+              {/* <p className="text-gray-700 text-[16px] font-normal">{productItem?.ingredient || t("noIngredient")}</p> */}
             </span>
           </div>
         </div>
-
-        {/* <div className="max-w-3xl mx-auto mt-10">
-          <h1 className="text-xl font-bold mb-4">Product Data</h1>
-          <JsonView src={productItem} />
-        </div> */}
       </div>
-      <GridProduct title={t("essential")} products={similaire} isLoading={productData.isLoading} isSuccess={productData.isSuccess} />
-      <GridProduct title={t("essential")} products={similaire} isLoading={productData.isLoading} isSuccess={productData.isSuccess} />
+
+      <GridProduct
+        title={t("essential")}
+        products={similaire?.flatMap(x => x.products)}
+        isLoading={productData.isLoading}
+        isSuccess={productData.isSuccess}
+        promotions={promotionData.data} />
+      {autreCat &&
+        <GridProduct
+          title={autreCat.name}
+          products={autre}
+          isLoading={productData.isLoading}
+          isSuccess={productData.isSuccess}
+          promotions={promotionData.data} />}
       <ReviewsProduct />
     </div>
   );

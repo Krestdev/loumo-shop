@@ -24,17 +24,37 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { AddAddress } from "./select-address";
+import { LoginDialog } from "./Auth/loginDialog";
 
 const Header = () => {
   const t = useTranslations("Header");
   const { user, currentOrderItems, logout } = useStore();
   const router = useRouter();
   const [isClient, setIsClient] = React.useState(true);
-
   React.useEffect(() => {
     setIsClient(true);
   }, []);
+
+  // const userQuery = new UserQuery();
+  // const userData = useMutation({
+  //   mutationKey: ["login"],
+  //   mutationFn: (data: { addresses: Address[] }) => userQuery.update(user!.id, data),
+  //   onError: (error) => {
+  //     console.error("Échec de connexion :", error);
+  //   },
+  // });
+
+  const handleSelect = (value: string) => {
+    console.log("Adresse sélectionnée :", value)
+  }
 
   const cartItemCount = currentOrderItems.reduce(
     (total, item) => total + item.quantity,
@@ -59,36 +79,57 @@ const Header = () => {
           />
 
           {/* Barre de recherche */}
-          <div className="relative hidden md:flex flex-row items-center w-full">
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              type="search"
-              placeholder={t("search")}
-              className="max-w-[640px] w-full pl-3 pr-8"
-            />
+          <div className="hidden md:flex w-full">
+            <div className="relative flex-row items-center max-w-[640px] w-full">
+              <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Input
+                type="search"
+                placeholder={t("search")}
+                className="max-w-[640px] w-full pl-3 pr-8"
+              />
+            </div>
           </div>
         </div>
 
         {/* Actions utilisateur */}
         <div className="flex flex-row items-center gap-2 md:gap-4">
           {/* Adresse */}
-          {isClient && (user?.addresses?.length ?? 0) > 0 && (
-            <div className="hidden md:flex justify-center items-center gap-2 max-w-[160px] w-full">
+          <Select onValueChange={handleSelect}>
+            <SelectTrigger className="hidden md:flex group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer hover:bg-gray-50 max-w-[250px] border-none shadow-none">
               <LucideMapPin size={20} className="flex-shrink-0" />
-              <div className="flex flex-col w-full overflow-hidden">
+              <div className="flex flex-col w-full overflow-hidden text-left">
                 <p className="text-xs text-muted-foreground">{t("address")}</p>
-                <p className="text-sm truncate">
-                  {user?.addresses?.[0]?.street}
-                </p>
+                <SelectValue placeholder={user?.addresses?.[0]?.street || t("select")} />
               </div>
-            </div>
-          )}
+            </SelectTrigger>
+            <SelectContent className="p-4">
+              {user && (user.addresses && user.addresses.length > 0) ?
+                user?.addresses?.map((x, i) => (
+                  <SelectItem key={i} value={x.id.toString()}>
+                    {x.local}
+                  </SelectItem>
+                )) : user ?
+                  <>
+                    <p>{t("noAddress")}</p>
+                    <AddAddress>
+                      <Button>{t("addAddress")}</Button>
+                    </AddAddress>
+                  </> :
+                  <>
+                    <p>{t("noAddress")}</p>
+                    <LoginDialog>
+                      <Button>{t("addAddress")}</Button>
+                    </LoginDialog>
+                  </>
+              }
+            </SelectContent>
+          </Select>
 
           <span className='hidden md:flex'>
             <LocalSwitcher />
           </span>
 
-          <Button variant={"ghost"} className="flex sm:hidden">
+          <Button onClick={() => router.push("/profile")} variant={"ghost"} className="flex sm:hidden">
             <LucideUserCircle size={36} />
           </Button>
           {/* Panier */}
@@ -111,9 +152,9 @@ const Header = () => {
             <Skeleton className="h-9 w-24 rounded-md" />
           ) : user ? (
             <DropdownMenu>
-              <DropdownMenuTrigger className="text-nowrap flex gap-2 items-center border border-input px-3 py-2 rounded-[20px] cursor-pointer hover:bg-gray-50">
-                  {t("myAccount")}
-                  <LucideChevronDown size={16} className="" />
+              <DropdownMenuTrigger className="hidden md:flex group text-nowrap gap-2 items-center border border-input px-3 py-2 rounded-[20px] cursor-pointer hover:bg-gray-50 data-[state=open]:bg-gray-100">
+                {t("myAccount")}
+                <LucideChevronDown size={16} className="transition-transform duration-200 group-data-[state=open]:rotate-180" />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem onClick={() => router.push("/profile")}>{t("profile")}</DropdownMenuItem>
@@ -121,6 +162,7 @@ const Header = () => {
                 <DropdownMenuItem onClick={logout}>{t("logOut")}</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
           ) : (
             <Button
               onClick={() => router.push("/auth/login")}

@@ -1,9 +1,9 @@
+import Category from "@/components/Categories/Category";
 import RequireAuth from "@/components/RequireAuth";
-import ProductDetails from "./productDetails";
 
 const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
-  return <RequireAuth><ProductDetails slug={slug} /></RequireAuth>;
+  return <RequireAuth><Category slug={slug} /></RequireAuth>;
 };
 
 export default Page;

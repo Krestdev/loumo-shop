@@ -23,7 +23,7 @@ const ReviewsProduct = ({}) => {
   return (
     <div className='flex flex-col gap-7 px-7 py-24 max-w-[1400px] w-full'>
         <h1 className='text-black'>{t("reviews")}</h1>
-        <div className='flex flex-row gap-10'>
+        <div className='flex flex-col md:flex-row gap-10'>
             <div className='flex flex-col gap-2'>
                 <h1 className='text-[72px]'>{moy.toFixed(2)}</h1>
                 <Stars note={moy} couleur='#F8CA4C' taille={40} />

@@ -17,7 +17,7 @@ function LocaleSelect({ defaultValue, children }: Props) {
     const locale = value as Locale;
     startTransition(() => {
       setUserLocale(locale);
-      setFlagSrc(locale)
+      setFlagSrc(locale);
     });
   }
 

@@ -41,7 +41,7 @@ export default class UserQuery {
 
   update = async (
     id: number,
-    data: Partial<{ email: string; password: string; name: string }>
+    data: Partial<{ email: string; password: string; name: string; addressIds: number[] }>
   ): Promise<User> => {
     return api
       .put(`${this.route}/${id}`, data)

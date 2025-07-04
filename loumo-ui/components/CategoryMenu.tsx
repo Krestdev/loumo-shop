@@ -9,13 +9,13 @@ import CategoryCard from "./CategoryCard"
 
 
 export function CategoryMenu() {
-    const [emblaRef, setEmblaRef] = React.useState<any>(null)
-    const category = new CategoryQuery()
-    const categoryData = useQuery({
-        queryKey: ["categoryFetchAll"],
-        queryFn: () => category.getAll(),
-    })
-    const categories = categoryData.data?.slice(0, 6) || []
+  const [emblaRef, setEmblaRef] = React.useState<any>(null)
+  const category = new CategoryQuery()
+  const categoryData = useQuery({
+    queryKey: ["categoryFetchAll"],
+    queryFn: () => category.getAll(),
+  })
+  const categories = categoryData.data?.slice(0, 6) || []
 
   React.useEffect(() => {
     if (!emblaRef) return;
@@ -44,14 +44,15 @@ export function CategoryMenu() {
         className="w-full relative"
       >
         <CarouselContent className="flex">
-          {categories.map((category, index) => (
-            <CarouselItem
-              key={index}
-              className="basis-[50%] sm:basis-[30%] lg:basis-[16.7%] flex-shrink-0"
-            >
-              <CategoryCard category={category} />
-            </CarouselItem>
-          ))}
+          {categories.filter(category =>
+            category.products?.some(product => product.variants && product.variants.length > 0)).map((category, index) => (
+              <CarouselItem
+                key={index}
+                className="basis-[50%] sm:basis-[30%] lg:basis-[16.7%] flex-shrink-0"
+              >
+                <CategoryCard category={category} />
+              </CarouselItem>
+            ))}
         </CarouselContent>
       </Carousel>
     </div>

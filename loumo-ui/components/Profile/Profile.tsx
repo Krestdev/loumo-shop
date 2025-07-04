@@ -100,7 +100,7 @@ const Profile = ({ user }: { user: User }) => {
                     </div>
                 </div>
             </div>
-            {user.orders && <History all={false} orders={user.orders.slice(0,6)} />}
+            {user.orders && <History all={false} orders={user.orders.slice(user.orders.length - 6,user.orders.length)} />}
         </div>
     )
 }

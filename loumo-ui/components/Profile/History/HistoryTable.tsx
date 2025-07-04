@@ -14,6 +14,7 @@ import { useState } from "react";
 import Pagination from "./Pagination";
 import { Button } from "@/components/ui/button";
 import { LucideEye } from "lucide-react";
+import ViewOrder from "./ViewOrder";
 
 interface Props {
     all: boolean,
@@ -51,7 +52,7 @@ const HistoryTable = ({ orders, all }: Props) => {
     return (
         <div className='flex flex-col max-w-[1400px] w-full px-7 py-8 gap-10'>
             <p className="text-primary/80 text-[36px] font-semibold">{t("orders")}</p>
-            {all ? <div className="flex gap-3">
+            {all ? <div className="flex gap-0 md:gap-3">
                 <Button onClick={() => handleClick("all")} variant={status === "all" ? "default" : "ghost"}>
                     {t("all")}
                     <div className={`h-[29px] px-2 rounded-[20px] text-black p-1 ${status === "all" ? "bg-white" : "bg-primary/20"}`}>{orders.length}</div>
@@ -88,10 +89,12 @@ const HistoryTable = ({ orders, all }: Props) => {
                                 </TableCell>
                                 <TableCell className="justify-center font-normal text-center" >{order.orderItems?.length ?? 0}</TableCell>
                                 <TableCell className="justify-center text-center" >
-                                    <Button variant={"outline"}>
-                                        <LucideEye size={16} />
-                                        {t("view")}
-                                    </Button>
+                                    <ViewOrder ord={order} addressId={order.addressId}>
+                                        <div className="flex w-fit px-2 py-1 items-center justify-center gap-2 rounded-full border cursor-pointer hover:bg-primary hover:text-white">
+                                            <LucideEye size={16} />
+                                            {t("view")}
+                                        </div>
+                                    </ViewOrder>
                                 </TableCell>
                             </TableRow>
                         )

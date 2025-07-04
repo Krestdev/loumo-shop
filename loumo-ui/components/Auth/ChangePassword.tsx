@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useTranslations } from "next-intl"
-import { useParams, useRouter, useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useTransition, useEffect } from "react"
 import { Loader } from "lucide-react"
 import { useMutation } from "@tanstack/react-query"
@@ -59,12 +59,12 @@ export default function ChangePassword({ slug }: { slug: string }) {
 
   const verifyOTP = useMutation({
     mutationKey: ["verify"],
-    mutationFn: (data: any) => user.verifyReset(data),
+    mutationFn: (data: {email: string, otp: string}) => user.verifyReset(data),
   })
 
   const resetPassword = useMutation({
     mutationKey: ["reset"],
-    mutationFn: (data: any) => user.reset(data),
+    mutationFn: (data: {email: string, otp: string, newPassword: string}) => user.reset(data),
     onSuccess: () => {
       router.push("/auth/login")
     },
@@ -74,7 +74,7 @@ export default function ChangePassword({ slug }: { slug: string }) {
   })
 
   useEffect(() => {
-    verifyOTP.mutate({
+    email && verifyOTP.mutate({
       email: email,
       otp: otp
     })
@@ -82,7 +82,7 @@ export default function ChangePassword({ slug }: { slug: string }) {
 
   const onSubmit = (values: FormData) => {
     startTransition(() => {
-      resetPassword.mutate({
+      email && resetPassword.mutate({
         email: email,
         otp: otp,
         newPassword: values.password,

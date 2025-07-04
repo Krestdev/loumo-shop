@@ -7,7 +7,7 @@ import { Category } from '@/types/types'
 
 const CategoryCard = ({ category }: { category: Category }) => {
     return (
-        <Link href={`/${category.id}`}>
+        <Link href={`/categories/${category.slug}`}>
             <motion.div
                 className="flex flex-col gap-2 max-w-[200px] w-full h-full"
                 whileHover={{ y: -5 }}
