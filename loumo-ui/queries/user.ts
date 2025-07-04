@@ -13,6 +13,15 @@ export default class UserQuery {
       return response.data;
     });
   };
+  verifyPassword = async (data: {
+    email: string;
+    password: string;
+  }): Promise<{ user: User; token: string }> => {
+    return api.post(`${this.route}/verifypass`, data).then((response) => {
+      toast.success(`Welcome back ${response.data.user.name}`);
+      return response.data;
+    });
+  };
   getAll = async (): Promise<User[]> => {
     return api
       .get(`${this.route}/?roleD=true&addressD=true&logD=true&notifD=true`)
