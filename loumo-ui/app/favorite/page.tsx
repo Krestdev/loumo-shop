@@ -1,7 +1,6 @@
 "use client"
 
 import GridProduct from '@/components/Home/GridProduct';
-import Loading from '@/components/setup/loading';
 import { useStore } from '@/providers/datastore';
 import PromotionQuery from '@/queries/promotion';
 import UserQuery from '@/queries/user';

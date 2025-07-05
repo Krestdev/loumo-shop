@@ -39,7 +39,7 @@ const ProductComp = ({ product, promotions }: Props) => {
         if (variantData.isSuccess) {
             setVariant(variantData.data?.find(x => x.id === product?.variants[0].id))
         }
-    }, [variantData.data])
+    }, [variantData.data, variantData.isSuccess, product?.variants])
 
     const userQuery = new UserQuery();
     const userData = useMutation({

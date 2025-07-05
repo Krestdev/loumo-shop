@@ -1,13 +1,8 @@
-import { Product } from '@/types/types'
 import { useTranslations } from 'next-intl'
 import React from 'react'
 import Stars from '../ui/stars'
 import { useReviews } from '@/data/data'
 import { Button } from '../ui/button'
-
-interface Props {
-    product: Product
-}
 
 const ReviewsProduct = ({}) => {
     const t = useTranslations("Catalog.ProductDetail")
@@ -17,8 +12,6 @@ const ReviewsProduct = ({}) => {
   reviews.length > 0
     ? reviews.reduce((total, x) => total + x.note, 0) / reviews.length
     : 0;
-
-
 
   return (
     <div className='flex flex-col gap-7 px-7 py-24 max-w-[1400px] w-full'>
@@ -34,7 +27,7 @@ const ReviewsProduct = ({}) => {
                     {
                         reviews.map((x,i) => {
                             return (
-                                <div className='flex flex-col gap-3 px-4 py-5'>
+                                <div key={i} className='flex flex-col gap-3 px-4 py-5'>
                                     <Stars note={x.note} couleur='#F8CA4C' taille={16} />
                                     <div className='flex flex-col gap-1'>
                                         <p className='text-[16px] text-gray-900 font-semibold'>{x.title}</p>

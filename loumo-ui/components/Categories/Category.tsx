@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import { Bread } from '../Bread'
 import Loading from '../setup/loading';
 import { useQuery } from '@tanstack/react-query';
 import CategoryQuery from '@/queries/category';
@@ -26,7 +25,7 @@ const CategoryComp = ({ slug }: { slug: string }) => {
         if (categoryData.isSuccess) {
             setCateg(categoryData.data.find(x => x.slug === slug))
         }
-    }, [categoryData.data])
+    }, [categoryData.data, categoryData.isSuccess])
 
     if (categoryData.isLoading) {
         return <Loading status={"loading"} />;

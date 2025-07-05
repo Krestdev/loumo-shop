@@ -42,12 +42,19 @@ const HistoryTable = ({ orders, all }: Props) => {
 
     const handleClick = (stat: "all" | "inProgress" | "completed") => {
         setStatus(stat);
-        stat === "all" ?
-            setItems(orders) :
-            stat === "inProgress" ?
-                setItems(orders.filter(x => x.status === "PENDING")) :
-                setItems(orders.filter(x => x.status === "COMPLETED"))
-    }
+        switch (stat) {
+            case "all":
+                setItems(orders);
+                break;
+            case "inProgress":
+                setItems(orders.filter(x => x.status === "PENDING"));
+                break;
+            case "completed":
+                setItems(orders.filter(x => x.status === "COMPLETED"));
+                break;
+        }
+    };
+
 
     return (
         <div className='flex flex-col max-w-[1400px] w-full px-7 py-8 gap-10'>
@@ -65,7 +72,7 @@ const HistoryTable = ({ orders, all }: Props) => {
                     {t("completed")}
                     <div className={`h-[29px] px-2 rounded-[20px] text-black p-1 ${status === "completed" ? "bg-white" : "bg-primary/20"}`}>{orders.filter(x => x.status === "COMPLETED").length}</div>
                 </Button>
-            </div> : ""}
+            </div> : null}
             <Table>
                 <TableHeader>
                     <TableRow>

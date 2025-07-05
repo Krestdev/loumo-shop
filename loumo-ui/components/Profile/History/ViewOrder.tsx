@@ -23,7 +23,7 @@ import OrderQuery from "@/queries/order";
 import ProductVariantQuery from "@/queries/productVariant";
 import PromotionQuery from "@/queries/promotion";
 import ZoneQuery from "@/queries/zone";
-import { Order, Zone } from "@/types/types";
+import { Order } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import {

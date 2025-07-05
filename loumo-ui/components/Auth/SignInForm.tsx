@@ -21,7 +21,6 @@ import Link from "next/link"
 import { useMutation } from "@tanstack/react-query"
 import UserQuery from "@/queries/user"
 import { useRouter } from "next/navigation"
-import { useStore } from "@/providers/datastore"
 import { useTransition } from "react"
 import { Loader } from "lucide-react"
 
@@ -46,7 +45,6 @@ type FormData = z.infer<typeof formSchema>
 export default function SignUpForm() {
     const t = useTranslations("SignUp")
     const router = useRouter()
-    const { setUser } = useStore()
     const user = new UserQuery()
     const [isPending, startTransition] = useTransition()
 

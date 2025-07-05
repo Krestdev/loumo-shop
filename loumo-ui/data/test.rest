@@ -389,7 +389,7 @@ DELETE {{host}}/api/shops/1
 GET {{host}}/api/orders/
 
 ### Get a single order by ID
-GET {{host}}/api/orders/1
+GET {{host}}/api/orders/24
 
 ### Create a new order
 POST {{host}}/api/orders/

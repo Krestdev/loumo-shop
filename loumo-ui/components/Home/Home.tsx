@@ -57,21 +57,23 @@ const Home = () => {
       <HeroSection />
       <CategoryMenu />
 
-      <GridProduct
+      {filteredProducts.length > 0
+       && <GridProduct
         title={t("star")}
         products={filteredProducts}
         isLoading={productData.isLoading}
         isSuccess={productData.isSuccess}
         promotions={promotionData.data}
-      />
+      />}
 
-      <GridProduct
-        title={t("promotions")}
-        products={filteredProducts.filter(x => x.variants.some(x => x.stock.some(x => x.promotionId)))}
-        isLoading={productData.isLoading}
-        isSuccess={productData.isSuccess}
-        promotions={promotionData.data}
-      />
+      {filteredProducts.filter(x => x.variants.some(x => x.stock.some(x => x.promotionId))).length > 0
+        && <GridProduct
+          title={t("promotions")}
+          products={filteredProducts.filter(x => x.variants.some(x => x.stock.some(x => x.promotionId)))}
+          isLoading={productData.isLoading}
+          isSuccess={productData.isSuccess}
+          promotions={promotionData.data}
+        />}
 
       <HowStep />
       <ReviewsGrid />

@@ -59,12 +59,12 @@ export default function ChangePassword({ slug }: { slug: string }) {
 
   const verifyOTP = useMutation({
     mutationKey: ["verify"],
-    mutationFn: (data: {email: string, otp: string}) => user.verifyReset(data),
+    mutationFn: (data: { email: string, otp: string }) => user.verifyReset(data),
   })
 
   const resetPassword = useMutation({
     mutationKey: ["reset"],
-    mutationFn: (data: {email: string, otp: string, newPassword: string}) => user.reset(data),
+    mutationFn: (data: { email: string, otp: string, newPassword: string }) => user.reset(data),
     onSuccess: () => {
       router.push("/auth/login")
     },
@@ -74,21 +74,23 @@ export default function ChangePassword({ slug }: { slug: string }) {
   })
 
   useEffect(() => {
-    email && verifyOTP.mutate({
-      email: email,
-      otp: otp
-    })
-  }, [])
+    if (email) {
+      verifyOTP.mutate({ email, otp });
+    }
+  }, [email, otp, verifyOTP]);
 
   const onSubmit = (values: FormData) => {
     startTransition(() => {
-      email && resetPassword.mutate({
-        email: email,
-        otp: otp,
-        newPassword: values.password,
-      })
-    })
-  }
+      if (email) {
+        resetPassword.mutate({
+          email,
+          otp,
+          newPassword: values.password,
+        });
+      }
+    });
+  };
+
 
   if (verifyOTP.isPending) return <Loading />
 

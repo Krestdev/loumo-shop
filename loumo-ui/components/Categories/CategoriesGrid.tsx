@@ -32,9 +32,9 @@ const CategoriesGrid = () => {
                 {categoryData.isLoading && Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="w-[301px] h-[254px] rounded-none" />)}
                 {
                     categoryData.isSuccess &&
-                    categoryData.data.filter(category => category.products?.some(product => product.variants && product.variants.length > 0)).map(x => {
+                    categoryData.data.filter(category => category.products?.some(product => product.variants && product.variants.length > 0)).map((x,i) => {
                         return (
-                            <Link href={`/categories/${x.slug}`} className='flex flex-col gap-2'>
+                            <Link key={i} href={`/categories/${x.slug}`} className='flex flex-col gap-2'>
                                 <img
                                     src={"/Images/imgUrl.png"}
                                     alt={x.name}

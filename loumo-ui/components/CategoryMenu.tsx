@@ -5,11 +5,12 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import CategoryQuery from "@/queries/category"
 import { useQuery } from "@tanstack/react-query"
 import CategoryCard from "./CategoryCard"
+import { EmblaCarouselType } from "embla-carousel";
 
 
 
 export function CategoryMenu() {
-  const [emblaRef, setEmblaRef] = React.useState<any>(null)
+  const [emblaRef, setEmblaRef] = React.useState<EmblaCarouselType | undefined>();
   const category = new CategoryQuery()
   const categoryData = useQuery({
     queryKey: ["categoryFetchAll"],
