@@ -7,6 +7,9 @@ import NotificationProvider from "@/providers/notifications";
 import { getLocale } from "next-intl/server";
 import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
+import Header from "@/components/header";
+import Notification from "@/components/ui/notification";
+import Footer from "@/components/footer";
 
 const font_sans = DM_Sans({
   variable: "--font-sans",
@@ -42,7 +45,12 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider locale={locale}>
           <QueryProvider>
-            <NotificationProvider>{children}</NotificationProvider>
+            <NotificationProvider>
+              <Notification />
+              <Header />
+              {children}
+              <Footer />
+              </NotificationProvider>
           </QueryProvider>
         </NextIntlClientProvider>
       </body>

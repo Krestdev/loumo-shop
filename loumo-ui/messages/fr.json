@@ -1,5 +1,268 @@
 {
+  "Maintenance": {
+    "redaction": "En cours de rédaction",
+    "maintenance": "En cours de maintenance"
+  },
+  "Header": {
+    "search": "Rechercher",
+    "address": "Adresse de livraison",
+    "login": "Connexion",
+    "register": "S'inscrire",
+    "or": "OU",
+    "myAccount": "Mon compte",
+    "profile": "Profil",
+    "history": "Historique",
+    "logOut": "Se déconnecter",
+    "select": "Sélectionnez votre adresse",
+    "noAddress": "Aucune adresse enregistrée",
+    "addAddress": "Ajouter une adresse",
+    "emptyCart": "Veuillez vider votre panier pour modifier votre adresse.",
+    "goCart": "Aller au panier"
+  },
+  "Address": {
+    "address": "Veuillez sélectionner votre adresse de livraison",
+    "select": "Sélectionner votre adresse",
+    "close": "Fermer",
+    "save": "Enregistrer"
+  },
+  "Footer": {
+    "Info": {
+      "fast": "Livraison rapide",
+      "fastDesc": "Nous livrons en moins de 3 heures",
+      "mobile": "Paiement mobile",
+      "mobileDesc": "Nous acceptons les paiements via Orange et MTN MOMO",
+      "support": "Assistance",
+      "supportDesc": "Chat en direct 24h/24 pour répondre à toutes vos questions"
+    },
+    "Help": {
+      "help": "Aide",
+      "faq": "FAQ",
+      "fees": "Frais de livraison",
+      "policy": "Politique de retour",
+      "contact": "Contact"
+    },
+    "About": {
+      "about": "À propos",
+      "term": "Conditions générales",
+      "privacy": "Politique de confidentialité"
+    },
+    "category": "Catégories",
+    "followUs": "Suivez-nous",
+    "copyright": "Droits d’auteur © 2025 KrestDev. Tous droits réservés."
+  },
   "HomePage": {
-    "title": "Bonjour le monde!"
+    "noConnect": "Vous n'êtes pas connecté",
+    "login": "Connexion",
+    "register": "S'inscrire",
+    "fav": "Ma liste de souhaits",
+    "home": "Accueil",
+    "categories": "Catégories",
+    "products": "Produits",
+    "title": "Loumo Shop",
+    "reviews": "Avis",
+    "Hero": {
+      "notification": "Livraison gratuite pour votre première commande ! Inscrivez-vous maintenant et commencez vos achats.",
+      "title": "À un clic de votre boutique locale.",
+      "allButton": "Tous les produits",
+      "RegisterButton": "Inscrivez-vous maintenant"
+    },
+    "GridProducts": {
+      "star": "Produits phares",
+      "promotions": "Promotions",
+      "addToCart": "Ajouter au panier",
+      "new": "Nouveau",
+      "outOfStock": "Rupture de stock",
+      "noProduct": "Aucun produit trouvé"
+    },
+    "Step": {
+      "step": "Étape",
+      "title": "Comment ça fonctionne",
+      "title1": "Sélectionnez votre zone de livraison",
+      "title2": "Ajoutez des articles à votre panier",
+      "title3": "Passez votre commande et gagnez des points",
+      "descrip1": "Indiquez-nous où vous souhaitez être livré. Nous vous montrerons uniquement les produits disponibles dans votre zone.",
+      "descrip2": "Parcourez notre large gamme de produits alimentaires en gros et ajoutez tout ce dont vous avez besoin à votre panier.",
+      "descrip3": "Confirmez votre commande, choisissez l'heure de livraison, et commencez à gagner des points de fidélité à chaque achat."
+    }
+  },
+  "Catalog": {
+    "Filters": {
+      "filters": "Filtres",
+      "priceRange": "Plage de prix",
+      "category": "Catégorie",
+      "find": "Trouver",
+      "show": "Afficher uniquement les produits disponibles",
+      "allProducts": "Tous les produits",
+      "search": "Rechercher"
+    },
+    "Cart": {
+      "add": "Ajouter au panier",
+      "close": "Fermer"
+    },
+    "ProductDetail": {
+      "options": "Options",
+      "addToCart": "Ajouter au panier",
+      "addToWishlist": "Ajouter à la liste de souhaits",
+      "about": "À propos de ce produit",
+      "weight": "Poids",
+      "categories": "Catégories",
+      "description": "Description",
+      "ingredient": "Ingrédient",
+      "dans": "Dans ",
+      "reviews": "Avis",
+      "leaveReview": "Laisser un avis",
+      "submit": "Publié par"
+    }
+  },
+  "Cart": {
+    "cart": "Panier",
+    "remove": "Retirer",
+    "delivery": "Informations de livraison",
+    "to": "Livrer à",
+    "contact": "Contact",
+    "payment": "Méthode de paiement",
+    "number": "Numéro de paiement",
+    "continue": "Continuer",
+    "emptyCart": "Panier vide",
+    "summary": "Résumé de la commande",
+    "promo": "Code promo",
+    "apply": "Appliquer",
+    "subtotal": "Sous-total",
+    "shiping": "Frais de livraison",
+    "discount": "Remise",
+    "total": "Total",
+    "addAddress": "Ajouter une adresse",
+    "Awaiting": {
+      "title": "Paiement en attente",
+      "description": "Veuillez patienter pendant que nous envoyons la demande de débit au numéro que vous avez fourni.",
+      "action": "⚠️ Action requise maintenant",
+      "step1": "Vérifiez les notifications sur votre téléphone.",
+      "step2": "Confirmez la transaction dans l'application Orange Money ou via le SMS reçu.",
+      "conclusion": "Une fois confirmé, vous recevrez un reçu par email et votre commande sera finalisée.",
+      "thank": "Merci pour votre confiance ! 🙌",
+      "close": "Fermer"
+    },
+    "Success": {
+      "title": "Paiement validé avec succès !",
+      "description": "Paiement confirmé ! Merci pour votre achat. Votre commande est en cours de traitement. Consultez votre e-mail pour plus de détails.",
+      "close": "Fermer"
+    }
+  },
+  "Login": {
+    "login": "Connexion",
+    "description": "Bon retour parmi nous ! Veuillez vous connecter pour accéder à votre compte.",
+    "emailLog": "Connexion par email",
+    "phoneLog": "Connexion par numéro de téléphone",
+    "email": "Adresse email",
+    "phone": "Numéro de téléphone",
+    "password": "Mot de passe",
+    "forgot": "Mot de passe oublié ?",
+    "notYet": "Pas encore inscrit ?",
+    "signIn": "S'inscrire"
+  },
+  "SignUp": {
+    "signUp": "Inscription",
+    "description": "Rejoignez-nous ! Créez un compte pour commencer. Remplissez vos informations ci-dessous.",
+    "email": "Adresse email *",
+    "phone": "Numéro de téléphone *",
+    "name": "Nom complet *",
+    "password": "Mot de passe *",
+    "cfPassword": "Confirmez le mot de passe",
+    "accept": "En continuant, vous acceptez les conditions générales de Loumo.",
+    "forgot": "Mot de passe oublié ?",
+    "alreaddy": "Vous avez déjà un compte ?",
+    "login": "Connexion",
+    "verified": "Email vérifié"
+  },
+  "Password": {
+    "resetPassword": "Réinitialisation du mot de passe",
+    "description": "Vous avez oublié votre mot de passe ? Pas de souci. Entrez votre adresse email ci-dessous et nous vous enverrons un lien pour le réinitialiser.",
+    "email": "Adresse email *",
+    "check": "Vérifier",
+    "confTitle": "Confirmation de l'email",
+    "confirmed": "Nous vous avons envoyé un email à",
+    "instruction": "ouvrez l'email et cliquez sur vérifier"
+  },
+  "ChangePassword": {
+    "change": "Changer le mot de passe",
+    "description": "Sécurisez votre compte en mettant à jour votre mot de passe. Il doit être unique.",
+    "newPassword": "Nouveau mot de passe",
+    "cfPassword": "Confirmez le mot de passe",
+    "verify": "Vérifier"
+  },
+  "Contact": {
+    "title": "Nous contacter",
+    "description": "Nous sommes là pour vous aider ! Si vous avez des questions concernant votre commande, la livraison, le paiement ou le fonctionnement de notre plateforme, n'hésitez pas à nous contacter.",
+    "contactUs": "Contacter notre équipe",
+    "email": "Email",
+    "phone": "Téléphone & Whatsapp",
+    "office": "Siège social",
+    "hours": "Heures d'ouverture",
+    "followUs": "Suivez-nous"
+  },
+  "FAQ": {
+    "title": "Foire Aux Questions (FAQ)"
+  },
+  "Profile": {
+    "overview": "Aperçu",
+    "loyalty": "Points de fidélité",
+    "orders": "Commandes",
+    "lastOrder": "Dernière commande",
+    "information": "Informations personnelles",
+    "name": "Nom",
+    "edit": "Modifier",
+    "editTitle": "Modifier les informations personnelles",
+    "editDescription": "Remplissez le formulaire pour mettre à jour vos informations",
+    "fullName": "Nom complet *",
+    "phoneNumber": "Numéro de téléphone",
+    "save": "Enregistrer",
+    "close": "Fermer",
+    "email": "Email",
+    "phone": "Téléphone",
+    "updatePassword": "Mettre à jour le mot de passe",
+    "deliveryAddress": "Adresse de livraison",
+    "address": "Adresse",
+    "addAddress": "Ajouter une adresse",
+    "noAddress": "Aucune adresse enregistrée",
+    "delete": "Supprimer",
+    "Orders": {
+      "orders": "Commandes",
+      "all": "Toutes",
+      "inProgress": "En cours",
+      "completed": "Terminées",
+      "reference": "Référence",
+      "date": "Date",
+      "amount": "Montant",
+      "status": "Statut",
+      "items": "Articles",
+      "actions": "Actions",
+      "view": "Voir",
+      "emptyTable": "Aucune donnée",
+      "Detail": {
+        "orderDetails": "Détails de la commande de",
+        "orderDate": "Du",
+        "delivery": "Livraison",
+        "zone": "Zone",
+        "address": "Adresse",
+        "product": "Produit",
+        "quantity": "Quantité",
+        "unitPrice": "Prix unitaire",
+        "total": "Total",
+        "subtotal": "Sous-total",
+        "deliveryFee": "Frais de livraison",
+        "paymentInfo": "Informations de paiement",
+        "status": "Statut",
+        "amount": "Montant",
+        "orderDateFull": "Date de commande",
+        "downloadInvoice": "Télécharger la facture",
+        "close": "Fermer",
+        "noProduct": "Aucun produit à afficher",
+        "orderedProducts": "Produits commandés",
+        "paid": "Payé",
+        "notPaid": "Non Payé",
+        "pending": "En cours",
+        "accepted": "Accepté"
+      }
+    }
   }
 }

@@ -1,5 +1,272 @@
 {
+  "Maintenance": {
+    "redaction": "Currently being written",
+    "maintenance": "Under maintenance"
+  },
+  "Header": {
+    "noResult": "No result found.",
+    "search": "Search",
+    "address": "Delivery address",
+    "login": "Login",
+    "register": "Register",
+    "or": "OR",
+    "myAccount": "My account",
+    "profile": "Profile",
+    "history": "History",
+    "logOut": "Log Out",
+    "select": "Select your address",
+    "noAddress": "No address registered",
+    "addAddress": "Add an Address",
+    "emptyCart": "Please empty your cart to change your address.",
+    "goCart": "Go to cart"
+  },
+  "Address": {
+    "address": "please select your delivery address",
+    "select": "Select your address",
+    "close": "Close",
+    "save": "Save",
+    "noResult": "No result found.",
+    "search": "Search"
+  },
+  "Footer": {
+    "Info": {
+      "fast": "Fast delivery",
+      "fastDesc": "We deliver in under 3 hours",
+      "mobile": "Mobile payment",
+      "mobileDesc": "We support Orange and MTN MOMO for payments",
+      "support": "Support",
+      "supportDesc": "24/7 live chat to answer all your questions"
+    },
+    "Help": {
+      "help": "Help",
+      "faq": "FAQ",
+      "fees": "Delivery fees",
+      "policy": "Return policy",
+      "contact": "Contact"
+    },
+    "About": {
+      "about": "About",
+      "term": "Terms and conditions",
+      "privacy": "Privacy policy"
+    },
+    "category": "Categories",
+    "followUs": "Follow us",
+    "copyright": "Copyright © 2025 KrestDev. All rights reserved."
+  },
   "HomePage": {
-    "title": "Hello world!"
+    "noConnect": "You are not connected",
+    "login": "Login",
+    "register": "Register",
+    "fav": "My wishlist",
+    "home": "Home",
+    "categories": "Categories",
+    "products": "Products",
+    "title": "Loumo Shop",
+    "reviews": "Reviews",
+    "Hero": {
+      "notification": "Free Delivery on your first order ! Register now and start buying.",
+      "title": "One click away from your Local Store.",
+      "allButton": "All products",
+      "RegisterButton": "Register Now"
+    },
+    "GridProducts": {
+      "star": "Featured Products",
+      "promotions": "Promotions",
+      "addToCart": "Add to Cart",
+      "new": "New",
+      "outOfStock": "Out of stock",
+      "noProduct": "No products found"
+    },
+    "Step": {
+      "step": "Step",
+      "title": "How does it work",
+      "title1": "Select your delivery area",
+      "title2": "Add items to your cart",
+      "title3": "Place your order and earn points",
+      "descrip1": "Tell us where you want your order delivered. We will only show you products available in your area.",
+      "descrip2": "Browse our wide range of bulk food products and add everything you need to your cart.",
+      "descrip3": "Confirm your order, choose the delivery time, and start earning loyalty points with every purchase."
+    }
+  },
+  "Catalog": {
+    "Filters": {
+      "filters": "Filters",
+      "priceRange": "Price Range",
+      "category": "Category",
+      "find": "Find",
+      "show": "Show only available products",
+      "allProducts": "All Products",
+      "search": "Search"
+    },
+    "Cart": {
+      "add": "Add to cart",
+      "close": "Close"
+    },
+    "ProductDetail": {
+      "options": "Options",
+      "addToCart": "Add to Cart",
+      "addToWishlist": "Add to wishlist",
+      "about": "About this product",
+      "weight": "Weight",
+      "categories": "Categories",
+      "description": "description",
+      "ingredient": "Ingredient",
+      "dans": "In ",
+      "reviews": "Reviews",
+      "leaveReview": "Leave a review",
+      "submit": "Submitted by"
+    }
+  },
+  "Cart": {
+    "noAddress":"No address registered",
+    "cart": "Cart",
+    "remove": "Remove",
+    "delivery": "Delivery information",
+    "to": "Deliver to",
+    "contact": "Contact",
+    "payment": "Payment method",
+    "number": "Payment number",
+    "continue": "Continue",
+    "emptyCart": "Empty Cart",
+    "summary": "Order Summary",
+    "promo": "Promo Code",
+    "apply": "Apply",
+    "subtotal": "Subtotal",
+    "shiping": "Shipping Charges",
+    "discount": "Discount",
+    "total": "Total",
+    "addAddress":"Add an Address",
+    "Awaiting": {
+      "title": "Awaiting payment",
+      "description": "Please wait while we send the debit request to the number you provided.",
+      "action": "⚠️ Action required now",
+      "step1": "Check the notifications on your phone.",
+      "step2": "Confirm the transaction from the Orange Money app or via the SMS received.",
+      "conclusion": "Once confirmed, you will receive a receipt by email and your order will be completed.",
+      "thank": "Thank you for your trust! 🙌",
+      "close": "Close"
+    },
+    "Success": {
+      "title": "Payment successfully validated!",
+      "description": "Payment confirmed! Thank you for your purchase. Your order is being processed. Check your email for more details.",
+      "close": "Close"
+    }
+  },
+  "Login": {
+    "login": "Login",
+    "description": "Welcome back! Please log in to access your account.",
+    "emailLog": "Log in with email",
+    "phoneLog": "Log in with phone number",
+    "email": "Email",
+    "phone": "Phone number",
+    "password": "Password",
+    "forgot": "Forgot password?",
+    "notYet": "Not registered yet?",
+    "signIn": "Sign up"
+  },
+  "SignUp": {
+    "signUp": "Sign up",
+    "description": "Join us! Create an account to get started. Fill in your details below to register.",
+    "email": "Email address *",
+    "phone": "Phone number *",
+    "name": "Full name *",
+    "password": "Password *",
+    "cfPassword": "Confirm password",
+    "accept": "By continuing, you agree to Loumo's terms and conditions.",
+    "forgot": "Forgot password?",
+    "alreaddy": "Do you have an account?",
+    "login": "Log in",
+    "verified": "Email verified"
+  },
+  "Password": {
+    "resetPassword": "Password recovery",
+    "description": "Forgot your password? No worries. Enter your email below and we'll send you a link to reset it.",
+    "email": "Email address *",
+    "check": "Check",
+    "confTitle": "Email confirmation",
+    "confirmed": "We sent you an email on",
+    "instruction": "open the email and click verify"
+  },
+  "ChangePassword": {
+    "change": "Change Password",
+    "description": "Secure your account by updating your password. Your new password must be unique.",
+    "newPassword": "New Password",
+    "cfPassword": "Confirm password",
+    "verify": "Verify"
+  },
+  "Contact": {
+    "title": "Contact us",
+    "description": "We're here to help! If you have any questions about your order, delivery, payment, or how our platform works, please don't hesitate to contact us.",
+    "contactUs": "Contact our team",
+    "email": "Email",
+    "phone": "Phone & Whatsapp",
+    "office": "Head office",
+    "hours": "Heures d'ouverture",
+    "followUs": "Follow us"
+  },
+  "FAQ": {
+    "title": "Frequently Asked Questions (FAQ)"
+  },
+  "Profile": {
+    "overview": "Overview",
+    "loyalty": "Loyalty point",
+    "orders": "Orders",
+    "lastOrder": "Last Order",
+    "information": "Personal Information",
+    "name": "Name",
+    "edit": "Edit",
+    "editTitle": "Edit personal informations",
+    "editDescription": "Fill the form to update your informations",
+    "fullName": "Full Name *",
+    "phoneNumber": "Phone Number",
+    "save": "Save",
+    "close": "Close",
+    "email": "Email",
+    "phone": "Phone",
+    "updatePassword": "Update Password",
+    "deliveryAddress": "Delivery Address",
+    "address": "Address",
+    "addAddress": "Add an Address",
+    "noAddress": "No address registered",
+    "delete": "Delete",
+    "Orders": {
+      "orders": "Orders",
+      "all": "All",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "reference": "Reference",
+      "date": "Date",
+      "amount": "Amount",
+      "status": "Status",
+      "items": "Items",
+      "actions": "Actions",
+      "view": "View",
+      "emptyTable": "Empty Table",
+      "Detail": {
+        "orderDetails": "Order details of",
+        "orderDate": "From",
+        "delivery": "Delivery",
+        "zone": "Zone",
+        "address": "Address",
+        "product": "Product",
+        "quantity": "Quantity",
+        "unitPrice": "Unit price",
+        "total": "Total",
+        "subtotal": "Subtotal",
+        "deliveryFee": "Delivery fee",
+        "paymentInfo": "Payment information",
+        "status": "Status",
+        "amount": "Amount",
+        "orderDateFull": "Order date",
+        "downloadInvoice": "Download invoice",
+        "close": "Close",
+        "noProduct": "No product to display",
+        "orderedProducts": "Ordered products",
+        "paid": "Paid",
+        "notPaid": "Not Paid",
+        "pending": "Pending",
+        "accepted": "Accepted"
+      }
+    }
   }
 }

@@ -1,37 +1,34 @@
 "use client";
+
+import QuestionSection from "@/components/FAQ/QuestionSection";
+import Redaction from "@/components/redaction";
 import Loading from "@/components/setup/loading";
-import FaqQuery from "@/queries/faq";
+import TopicQuery from "@/queries/topic";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 import React from "react";
-import JsonView from "react18-json-view";
 
 const Page = () => {
-  const faq = new FaqQuery();
-  const faqData = useQuery({
-    queryKey: ["faqData"],
-    queryFn: () => faq.getAll,
+  const t = useTranslations("Maintenance")
+  const { data, isLoading, isError, isSuccess } = useQuery({
+    queryKey: ["topicData"],
+    queryFn: () => new TopicQuery().getAll(),
   });
 
-  if (faqData.isLoading) {
-    return <Loading status={"loading"} />;
-  }
+  if (isLoading) return <Loading status="loading" />;
+  if (isError) return <Loading status="failed" />;
+  if (!isSuccess) return null;
 
-  if (faqData.isError) {
-    return <Loading status={"failed"} />;
-  }
-
-  if (faqData.isSuccess) {
-    return (
-      <div>
-        <div className="max-w-3xl mx-auto mt-10">
-          <h1 className="text-xl font-bold mb-4">Faq Data</h1>
-          <JsonView src={faqData.data} />
-        </div>
-      </div>
-    );
-  }
-
-  return <Loading />;
+  return (
+    <div className="w-full flex justify-between">
+      {data.length > 0 ?
+        <QuestionSection topic={data} isSuccess={isSuccess} />
+        :
+        <Redaction message={t("redaction")} />
+      }
+    </div>
+  );
 };
+
 
 export default Page;

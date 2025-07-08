@@ -142,3 +142,23 @@
     @apply text-[clamp(1.5rem,5vw,2.25rem)] font-semibold tracking-normal; /** Category title size should be h1 */
   }
 }
+
+/* globals.css */
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: theme('colors.primary.DEFAULT'); /* Ou une couleur fixe comme #3b82f6 */
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}

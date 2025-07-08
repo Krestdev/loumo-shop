@@ -1,37 +1,29 @@
 "use client";
+import ContactForm from "@/components/Contact/ContactForm";
 import Loading from "@/components/setup/loading";
 import SettingQuery from "@/queries/setting";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import JsonView from "react18-json-view";
 
 const Page = () => {
-  const setting = new SettingQuery();
-  const settingData = useQuery({
-    queryKey: ["settingData"],
-    queryFn: () => setting.getAll("contact"),
+
+  const { data, isLoading, isError, isSuccess } = useQuery({
+    queryKey: ["topicData"],
+    queryFn: () => new SettingQuery().getAll(),
   });
 
-  if (settingData.isLoading) {
-    return <Loading status={"loading"} />;
-  }
+  if (isLoading) return <Loading status="loading" />;
+  if (isError) return <Loading status="failed" />;
+  if (!isSuccess) return null;
 
-  if (settingData.isError) {
-    return <Loading status={"failed"} />;
-  }
-
-  if (settingData.isSuccess) {
-    return (
-      <div>
-        <div className="max-w-3xl mx-auto mt-10">
-          <h1 className="text-xl font-bold mb-4">Product Data</h1>
-          <JsonView src={settingData.data} />
-        </div>
-      </div>
-    );
-  }
-
-  return <Loading />;
+  console.log(data);
+  
+  
+  return (
+    <div>
+      <ContactForm />
+    </div>
+  );
 };
 
 export default Page;
