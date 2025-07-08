@@ -9,7 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 
-const page = () => {
+const Page = () => {
     const { user } = useStore();
     const t = useTranslations("HomePage")
 
@@ -33,13 +33,13 @@ const page = () => {
         if (userData.isSuccess && userData.data?.favorite) {
             setFavorite(userData.data?.favorite)
         }
-    }, [userData.data, userData.data?.favorite])
+    }, [userData.data, userData.data?.favorite, userData.isSuccess])
 
     useEffect(() => {
         if (promotionData.isSuccess && promotionData.data) {
             setPromotions(promotionData.data)
         }
-    }, [promotionData.data])
+    }, [promotionData.data, promotionData.isSuccess])
 
     return (
         <div className='w-full flex justify-center'>
@@ -51,4 +51,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page
