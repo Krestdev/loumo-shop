@@ -17,19 +17,6 @@ jobs:
       - name: Run linter
         run: npm run lint
         working-directory: ./loumo-ui
-
-  # test:
-  #   name: Run Tests
-  #   runs-on: ubuntu-latest
-  #   needs: lint
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Install deps
-  #       run: npm ci
-  #       working-directory: ./loumo-ui
-  #     - name: Run tests
-  #       run: npm test
-  #       working-directory: ./loumo-ui
   
   build:
     name: Build API
@@ -82,14 +69,16 @@ jobs:
             mv temp-clone/* temp-clone/.* . 2>/dev/null || true
             rm -rf temp-clone
 
-            cp ~/deployments/loumo-shop/shared/.env .env
+            # cp ~/deployments/loumo-shop/shared/.env .env
             export DOCKER_BUILDKIT=0
 
             # Remove any containers that might conflict
             docker rm -f loumo_ui 2>/dev/null || true
 
-            docker compose -f docker-compose.yml --env-file .env build
-            docker compose -f docker-compose.yml --env-file .env up -d
+            # docker compose -f docker-compose.yml --env-file .env build
+            # docker compose -f docker-compose.yml --env-file .env up -d
+            docker compose -f docker-compose.yml build
+            docker compose -f docker-compose.yml up -d
 
             # Health check loop
             for i in {1..10}; do
@@ -108,9 +97,11 @@ jobs:
               echo "❌ Health check failed, rolling back"
               if [ -L ~/deployments/loumo-shop/current ]; then
                 PREV=$(readlink ~/deployments/loumo-shop/current)
-                docker compose -f $RELEASE_DIR/docker-compose.yml --env-file .env down || true
+                # docker compose -f $RELEASE_DIR/docker-compose.yml --env-file .env down || true
+                docker compose -f $RELEASE_DIR/docker-compose.yml down || true
                 ln -sfn $PREV ~/deployments/loumo-shop/current
-                docker compose -f $PREV/docker-compose.yml --env-file $PREV/.env up -d
+                # docker compose -f $PREV/docker-compose.yml --env-file $PREV/.env up -d
+                docker compose -f $PREV/docker-compose.yml up -d
               else
                 echo "⚠️ No previous release to roll back to"
               fi
