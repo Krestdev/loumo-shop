@@ -11,10 +11,10 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - app-network
+      - caddy-network
 
 networks:
-  app-network:
+  caddy-network:
     driver: bridge
     attachable: true
-# correct deployment
+# correct deployment on sidiki vps
