@@ -99,6 +99,8 @@ export default function LoginForm() {
     })
   }
 
+  setMethod("email")
+
   return (
     <Form {...form}>
       <form

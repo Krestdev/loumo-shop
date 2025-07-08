@@ -25,7 +25,7 @@ const CategoryComp = ({ slug }: { slug: string }) => {
         if (categoryData.isSuccess) {
             setCateg(categoryData.data.find(x => x.slug === slug))
         }
-    }, [categoryData.data, categoryData.isSuccess])
+    }, [categoryData.data, categoryData.isSuccess, slug])
 
     if (categoryData.isLoading) {
         return <Loading status={"loading"} />;
