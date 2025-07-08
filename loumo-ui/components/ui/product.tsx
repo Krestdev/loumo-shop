@@ -14,7 +14,6 @@ import UserQuery from '@/queries/user';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import ProductVariantQuery from '@/queries/productVariant';
-import { LoginDialog } from '../Auth/loginDialog';
 
 interface Props {
     product: Product | undefined
@@ -23,7 +22,7 @@ interface Props {
 
 const ProductComp = ({ product, promotions }: Props) => {
     const router = useRouter()
-    const { user } = useStore()
+    const { user, address } = useStore()
     const t = useTranslations("HomePage.GridProducts")
     const env = process.env.NEXT_PUBLIC_API_BASE_URL
 
@@ -108,17 +107,29 @@ const ProductComp = ({ product, promotions }: Props) => {
                     )}
                 </div>
 
-                <Link className='w-full h-full' href={`/catalog/${product.slug}`}>
+                {address ? <Link className='w-full h-full' href={`/catalog/${product.slug}`}>
                     {variant.imgUrl ? (
-                        <img src={`${env}${variant.imgUrl}`} alt={variant.name} className='w-full aspect-square h-auto object-cover' />
+                        <img src={`${env}/${variant.imgUrl}`} alt={variant.name} className='w-full aspect-square h-auto object-cover' />
                     ) : (
                         <div className='flex items-center justify-center w-full h-auto aspect-square object-cover bg-gray-100 text-white'>
                             <LucideDatabase size={80} />
                         </div>
                     )}
-                </Link>
+                </Link> :
+                    <AddAddress>
+                        <Button className='px-0 py-0 w-full h-full bg-transparent hover:bg-transparent rounded-none'>
+                            {variant.imgUrl ? (
+                                <img src={`${env}/${variant.imgUrl}`} alt={variant.name} className='w-full aspect-square h-auto object-cover' />
+                            ) : (
+                                <div className='flex items-center justify-center w-full h-auto aspect-square object-cover bg-gray-100 text-white'>
+                                    <LucideDatabase size={80} />
+                                </div>
+                            )}
+                        </Button>
+                    </AddAddress>
+                }
 
-                {((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0)) && (
+                {((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0) && (
                     <div className='absolute bottom-2 left-0 bg-red-700 p-2 z-10'>
                         <p className='text-white text-sm font-semibold'>{t("outOfStock")}</p>
                     </div>
@@ -128,13 +139,13 @@ const ProductComp = ({ product, promotions }: Props) => {
             <div className='flex flex-col justify-between'>
                 <div className='flex flex-col gap-1'>
                     <p className='text-[16px] text-gray-700'>{product.name}</p>
-                    <div className='flex flex-row items-center'>
+                    <div className='flex flex-row items-center gap-2'>
                         {product?.variants?.slice(0, 2).map((va, idx) => (
                             <Button
+                                key={va.id ?? idx}
                                 onClick={() => setVariant(va)}
-                                className='px-2 py-1 h-[26px]'
-                                key={idx}
-                                variant={variant.id === va.id ? "default" : "ghost"}
+                                className="px-2 py-1 h-[26px] max-w-[50px] truncate flex justify-start"
+                                variant={variant?.id === va.id ? "default" : "ghost"}
                             >
                                 {va.name}
                             </Button>
@@ -159,19 +170,19 @@ const ProductComp = ({ product, promotions }: Props) => {
                     />
                 </div>
 
-                {user?.addresses && user.addresses.length > 0 ? (
+                {address ? (
                     <AddToCard product={product} variant={variant} setVariant={setVariant} promotions={promotions}>
                         <Button variant={"default"}>{t("addToCart")}</Button>
                     </AddToCard>
                 ) : (
-                    user ?
-                        <AddAddress>
-                            <Button>{t("addToCart")}</Button>
-                        </AddAddress>
-                        :
-                        <LoginDialog>
-                            <Button>{t("addToCart")}</Button>
-                        </LoginDialog>
+                    // user ?
+                    <AddAddress>
+                        <Button>{t("addToCart")}</Button>
+                    </AddAddress>
+                    // :
+                    // <LoginDialog>
+                    //     <Button>{t("addToCart")}</Button>
+                    // </LoginDialog>
                 )}
             </div>
         </div>

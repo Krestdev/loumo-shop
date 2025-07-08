@@ -14,23 +14,21 @@ interface FilterProps {
     categories: Category[];
     selectedCategories: Category[];
     setSelectedCategories: (categories: Category[]) => void;
-    price: number;
-    setPrice: (price: number) => void;
-    minPrice: number;
-    setMinPrice: (price: number) => void;
+    priceRange: [number, number]; 
+    setPriceRange: (range: [number, number]) => void; 
     availableOnly: boolean;
     setAvailableOnly: (value: boolean) => void;
-    maxPrice: number;
+    minPrice: number; 
+    maxPrice: number; 
 }
 
 export default function Filter({
-    price,
-    setPrice,
-    minPrice,
-    setMinPrice,
+    priceRange,
+    setPriceRange,
     availableOnly,
     setAvailableOnly,
-    maxPrice,
+    minPrice: minPossiblePrice, 
+    maxPrice: maxPossiblePrice, 
     categories,
     selectedCategories,
     setSelectedCategories,
@@ -49,7 +47,7 @@ export default function Filter({
     };
 
     return (
-        <aside className="max-w-[240px] w-full border border-input rounded-md">
+        <aside className="md:max-w-[240px] w-full border border-input rounded-md">
             <div className="flex gap-2 px-5 py-2">
                 <p className="text-lg font-semibold">{t("filters")}</p>
             </div>
@@ -66,43 +64,19 @@ export default function Filter({
                     </AccordionTrigger>
                     <AccordionContent className="flex flex-col gap-2 px-5 py-2">
                         <p className="mb-1 text-sm text-gray-600">
-                            {minPrice.toLocaleString()} – {price.toLocaleString()} FCFA
+                            {priceRange[0].toLocaleString()} – {priceRange[1].toLocaleString()} FCFA
                         </p>
 
                         <Slider
-                            min={0}
-                            max={maxPrice}
+                            min={minPossiblePrice}
+                            max={maxPossiblePrice}
                             step={500}
-                            defaultValue={[minPrice, price]}
-                            value={[minPrice, price]}
-                            onValueChange={([min, max]) => {
-                                setMinPrice(min);
-                                setPrice(max);
+                            value={priceRange}
+                            onValueChange={(value) => {
+                                setPriceRange(value as [number, number]);
                             }}
                             className="relative w-full h-4"
-                            // thumbClassName="w-4 h-4 bg-red-600 border border-white rounded-full shadow" 
-                            // trackClassName="bg-gray-200 h-1 rounded-full"
-                            // rangeClassName="bg-red-500 h-1 rounded-full"
                         />
-
-                        {/* <div className="flex items-center justify-between gap-2">
-              <Input
-                type="number"
-                min={0}
-                max={price}
-                value={minPrice}
-                onChange={(e) => setMinPrice(Number(e.target.value))}
-                className="w-1/2 h-8 text-sm px-2"
-              />
-              <Input
-                type="number"
-                min={minPrice}
-                max={maxPrice}
-                value={price}
-                onChange={(e) => setPrice(Number(e.target.value))}
-                className="w-1/2 h-8 text-sm px-2"
-              />
-            </div> */}
                     </AccordionContent>
                 </AccordionItem>
 

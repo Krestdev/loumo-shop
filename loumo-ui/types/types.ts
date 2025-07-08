@@ -196,6 +196,13 @@ export type User = {
   updatedAt: Date;
 };
 
+export type RegisterPayload = {
+  name: string;
+  email: string;
+  tel: string;
+  password: string;
+};
+
 export type Faq = {
   id: number;
   question: string;

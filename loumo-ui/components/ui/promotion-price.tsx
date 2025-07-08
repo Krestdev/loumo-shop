@@ -9,9 +9,11 @@ interface PriceDisplayProps {
     productVariantId: number;
   }> | null;
   variants: ProductVariant[] | undefined;
+  className1?: string
+  className2?: string
 }
 
-export const PriceDisplay = ({ price, stocks, variants }: PriceDisplayProps) => {
+export const PriceDisplay = ({ price, stocks, variants, className1="text-[20px] font-bold text-black", className2="text-[14px] text-gray-500" }: PriceDisplayProps) => {
   const now = new Date();
 
   const promotion = new PromotionQuery();
@@ -65,10 +67,10 @@ export const PriceDisplay = ({ price, stocks, variants }: PriceDisplayProps) => 
           return (
             <div key={variant.id} className="flex flex-col gap-1 border-b pb-2">
               <div className="flex gap-2 items-center">
-                <p className="text-[20px] font-bold text-black text-nowrap">
+                <p className={`text-nowrap ${className1}`}>
                   {formatPrice(discounted)} FCFA
                 </p>
-                <p className="text-[14px] text-gray-500 line-through text-nowrap">
+                <p className={`line-through text-nowrap ${className2}`}>
                   {formatPrice(variant.price)} FCFA
                 </p>
               </div>
@@ -76,7 +78,7 @@ export const PriceDisplay = ({ price, stocks, variants }: PriceDisplayProps) => 
           );
         })
       ) : (
-        <p className="text-[20px] font-bold text-gray-900">{formatPrice(price)} FCFA</p>
+        <p className={`${className1} text-nowrap`}>{formatPrice(price)} FCFA</p>
       )}
     </div>
   );

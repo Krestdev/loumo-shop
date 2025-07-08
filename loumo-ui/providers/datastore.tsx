@@ -1,5 +1,6 @@
 import { getBestPromotionPrice } from "@/lib/utils";
 import {
+  Address,
   Category,
   Order,
   OrderItem,
@@ -14,6 +15,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 type Store = {
   user: User | null;
   setUser: (user: User) => void;
+  address: Address | null;
+  setAddress: (address: Address) => void;
   logout: () => void;
   categories: Category[];
   setCategories: (categories: Category[]) => void;
@@ -48,6 +51,8 @@ export const useStore = create<Store>()(
     (set, get) => ({
       user: null,
       setUser: (user) => set(() => ({ user })),
+      address: null,
+      setAddress: (address) => set(() => ({address})),
       logout: () => set({ user: null }),
       categories: [],
       setCategories: (categories) => set(() => ({ categories })),

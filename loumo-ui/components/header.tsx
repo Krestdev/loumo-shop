@@ -23,53 +23,59 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { AddAddress } from "./select-address";
-import { LoginDialog } from "./Auth/loginDialog";
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import AddressQuery from "@/queries/address";
+import { useQuery } from "@tanstack/react-query";
 
 const Header = () => {
   const t = useTranslations("Header");
-  const { user, currentOrderItems, logout } = useStore();
+  const { user, currentOrderItems, logout, setAddress, address } = useStore();
   const router = useRouter();
   const [isClient, setIsClient] = React.useState(true);
+  const [search, setSearch] = React.useState("");
+  const [open, setOpen] = React.useState(false);
+
   React.useEffect(() => {
     setIsClient(true);
   }, []);
-
-  // const userQuery = new UserQuery();
-  // const userData = useMutation({
-  //   mutationKey: ["login"],
-  //   mutationFn: (data: { addresses: Address[] }) => userQuery.update(user!.id, data),
-  //   onError: (error) => {
-  //     console.error("Échec de connexion :", error);
-  //   },
-  // });
-
-  const handleSelect = (value: string) => {
-    console.log("Adresse sélectionnée :", value)
-  }
 
   const cartItemCount = currentOrderItems.reduce(
     (total, item) => total + item.quantity,
     0
   );
 
+  const addresses = new AddressQuery();
+  const addressData = useQuery({
+    queryKey: ["addressFetchAll"],
+    queryFn: () => addresses.getAll(),
+  });
+
   return (
     <div className="w-full flex flex-col items-center sticky top-0 z-50 bg-background border-b">
       <div className="flex flex-row items-center gap-4 md:gap-10 px-4 md:px-7 max-w-[1400px] w-full h-[60px]">
-        {/* Logo */}
         <Menu>
           <Button variant={"ghost"}>
             <LucideMenu size={20} />
           </Button>
         </Menu>
+
         <div className="flex items-center gap-4 w-full">
           <img
             onClick={() => router.push("/")}
@@ -78,7 +84,6 @@ const Header = () => {
             className="h-7 w-[102px] object-cover cursor-pointer hover:opacity-80 transition-opacity"
           />
 
-          {/* Barre de recherche */}
           <div className="hidden md:flex w-full">
             <div className="relative flex-row items-center max-w-[640px] w-full">
               <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -91,48 +96,95 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Actions utilisateur */}
+        {/* Adresse sélectionnable uniquement si panier vide */}
         <div className="flex flex-row items-center gap-2 md:gap-4">
-          {/* Adresse */}
-          <Select onValueChange={handleSelect}>
-            <SelectTrigger className="hidden md:flex group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer hover:bg-gray-50 max-w-[250px] border-none shadow-none">
-              <LucideMapPin size={20} className="flex-shrink-0" />
-              <div className="flex flex-col w-full overflow-hidden text-left">
-                <p className="text-xs text-muted-foreground">{t("address")}</p>
-                <SelectValue placeholder={user?.addresses?.[0]?.street || t("select")} />
-              </div>
-            </SelectTrigger>
-            <SelectContent className="p-4">
-              {user && (user.addresses && user.addresses.length > 0) ?
-                user?.addresses?.map((x, i) => (
-                  <SelectItem key={i} value={x.id.toString()}>
-                    {x.local}
-                  </SelectItem>
-                )) : user ?
-                  <>
-                    <p>{t("noAddress")}</p>
-                    <AddAddress>
-                      <Button>{t("addAddress")}</Button>
-                    </AddAddress>
-                  </> :
-                  <>
-                    <p>{t("noAddress")}</p>
-                    <LoginDialog>
-                      <Button>{t("addAddress")}</Button>
-                    </LoginDialog>
-                  </>
-              }
-            </SelectContent>
-          </Select>
+          {currentOrderItems.length <= 0 ? (
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  className="hidden md:flex group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer max-w-[250px] border border-input"
+                >
+                  <LucideMapPin size={20} className="flex-shrink-0" />
+                  <div className="flex flex-col w-full overflow-hidden text-left hover:text-white">
+                    <p className="text-xs text-muted-foreground hover:text-white">{t("address")}</p>
+                    <span className="truncate text-sm">
+                      {address?.street || t("select")}
+                    </span>
+                  </div>
+                  <LucideChevronDown size={16} className="ml-auto opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[250px] h-[600px] p-0 overflow-y-auto">
+                <Command>
+                  <CommandInput
+                    placeholder={t("search")}
+                    value={search}
+                    onValueChange={setSearch}
+                    className="h-9"
+                  />
+                  <CommandEmpty>{t("noResult")}</CommandEmpty>
+                  <CommandGroup className="overflow-y-auto">
+                    {addressData.data
+                      ?.filter((addr) =>
+                        addr.local.toLowerCase().includes(search.toLowerCase())
+                      )
+                      .map((addr) => (
+                        <CommandItem
+                          key={addr.id}
+                          value={addr.id.toString()}
+                          onSelect={() => {
+                            setAddress(addr);
+                            setOpen(false);
+                          }}
+                        >
+                          {addr.street}
+                          {address?.id === addr.id && (
+                            <LucideMapPin className="ml-auto h-4 w-4 opacity-50" />
+                          )}
+                        </CommandItem>
+                      ))}
+                  </CommandGroup>
+                </Command>
+              </PopoverContent>
+            </Popover>
+          ) : (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="hidden md:flex items-center gap-2 cursor-not-allowed">
+                  <LucideMapPin size={16} className="flex-shrink-0 text-gray-300" />
+                  <div className="flex flex-col w-full overflow-hidden text-left">
+                    <p className="text-xs text-muted-foreground text-nowrap">{t("address")}</p>
+                    <p className="text-sm text-black">{address?.street}</p>
+                  </div>
+                  <LucideChevronDown size={20} className="text-gray-300" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent className="flex flex-col gap-2 justify-center">
+                <p className="w-[150px]">{t("emptyCart")}</p>
+                <Button variant={"ghost"} className="bg-white text-black hover:bg-gray-50 hover:text-black">{t("goCart")}</Button>
+              </TooltipContent>
+            </Tooltip>
+          )}
 
-          <span className='hidden md:flex'>
+          <span className="hidden md:flex">
             <LocalSwitcher />
           </span>
 
-          <Button onClick={() => router.push("/profile")} variant={"ghost"} className="flex sm:hidden">
-            <LucideUserCircle size={36} />
-          </Button>
-          {/* Panier */}
+          <DropdownMenu>
+              <DropdownMenuTrigger className="md:hidden flex group text-nowrap gap-2 items-center border border-input px-3 py-2 rounded-[20px] cursor-pointer hover:bg-gray-50">
+                {t("myAccount")}
+                <LucideUserCircle size={18} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onClick={() => router.push("/profile")}>{t("profile")}</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push("/profile/history")}>{t("history")}</DropdownMenuItem>
+                <DropdownMenuItem onClick={logout}>{t("logOut")}</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
           <Button
             variant="ghost"
             size="icon"
@@ -147,7 +199,6 @@ const Header = () => {
             <LucideShoppingCart size={20} />
           </Button>
 
-          {/* Profil/Connexion */}
           {!isClient ? (
             <Skeleton className="h-9 w-24 rounded-md" />
           ) : user ? (
@@ -162,7 +213,6 @@ const Header = () => {
                 <DropdownMenuItem onClick={logout}>{t("logOut")}</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-
           ) : (
             <Button
               onClick={() => router.push("/auth/login")}
@@ -175,17 +225,19 @@ const Header = () => {
           )}
         </div>
       </div>
-      {isClient && (user?.addresses?.length ?? 0) > 0 && (
+
+      {address && (
         <div className="flex md:hidden items-center justify-center px-7 py-2 gap-2 w-full mx-auto bg-secondary">
           <div className="flex items-center gap-2">
             <LucideMapPin size={24} className="text-white flex-shrink-0" />
             <div className="flex flex-row w-full overflow-hidden">
               <p className="text-xs text-white">{t("address")}</p>
-              <p className="text-sm truncate">{user?.addresses?.[0]?.street}</p>
+              <p className="text-sm truncate">{address?.street}</p>
             </div>
           </div>
         </div>
       )}
+
       <CategoriesNav />
     </div>
   );

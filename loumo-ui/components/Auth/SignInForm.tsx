@@ -23,6 +23,7 @@ import UserQuery from "@/queries/user"
 import { useRouter } from "next/navigation"
 import { useTransition } from "react"
 import { Loader } from "lucide-react"
+import { RegisterPayload } from "@/types/types"
 
 const formSchema = z
     .object({
@@ -41,6 +42,7 @@ const formSchema = z
     })
 
 type FormData = z.infer<typeof formSchema>
+
 
 export default function SignUpForm() {
     const t = useTranslations("SignUp")
@@ -62,7 +64,7 @@ export default function SignUpForm() {
 
     const userRegister = useMutation({
         mutationKey: ["register"],
-        mutationFn: (data: any) => user.register(data),
+        mutationFn: (data: RegisterPayload) => user.register(data),
         onSuccess: () => {
             router.push("/auth/login")
         },

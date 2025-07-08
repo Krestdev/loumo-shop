@@ -43,7 +43,7 @@ const GridProduct = ({
   const t = useTranslations("HomePage.GridProducts")
 
   const filteredProducts = products?.filter(
-    (product) => product?.variants && product.variants.length > 0
+    (product) => product && product.variants && product.variants.length > 0
   ) ?? [];
 
   // Limiter selon le breakpoint

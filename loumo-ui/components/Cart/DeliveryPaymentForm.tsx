@@ -26,12 +26,24 @@ import * as z from "zod"
 import { User } from "@/types/types"
 import { useState } from "react"
 import { AddAddress } from "../select-address"
+import { LoginDialog } from "../Auth/loginDialog"
+
 
 const formSchema = z.object({
     tel: z.string().min(8, { message: "Numéro trop court" }).max(15, { message: "Numéro trop long" }),
-    paymentMethod: z.string().nonempty({ message: "Mode de paiement requis" }),
-    paymentNumber: z.string().min(8, { message: "Numéro trop court" }).max(15, { message: "Numéro trop long" }),
-})
+    paymentMethod: z.enum(["cash", "orange", "mtn"], { required_error: "Mode de paiement requis" }),
+    paymentNumber: z.string().optional(),
+}).superRefine((data, ctx) => {
+    if (["orange", "mtn"].includes(data.paymentMethod)) {
+        if (!data.paymentNumber || data.paymentNumber.length < 8) {
+            ctx.addIssue({
+                code: "custom",
+                path: ["paymentNumber"],
+                message: "Numéro requis pour ce mode de paiement",
+            });
+        }
+    }
+});
 
 type FormValues = z.infer<typeof formSchema>
 
@@ -43,10 +55,12 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
         resolver: zodResolver(formSchema),
         defaultValues: {
             tel: user?.tel?.toString() || "",
-            paymentMethod: "",
-            paymentNumber: user?.tel?.toString() || "",
+            paymentMethod: "cash",
+            paymentNumber: "",
         },
     })
+
+    const paymentMethod = form.watch("paymentMethod")
 
     const onSubmit = (values: FormValues) => {
         console.log("Form submitted:", values)
@@ -124,9 +138,18 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                             <p className="text-secondary font-bold text-[18px] text-end">{totalPrice}</p>
                         </div>
 
-                        <Button onClick={() => setLevel("paiement")} className="h-12 rounded-[24px]">
-                            {t("continue")}
-                        </Button>
+                        {
+                            user ?
+                                <Button onClick={() => setLevel("paiement")} className="h-12 rounded-[24px]">
+                                    {t("continue")}
+                                </Button>
+                                :
+                                <LoginDialog>
+                                    <Button className="h-12 rounded-[24px]">
+                                        {t("continue")}
+                                    </Button>
+                                </LoginDialog>
+                        }
                     </div>
                 ) : (
                     <div className="flex flex-col gap-5 px-6 py-7 rounded-[12px]">
@@ -161,23 +184,34 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                                 )}
                             />
 
-                            <FormField
-                                control={form.control}
-                                name="paymentNumber"
-                                render={({ field }) => (
-                                    <FormItem className="flex flex-col gap-2">
-                                        <FormLabel className="font-medium text-[14px] text-gray-900">{t("number")}</FormLabel>
-                                        <FormControl>
-                                            <Input type="tel" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                            {["orange", "mtn"].includes(paymentMethod) && (
+                                <FormField
+                                    control={form.control}
+                                    name="paymentNumber"
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-col gap-2">
+                                            <FormLabel className="font-medium text-[14px] text-gray-900">{t("number")}</FormLabel>
+                                            <FormControl>
+                                                <Input type="tel" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            )}
 
-                            <Button type="submit" className="h-12 rounded-[24px]">
-                                {t("continue")}
-                            </Button>
+                            {
+                                user ?
+                                    <Button type="submit" className="h-12 rounded-[24px]">
+                                        {t("continue")}
+                                    </Button>
+                                    :
+                                    <LoginDialog>
+                                        <Button className="h-12 rounded-[24px]">
+                                            {t("continue")}
+                                        </Button>
+                                    </LoginDialog>
+                            }
                         </div>
                     </div>
                 )}

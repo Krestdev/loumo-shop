@@ -1,5 +1,5 @@
 import api from "@/providers/axios";
-import { User } from "@/types/types";
+import { RegisterPayload, User } from "@/types/types";
 import { toast } from "react-toastify";
 
 export default class UserQuery {
@@ -41,7 +41,7 @@ export default class UserQuery {
       .then((response) => response.data);
   };
   register = async (
-    data: Omit<User, "id"> & {
+    data: RegisterPayload & {
       addressList?: number[];
     }
   ): Promise<User> => {

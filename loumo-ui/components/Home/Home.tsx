@@ -14,7 +14,7 @@ import { useStore } from '@/providers/datastore';
 
 const Home = () => {
   const t = useTranslations("HomePage.GridProducts");
-  const { user } = useStore()
+  const { address } = useStore()
 
   const product = new ProductQuery();
   const promotion = new PromotionQuery();
@@ -32,25 +32,27 @@ const Home = () => {
   });
 
 
-  const userZoneId = user?.addresses?.[0]?.zoneId;
+  const addressId = address?.zoneId
+
+  console.log(addressId);
+
 
   // ✅ Filtrage des produits par zone de livraison
   const filteredProducts = React.useMemo(() => {
     if (!productData.data) return [];
 
     // S'il n'y a pas de zone, retourne tous les produits
-    if (!userZoneId) return productData.data;
+    if (!addressId) return productData.data;
 
     // Sinon, filtre par zone
     return productData.data.filter((product) =>
       product.variants?.some((variant) =>
         variant.stock?.some((stock) =>
-          stock.shop?.address?.zoneId === userZoneId
+          stock.shop?.address?.zoneId === addressId
         )
       )
     );
-  }, [productData.data, userZoneId]);
-
+  }, [productData.data, addressId]);
 
   return (
     <div className="w-full flex flex-col items-center">
@@ -58,13 +60,17 @@ const Home = () => {
       <CategoryMenu />
 
       {filteredProducts.length > 0
-       && <GridProduct
-        title={t("star")}
-        products={filteredProducts}
-        isLoading={productData.isLoading}
-        isSuccess={productData.isSuccess}
-        promotions={promotionData.data}
-      />}
+        ? <GridProduct
+          title={t("star")}
+          products={filteredProducts}
+          isLoading={productData.isLoading}
+          isSuccess={productData.isSuccess}
+          promotions={promotionData.data}
+        />
+        : <div className='py-32'>
+          <h3>{"Aucun produit disponible dans votre zone de livraison"}</h3>
+        </div>
+      }
 
       {filteredProducts.filter(x => x.variants.some(x => x.stock.some(x => x.promotionId))).length > 0
         && <GridProduct

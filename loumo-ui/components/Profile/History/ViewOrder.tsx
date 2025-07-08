@@ -29,7 +29,6 @@ import { format } from "date-fns";
 import {
   CheckCircle,
   CreditCard,
-  Download,
   MapPin,
   Package,
 } from "lucide-react";
@@ -229,10 +228,10 @@ function ViewOrder({ ord, addressId, children }: Props) {
                   {format(order.createdAt, "dd/MM/yyyy - HH:mm")}
                 </p>
               </div>
-              <Button>
+              {/* <Button>
                 <Download className="mr-2 h-4 w-4" />
                 {`${t("downloadInvoice")}`}
-              </Button>
+              </Button> */}
             </CardContent>
           </Card>
         </div>

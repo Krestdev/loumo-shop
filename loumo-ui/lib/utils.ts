@@ -31,3 +31,6 @@ export const getBestPromotionPrice = (variant: ProductVariant, promotions: Promo
   const basePrice = variant.price || 0;
   return best ? Math.round(basePrice * (1 - best.percentage / 100)) : basePrice;
 };
+
+
+export const PRICE_RANGE = { MIN: 0, MAX: 100_000 };

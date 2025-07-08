@@ -1,74 +1,69 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { useStore } from "@/providers/datastore";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import AddressQuery from "@/queries/address";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { LucideMapPin } from "lucide-react";
-import { useStore } from "@/providers/datastore";
 import { useTranslations } from "next-intl";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import AddressQuery from "@/queries/address";
 import UserQuery from "@/queries/user";
-import { useState } from "react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { LucideMapPin, LucideChevronDown } from "lucide-react";
+import React, { useState } from "react";
 
 interface Props {
   children: React.JSX.Element;
 }
 
 export function AddAddress({ children }: Props) {
-  const { user, setUser } = useStore();
+  const { address, setAddress, user } = useStore();
   const t = useTranslations("Address");
-  const [selectedAddressId, setSelectedAddressId] = useState<number | null>(null);
 
-  const address = new AddressQuery();
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const addressQ = new AddressQuery();
   const addressData = useQuery({
     queryKey: ["addressData"],
-    queryFn: () => address.getAll(),
+    queryFn: () => addressQ.getAll(),
   });
 
   const userQuery = new UserQuery();
-  const userData = useMutation({
+  const updateAddressMutation = useMutation({
     mutationKey: ["update-user-address"],
-    mutationFn: (data: { addressIds: number[] }) => userQuery.update(user!.id, data),
+    mutationFn: async (data: { addressIds: number[] }) => {
+      if (!user?.id) throw new Error("Utilisateur non connecté");
+      return userQuery.update(user.id, data);
+    },
+    onSuccess: () => {
+      // Pas besoin de setAddress ici car on le fait déjà dans onSelect
+    },
     onError: (error) => {
       console.error("Échec de la mise à jour :", error);
     },
   });
 
   const handleSubmit = () => {
-    if (!selectedAddressId || !user) return;
-
-    const existingIds = user.addresses?.map((a) => a.id) || [];
-    const newIds = Array.from(new Set([...existingIds, selectedAddressId]));
-    userData.mutate(
-      { addressIds: newIds },
-      {
-        onSuccess: () => {
-          const newAddress = addressData.data?.find((a) => a.id === selectedAddressId);
-          if (!newAddress) return;
-
-          const updatedUser = {
-            ...user,
-            addresses: [...(user.addresses || []), newAddress],
-          };
-          setUser(updatedUser);
-        },
-      }
-    );
+    if (!address?.id) return;
+    updateAddressMutation.mutate({ addressIds: [address.id] });
   };
 
   return (
@@ -81,31 +76,75 @@ export function AddAddress({ children }: Props) {
           <DialogTitle>{t("address")}</DialogTitle>
         </DialogHeader>
 
-        <Select onValueChange={(value) => setSelectedAddressId(parseInt(value))}>
-          <SelectTrigger className="hidden md:flex group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer hover:bg-gray-50 max-w-[250px] border-none shadow-none">
-            <LucideMapPin size={20} className="flex-shrink-0" />
-            <div className="flex flex-col w-full overflow-hidden text-left">
-              <SelectValue placeholder={user?.addresses?.[0]?.street || t("select")} />
-            </div>
-          </SelectTrigger>
-          <SelectContent>
-            {addressData.data?.map((x, i) => (
-              <SelectItem key={i} value={x.id.toString()}>
-                {x.local}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="flex flex-col gap-4">
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={open}
+                className="flex group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer max-w-[250px] border border-input"
+              >
+                <LucideMapPin size={20} className="flex-shrink-0" />
+                <div className="flex flex-col w-full overflow-hidden text-left hover:text-white">
+                  <p className="text-xs text-muted-foreground hover:text-white">
+                    {t("address")}
+                  </p>
+                  <span className="truncate text-sm">
+                    {address?.street || t("select")}
+                  </span>
+                </div>
+                <LucideChevronDown size={16} className="ml-auto opacity-50" />
+              </Button>
+            </PopoverTrigger>
+
+            <PopoverContent className="w-[250px] h-[400px] p-0 overflow-y-auto z-50">
+              <Command>
+                <CommandInput
+                  placeholder={t("search")}
+                  value={search}
+                  onValueChange={setSearch}
+                  className="h-9"
+                />
+                <CommandEmpty>{t("noResult")}</CommandEmpty>
+                <CommandGroup>
+                  {addressData.data
+                    ?.filter((addr) =>
+                      addr.local
+                        .toLowerCase()
+                        .includes(search.toLowerCase())
+                    )
+                    .map((addr) => (
+                      <CommandItem
+                        key={addr.id}
+                        value={addr.id.toString()}
+                        onSelect={() => {
+                          setAddress(addr);
+                          setOpen(false);
+                        }}
+                      >
+                        {addr.street}
+                        {address?.id === addr.id && (
+                          <LucideMapPin className="ml-auto h-4 w-4 opacity-50" />
+                        )}
+                      </CommandItem>
+                    ))}
+                </CommandGroup>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </div>
 
         <DialogFooter className="mt-4">
-          <DialogClose asChild>
-            <Button onClick={handleSubmit} disabled={!selectedAddressId || userData.isPending}>
-              {t("save")}
-            </Button>
-          </DialogClose>
-          <DialogClose asChild>
-            <Button variant="outline">{t("close")}</Button>
-          </DialogClose>
+          <Button
+            onClick={handleSubmit}
+            disabled={!address?.id || updateAddressMutation.isPending}
+          >
+            {t("save")}
+          </Button>
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            {t("close")}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

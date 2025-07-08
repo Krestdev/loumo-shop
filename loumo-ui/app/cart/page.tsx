@@ -1,7 +1,6 @@
 "use client";
 
 import CartComp from "@/components/Cart/CartComp";
-import RequireAuth from "@/components/RequireAuth";
 import { useStore } from "@/providers/datastore";
 import OrderQuery from "@/queries/order";
 import PromotionQuery from "@/queries/promotion";
@@ -41,8 +40,6 @@ const Page = () => {
   })
 
   const handleSubmitOrder = () => {
-    console.log(user, user?.addresses?.[0].id, currentOrderItems.length);
-
     if (user && user?.addresses?.[0].id && currentOrderItems.length > 0) {
 
       const total = currentOrderItems.reduce(
@@ -86,9 +83,7 @@ const Page = () => {
 
   return (
     <div className="w-full flex justify-center">
-      <RequireAuth>
         <CartComp onValidate={handleSubmitOrder} promotions={promotionData.data} />
-      </RequireAuth>
     </div>
   );
 };

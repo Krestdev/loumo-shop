@@ -40,7 +40,7 @@ type LoginFormData = z.infer<typeof loginSchema>
 
 export default function LoginForm() {
   const t = useTranslations("Login")
-  const [method, setMethod] = useState<"phone" | "email">("phone")
+  const [method, setMethod] = useState<"phone" | "email">("email")
   const [isPending, startTransition] = useTransition()
 
   const form = useForm<LoginFormData>({
@@ -112,7 +112,7 @@ export default function LoginForm() {
 
         <div className="max-w-[360px] w-full flex flex-col items-center gap-7">
           <div className="flex flex-col items-center gap-4 w-full">
-            {method === "phone" ? (
+            {/* {method === "phone" ? (
               <Button type="button" onClick={() => setMethod("email")} variant="outline">
                 {t("emailLog")}
               </Button>
@@ -120,7 +120,7 @@ export default function LoginForm() {
               <Button type="button" onClick={() => setMethod("phone")} variant="outline">
                 {t("phoneLog")}
               </Button>
-            )}
+            )} */}
 
             {method === "phone" ? (
               <FormField
