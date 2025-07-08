@@ -21,9 +21,9 @@ import Link from "next/link"
 import { useMutation } from "@tanstack/react-query"
 import UserQuery from "@/queries/user"
 import { useRouter } from "next/navigation"
-import { useStore } from "@/providers/datastore"
 import { useTransition } from "react"
 import { Loader } from "lucide-react"
+import { RegisterPayload } from "@/types/types"
 
 const formSchema = z
     .object({
@@ -43,10 +43,10 @@ const formSchema = z
 
 type FormData = z.infer<typeof formSchema>
 
+
 export default function SignUpForm() {
     const t = useTranslations("SignUp")
     const router = useRouter()
-    const { setUser } = useStore()
     const user = new UserQuery()
     const [isPending, startTransition] = useTransition()
 
@@ -64,7 +64,7 @@ export default function SignUpForm() {
 
     const userRegister = useMutation({
         mutationKey: ["register"],
-        mutationFn: (data: any) => user.register(data),
+        mutationFn: (data: RegisterPayload) => user.register(data),
         onSuccess: () => {
             router.push("/auth/login")
         },

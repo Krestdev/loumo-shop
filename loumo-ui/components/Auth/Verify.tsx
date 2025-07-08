@@ -48,15 +48,15 @@ export default function Verify({ slug }: { slug: string }) {
 
     const verifyEmail = useMutation({
         mutationKey: ["verify"],
-        mutationFn: (data: any) => user.verify(data),
+        mutationFn: (data: {email: string, otp: string}) => user.verify(data),
     })
 
     useEffect(() => {
         verifyEmail.mutate({
-            email: email,
+            email: email!,
             otp: otp
         })
-    }, [])
+    }, [email, otp, verifyEmail])
 
     if (verifyEmail.isPending) return <Loading />
 

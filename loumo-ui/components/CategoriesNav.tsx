@@ -8,9 +8,11 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 import { Skeleton } from './ui/skeleton';
+import { useStore } from '@/providers/datastore';
 
 const CategoriesNav = () => {
-    
+
+    const { address } = useStore()
     const pathname = usePathname();
     const category = new CategoryQuery();
     const categoryData = useQuery({
@@ -28,15 +30,15 @@ const CategoriesNav = () => {
 
     const path = pathname.split("/");
 
-    function isActive(id:number):boolean{
-        if(path[1]===String(id)){
+    function isActive(id: number): boolean {
+        if (path[1] === String(id)) {
             return true;
         }
         else {
-            const activeCategory = categoryData.data && categoryData.data.find(z=>z.name === path[1]);
-            if(!activeCategory){
+            const activeCategory = categoryData.data && categoryData.data.find(z => z.name === path[1]);
+            if (!activeCategory) {
                 return false;
-            } 
+            }
             else {
                 return id === activeCategory.id;
             }
@@ -49,13 +51,16 @@ const CategoriesNav = () => {
                 <div className="inline-flex gap-3">
                     {categoryData.isLoading && Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="w-20 h-10 rounded-none" />)}
                     {categoryData.isSuccess &&
-                        categoryData.data.map((x, i) => {
-                            return (
-                                <Link className={cn("font-mono h-10 w-fit shrink-0 px-3 flex items-center", isActive(x.id) ? "bg-primary text-primary-foreground" : "bg-[#FAFAFA]")} key={i} href={`/${x.id}`}>
-                                    <span className="font-medium text-[14px] uppercase">{x.name}</span>
-                                </Link>
-                            )
-                        })
+                        categoryData.data.filter(category => category.products?.some(product => product.variants && product.variants.length > 0 && product.variants.some((variant) =>
+                            variant.stock?.some((stock) =>
+                                stock.shop?.address?.zoneId === address?.zoneId
+                            )))).map((x, i) => {
+                                return (
+                                    <Link className={cn("font-mono h-10 w-fit shrink-0 px-3 flex items-center", isActive(x.id) ? "bg-primary text-primary-foreground" : "bg-[#FAFAFA]")} key={i} href={`/categories/${x.slug}`}>
+                                        <span className="font-medium text-[14px] uppercase">{x.name}</span>
+                                    </Link>
+                                )
+                            })
                     }
                 </div>
             </section>

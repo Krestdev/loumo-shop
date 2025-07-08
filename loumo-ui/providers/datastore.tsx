@@ -1,8 +1,11 @@
+import { getBestPromotionPrice } from "@/lib/utils";
 import {
+  Address,
   Category,
   Order,
   OrderItem,
   ProductVariant,
+  Promotion,
   User,
 } from "@/types/types";
 import { toast } from "react-toastify";
@@ -12,6 +15,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 type Store = {
   user: User | null;
   setUser: (user: User) => void;
+  address: Address | null;
+  setAddress: (address: Address) => void;
   logout: () => void;
   categories: Category[];
   setCategories: (categories: Category[]) => void;
@@ -21,9 +26,15 @@ type Store = {
 
   currentOrderItems: OrderItem[];
 
-  addOrderItem: (item: { variant: ProductVariant; note: string }, quantity?:number) => void;
-  incrementOrderItem: (variantId: number) => void;
-  decrementOrderItem: (variantId: number) => void;
+  addOrderItem: (
+    item: { variant: ProductVariant; note: string; promotions: Promotion[] },
+    quantity?: number
+  ) => void;
+
+  incrementOrderItem: (variantId: number, promotions: Promotion[]) => void;
+
+  decrementOrderItem: (variantId: number, promotions: Promotion[]) => void;
+
   removeOrderItem: (variantId: number) => void;
 
   getOrderTotal: () => number;
@@ -40,6 +51,8 @@ export const useStore = create<Store>()(
     (set, get) => ({
       user: null,
       setUser: (user) => set(() => ({ user })),
+      address: null,
+      setAddress: (address) => set(() => ({address})),
       logout: () => set({ user: null }),
       categories: [],
       setCategories: (categories) => set(() => ({ categories })),
@@ -54,34 +67,35 @@ export const useStore = create<Store>()(
       orderNote: "",
       orderAddressId: null,
 
-      addOrderItem: ({ variant, note },quantity=1) => {
+      addOrderItem: ({ variant, note, promotions }, quantity = 1) => {
         const existing = get().currentOrderItems.find(
           (x) => x.productVariantId === variant.id
         );
+
+        const promoPrice = getBestPromotionPrice(variant, promotions);
 
         if (existing) {
           set((state) => ({
             currentOrderItems: state.currentOrderItems.map((x) =>
               x.productVariantId === variant.id
                 ? {
-                    ...x,
-                    quantity: x.quantity + quantity,
-                    total: (x.quantity + quantity) * (variant.price || 0),
-                  }
+                  ...x,
+                  quantity: x.quantity + quantity,
+                  total: (x.quantity + quantity) * promoPrice,
+                }
                 : x
             ),
           }));
           toast.info(`Increased quantity for ${variant.name}`);
         } else {
-          const price = variant.price || 0;
           const newItem: OrderItem = {
             id: 0,
             orderId: 0,
             note,
             productVariant: variant,
             productVariantId: variant.id,
-            quantity: quantity,
-            total: price,
+            quantity,
+            total: promoPrice * quantity,
             deliveryId: null,
           };
 
@@ -93,33 +107,43 @@ export const useStore = create<Store>()(
         }
       },
 
-      incrementOrderItem: (variantId) =>
+      incrementOrderItem: (variantId, promotions) =>
         set((state) => ({
-          currentOrderItems: state.currentOrderItems.map((x) =>
-            x.productVariantId === variantId
-              ? {
-                  ...x,
-                  quantity: x.quantity + 1,
-                  total: (x.quantity + 1) * (x.productVariant?.price || 0),
-                }
-              : x
-          ),
+          currentOrderItems: state.currentOrderItems.map((x) => {
+            if (x.productVariantId === variantId) {
+              const price = getBestPromotionPrice(x.productVariant!, promotions);
+              console.log(price);
+              
+              return {
+                ...x,
+                quantity: x.quantity + 1,
+                total: (x.quantity + 1) * price,
+              };
+            }
+            return x;
+          }),
         })),
 
-      decrementOrderItem: (variantId) =>
+
+
+      decrementOrderItem: (variantId, promotions) =>
         set((state) => ({
           currentOrderItems: state.currentOrderItems
-            .map((x) =>
-              x.productVariantId === variantId
-                ? {
-                    ...x,
-                    quantity: x.quantity - 1,
-                    total: (x.quantity - 1) * (x.productVariant?.price || 0),
-                  }
-                : x
-            )
+            .map((x) => {
+              if (x.productVariantId === variantId) {
+                const price = getBestPromotionPrice(x.productVariant!, promotions);
+                return {
+                  ...x,
+                  quantity: x.quantity - 1,
+                  total: (x.quantity - 1) * price,
+                };
+              }
+              return x;
+            })
             .filter((x) => x.quantity > 0),
         })),
+
+
 
       removeOrderItem: (variantId) =>
         set((state) => ({
@@ -142,17 +166,17 @@ export const useStore = create<Store>()(
         }),
     }),
     {
-  name: "ecommerce-store",
-  storage: createJSONStorage(() => localStorage),
-  partialize: (state) => ({
-    ...state,
-    user: state.user, 
-    orders: [], 
-    categories: [], 
-    orderAddressId: null, 
-    currentOrderItems: state.currentOrderItems,
-    orderNote: state.orderNote
-  })
-}
+      name: "ecommerce-store",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        ...state,
+        user: state.user,
+        orders: state.orders,
+        categories: state.categories,
+        orderAddressId: state.orderAddressId,
+        currentOrderItems: state.currentOrderItems,
+        orderNote: state.orderNote
+      })
+    }
   )
 );

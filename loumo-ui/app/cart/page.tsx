@@ -1,58 +1,91 @@
 "use client";
+
 import CartComp from "@/components/Cart/CartComp";
-import Loading from "@/components/setup/loading";
-import { Button } from "@/components/ui/button";
 import { useStore } from "@/providers/datastore";
 import OrderQuery from "@/queries/order";
+import PromotionQuery from "@/queries/promotion";
+import UserQuery from "@/queries/user";
 import { Order, OrderItem } from "@/types/types";
-import { useMutation } from "@tanstack/react-query";
-import JsonView from "react18-json-view";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
-
   const order = new OrderQuery();
-  const productData = useMutation({
-    mutationKey: ["product"],
+  const userQuery = new UserQuery();
+  const promotion = new PromotionQuery();
+
+  const { currentOrderItems, user, setUser, resetOrderDraft } = useStore();
+  const router = useRouter();
+
+  const createOrder = useMutation({
+    mutationKey: ["createOrder"],
     mutationFn: (
-      newOrder: Omit<Order, "id" | "orderItems"> & {
-        orderItems: Omit<OrderItem, "id" | "orderId">[];
+      newOrder: Omit<Order, "id" | "orderItems" | "createdAt" | "address"> & {
+        orderItems?: Partial<OrderItem>[];
       }
     ) => order.create(newOrder),
   });
 
-  const { currentOrderItems, orderNote, orderAddressId, user } =
-    useStore.getState();
+  const promotionData = useQuery({
+    queryKey: ["promotionFetchAll"],
+    queryFn: () => promotion.getAll(),
+  });
+
+  const userData = useQuery({
+    queryKey: ["userData"],
+    queryFn: () => {
+      if (user) return userQuery.getOne(user.id);
+      return null;
+    }
+  })
 
   const handleSubmitOrder = () => {
-    if (user && orderAddressId) {
-      const payload = {
+    if (user && user?.addresses?.[0].id && currentOrderItems.length > 0) {
+
+      const total = currentOrderItems.reduce(
+        (acc, item) => acc + (item.total || 0),
+        0
+      );
+      const weight = currentOrderItems.reduce((acc, item) => acc + (item.productVariant.weight || 0), 0)
+      const payload: Omit<Order, "id" | "createdAt" | "address"> = {
         userId: user.id,
-        addressId: orderAddressId,
-        note: orderNote,
-        orderItems: currentOrderItems.map((item) => ({
-          productVariantId: item.productVariantId,
-          quantity: item.quantity,
-          note: item.note,
-          total: item.total,
-          deliveryId: item.deliveryId,
-        })),
+        addressId: user?.addresses?.[0].id as number,
+        note: "note",
+        total: total,
+        status: "PENDING",
+        weight: weight,
+        deliveryFee: 0,
+        orderItems: currentOrderItems.map((item) => {
+          console.log(item.total);
+          return ({
+            productVariantId: item.productVariantId,
+            quantity: item.quantity,
+            note: item.note,
+            total: item.total,
+          })
+        }),
       };
-      productData.mutate(payload);
+
+      createOrder.mutate(payload,
+        {
+          onSuccess: () => {
+            resetOrderDraft()
+            router.push("/")
+          }
+        }
+      );
+      userData.refetch().then(res => {
+        if (res.data) setUser(res.data)
+      })
     }
   };
 
-    return (
-      <div className="w-full flex justify-center">
-        <CartComp />
-        {/* <div className="max-w-3xl mx-auto mt-10">
-          <h1 className="text-xl font-bold mb-4">Product Data</h1>
-          <JsonView src={productData.data} />
-          <Button onClick={handleSubmitOrder}>
-            make order
-          </Button>
-        </div> */}
-      </div>
-    );
+
+  return (
+    <div className="w-full flex justify-center">
+        <CartComp onValidate={handleSubmitOrder} promotions={promotionData.data} />
+    </div>
+  );
 };
 
 export default Page;

@@ -81,7 +81,7 @@ const Profile = ({ user }: { user: User }) => {
                             // user.addresses && user.addresses?.length > 0 ?
                             user.addresses?.map((x, i) => {
                                 return (
-                                    <div className='flex gap-2 w-full'>
+                                    <div key={i} className='flex gap-2 w-full'>
                                         <div className='flex flex-col gap-1 w-full'>
                                             <p className='text-[14px] text-gray-500'>{t("address")}</p>
                                             <p className='text-[18px] text-gray-700 font-semibold'>{x.local}</p>
@@ -100,7 +100,7 @@ const Profile = ({ user }: { user: User }) => {
                     </div>
                 </div>
             </div>
-            {user.orders && <History all={false} orders={user.orders.slice(0,6)} />}
+            {user.orders && <History all={false} orders={user.orders.slice(user.orders.length - 6,user.orders.length)} />}
         </div>
     )
 }

@@ -6,8 +6,9 @@ import { motion } from 'framer-motion'
 import { Category } from '@/types/types'
 
 const CategoryCard = ({ category }: { category: Category }) => {
+
     return (
-        <Link href={`/${category.id}`}>
+        <Link href={`/categories/${category.slug}`}>
             <motion.div
                 className="flex flex-col gap-2 max-w-[200px] w-full h-full"
                 whileHover={{ y: -5 }}
@@ -15,9 +16,9 @@ const CategoryCard = ({ category }: { category: Category }) => {
             >
                 {category.imgUrl ? (
                     <motion.img
-                        src={"/Images/imgUrl.png"}
+                        src={category.slug}
                         alt={category.name}
-                        className='w-full aspect-auto object-cover rounded-[12px]'
+                        className='w-full max-h-[150px] aspect-auto object-cover rounded-[12px]'
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5 }}

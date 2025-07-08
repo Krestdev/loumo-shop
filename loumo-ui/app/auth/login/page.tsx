@@ -4,7 +4,6 @@ import { useStore } from "@/providers/datastore";
 import UserQuery from "@/queries/user";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
-import JsonView from "react18-json-view";
 
 const Page = () => {
   const user = new UserQuery();

@@ -1,5 +1,5 @@
-# @host = https://loumoapi.krestdev.com
-@host = http://192.168.0.103:5000
+@host = https://loumoapi.krestdev.com
+# @host = http://192.168.0.103:5000
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTc1MDQwNTE3MiwiZXhwIjoxNzUwNDkxNTcyfQ.b0adqlbb_UEytXz-tmw96oK2LwP1Ko4YHY8QN6IqME4
 ### Login user by ID
 post {{host}}/api/users/login
@@ -389,7 +389,7 @@ DELETE {{host}}/api/shops/1
 GET {{host}}/api/orders/
 
 ### Get a single order by ID
-GET {{host}}/api/orders/1
+GET {{host}}/api/orders/24
 
 ### Create a new order
 POST {{host}}/api/orders/
@@ -400,7 +400,8 @@ Content-Type: application/json
   "addressId": 9,
   "userId": 1,
   "weight": 10,
-  "total": 5000
+  "total": 5000,
+  "deliveryFee": 500
 }
 
 ### Update an order by ID
@@ -565,8 +566,8 @@ Content-Type: application/json
 
 {
   "quantity": 100,
-  "productVariantId": 1,
-  "shopId": 1
+  "productVariantId": 12,
+  "shopId": 6
 }
 
 ### Update a stock by ID
@@ -589,7 +590,7 @@ DELETE {{host}}/api/stocks/1
 GET {{host}}/api/promotions/
 
 ### Get a single promotion by ID
-GET {{host}}/api/promotions/1
+GET {{host}}/api/promotions/2
 
 ### Create a new promotion
 POST {{host}}/api/promotions/
@@ -598,7 +599,7 @@ Content-Type: application/json
 {
   "code": "SUMMER2024",
   "percentage": 20,
-  "expireAt": "2024-12-31T23:59:59.000Z"
+  "expireAt": "2025-12-31T23:59:59.000Z"
 }
 
 ### Update a promotion by ID
@@ -608,7 +609,7 @@ Content-Type: application/json
 {
   "code": "WINTER2024",
   "percentage": 25,
-  "expireAt": "2025-03-31T23:59:59.000Z"
+  "expireAt": "2025-12-31T23:59:59.000Z"
 }
 
 ### Delete a promotion by ID

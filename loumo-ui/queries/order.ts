@@ -4,11 +4,11 @@ import { Order, OrderItem } from "@/types/types";
 export default class OrderQuery {
   route = "/orders";
   create = async (
-    data: Omit<Order, "id" | "orderItems"> & {
-      orderItems?: Omit<OrderItem, "id" | "orderId">[];
+    data: Omit<Order, "id" | "orderItems" | "createdAt" | "address"> & {
+      orderItems?: Partial<OrderItem>[];
     }
   ): Promise<Order> => {
-    return api.post(`${this.route}`, data).then((response) => response.data);
+    return api.post(`${this.route}/`, data).then((response) => response.data);
   };
 
   getAll = async (): Promise<Order[]> => {

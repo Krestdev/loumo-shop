@@ -35,6 +35,7 @@ export type Category = {
   status: boolean;
   products?: Product[];
   imgUrl?: string;
+  slug: string;
 };
 
 export type Delivery = {
@@ -69,13 +70,16 @@ export type Order = {
   id: number;
   userId: number;
   note: string;
+  address: Address;
   addressId: number;
-  orderItems?: OrderItem[];
-  payment?: Payment[];
+  orderItems?: Partial<OrderItem>[];
+  payment?: Payment;
   delivery?: Delivery[];
   createdAt: Date;
   total: number;
-  status: string;
+  status: "FAILED" | "COMPLETED" | "PROCESSING" | "REJECTED" | "ACCEPTED" | "PENDING";
+  weight: number;
+  deliveryFee: number;
 };
 
 export type OrderItem = {
@@ -83,7 +87,7 @@ export type OrderItem = {
   orderId: number;
   order?: Order;
   note: string;
-  productVariant?: ProductVariant;
+  productVariant: ProductVariant;
   productVariantId: number;
   quantity: number;
   total: number;
@@ -94,7 +98,7 @@ export type OrderItem = {
 export type Payment = {
   name: string;
   id: number;
-  status: string;
+  status: "FAILED" | "COMPLETED" | "PROCESSING" | "REJECTED" | "ACCEPTED" | "PENDING";
   orderId: number;
   order?: Order[];
   total: number;
@@ -109,6 +113,7 @@ export type Permission = {
 
 export type Product = {
   name: string;
+  slug: string,
   id: number;
   createdAt: Date;
   updatedAt: Date;
@@ -116,7 +121,7 @@ export type Product = {
   status: boolean;
   categoryId: number | null;
   category?: Category;
-  variants?: ProductVariant[];
+  variants: ProductVariant[];
 };
 
 export type ProductVariant = {
@@ -129,6 +134,7 @@ export type ProductVariant = {
   productId: number;
   product?: Product;
   stock: Stock[];
+  createdAt: Date;
 };
 
 export type Promotion = {
@@ -157,7 +163,7 @@ export type Stock = {
   id: number;
   quantity: number;
   productVariantId: number;
-  productVariant?: ProductVariant;
+  productVariant: ProductVariant;
   shopId: number;
   shop?: Shop;
   promotionId: number | null;
@@ -188,6 +194,13 @@ export type User = {
   lastLogin: Date | null;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type RegisterPayload = {
+  name: string;
+  email: string;
+  tel: string;
+  password: string;
 };
 
 export type Faq = {

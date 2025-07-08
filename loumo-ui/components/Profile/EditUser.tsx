@@ -12,7 +12,6 @@ import {
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -58,15 +57,19 @@ export function EditUser({ children, user }: Props) {
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         console.log(values);
-        values.tel ?
+
+        if (values.tel) {
             userData.mutate({
                 name: values.name,
-                tel: values.tel!
-            }) :
-            userData.mutate({
-                name: values.name
+                tel: values.tel,
             });
+        } else {
+            userData.mutate({
+                name: values.name,
+            });
+        }
     }
+
 
     return (
         <Dialog>

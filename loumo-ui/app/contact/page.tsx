@@ -3,7 +3,6 @@ import ContactForm from "@/components/Contact/ContactForm";
 import Loading from "@/components/setup/loading";
 import SettingQuery from "@/queries/setting";
 import { useQuery } from "@tanstack/react-query";
-import { useTranslations } from "next-intl";
 import React from "react";
 
 const Page = () => {

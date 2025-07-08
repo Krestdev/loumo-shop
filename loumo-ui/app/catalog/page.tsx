@@ -2,142 +2,211 @@
 
 import React, { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import CategoryQuery from "@/queries/category";
-import { Category, Product } from "@/types/types";
 import { Input } from "@/components/ui/input";
-import GridProduct from "@/components/Home/GridProduct";
 import Filter from "@/components/Catalog/Filter";
 import Loading from "@/components/setup/loading";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
+import { Bread } from "@/components/Bread";
+import { useStore } from "@/providers/datastore";
+import AllProducts from "@/components/Catalog/AllProducts";
+import { PRICE_RANGE } from "@/lib/utils";
+import CategoryQuery from "@/queries/category";
+import ProductQuery from "@/queries/product";
+import ProductVariantQuery from "@/queries/productVariant";
+import PromotionQuery from "@/queries/promotion";
+import StockQuery from "@/queries/stock";
+import ShopQuery from "@/queries/shop";
+import { Category } from "@/types/types";
 
 const Page = () => {
-  const category = new CategoryQuery();
-  const categoryData = useQuery({
-    queryKey: ["categoryData"],
-    queryFn: () => category.getAll(),
+  const t = useTranslations("Catalog.Filters");
+  const { address } = useStore();
+
+  // Initialisation des queries
+  const categoryQuery = new CategoryQuery();
+  const productQuery = new ProductQuery();
+  const variantQuery = new ProductVariantQuery();
+  const promotionQuery = new PromotionQuery();
+  const stockQuery = new StockQuery();
+  const shopQuery = new ShopQuery();
+
+  // Récupération des données séparées
+  const { data: categories, isLoading: categoriesLoading } = useQuery({
+    queryKey: ['categories'],
+    queryFn: () => categoryQuery.getAll(),
   });
 
+  const { data: allProducts, isLoading: productsLoading } = useQuery({
+    queryKey: ['products'],
+    queryFn: () => productQuery.getAll(),
+  });
+
+  const { data: allVariants} = useQuery({
+    queryKey: ['variants'],
+    queryFn: () => variantQuery.getAll(),
+  });
+
+  const { data: allStocks} = useQuery({
+    queryKey: ['stocks'],
+    queryFn: () => stockQuery.getAll(),
+  });
+
+  const { data: allShops } = useQuery({
+    queryKey: ['shops'],
+    queryFn: () => shopQuery.getAll(),
+  });
+
+  const { data: promotions } = useQuery({
+    queryKey: ['promotions'],
+    queryFn: () => promotionQuery.getAll(),
+  });
+
+  // États des filtres
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
-  const [price, setPrice] = useState(10000);
   const [availableOnly, setAvailableOnly] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const t = useTranslations("Catalog.Filters")
+  const [priceRange, setPriceRange] = useState<[number, number]>([PRICE_RANGE.MIN, PRICE_RANGE.MAX]);
 
-  const allProducts: Product[] =
-    categoryData.data?.flatMap((cat) => cat.products ?? []) ?? [];
+  // Jointure des données
+  const enrichedProducts = useMemo(() => {
+    if (!allProducts || !allVariants || !allStocks || !allShops) return [];
 
-  const useFilteredProducts = ({
-    allProducts,
-    price,
+    return allProducts.map(product => {
+      const productVariants = allVariants.filter(v => v.productId === product.id)
+        .map(variant => {
+          const variantStocks = allStocks.filter(s => s.productVariantId === variant.id)
+            .map(stock => {
+              const shop = allShops.find(s => s.id === stock.shopId);
+              return { ...stock, shop };
+            });
+          return { ...variant, stock: variantStocks };
+        });
+
+      return {
+        ...product,
+        variants: productVariants,
+        category: categories?.find(c => c.id === product.categoryId)
+      };
+    });
+  }, [allProducts, allVariants, allStocks, allShops, categories]);
+
+  // Filtrage des produits
+  const filteredProducts = useMemo(() => {
+    let result = enrichedProducts;
+
+    // Filtre par catégorie
+    if (selectedCategories.length > 0) {
+      const selectedCategoryIds = selectedCategories.map(c => c.id);
+      result = result.filter(p => selectedCategoryIds.includes(p.categoryId!));
+    }
+
+    // Filtre par prix (version corrigée avec priceRange)
+    result = result.filter(p =>
+      p.variants.some(v =>
+        v.price >= priceRange[0] && 
+        v.price <= priceRange[1]  
+      )
+    );
+
+    // Filtre par disponibilité
+    if (availableOnly) {
+      result = result.filter(p =>
+        p.variants.some(v =>
+          v.stock.some(s => s.quantity > 0)
+        )
+      );
+    }
+
+    // Filtre par zone
+    if (address?.zoneId) {
+      result = result.filter(p =>
+        p.variants.some(v =>
+          v.stock.some(s =>
+            s.shop?.address?.zoneId === address.zoneId
+          )
+        )
+      );
+    }
+
+    // Filtre par recherche
+    if (searchTerm.trim()) {
+      const term = searchTerm.trim().toLowerCase();
+      result = result.filter(p =>
+        p.name.toLowerCase().includes(term) ||
+        (p.category?.name.toLowerCase().includes(term)
+        ))
+    }
+
+    return result;
+  }, [
+    enrichedProducts,
     selectedCategories,
     availableOnly,
+    address?.zoneId,
     searchTerm,
-  }: {
-    allProducts: Product[];
-    price: number;
-    selectedCategories: Category[];
-    availableOnly: boolean;
-    searchTerm: string;
-  }) => {
-    const selectedCategoryIds = selectedCategories.map((cat) => cat.id);
-    const filtered = useMemo(() => {
-      if (!allProducts || allProducts.length === 0) return [];
+    priceRange
+  ]);
 
-      let filteredData = allProducts;
+  // Catégories disponibles (pour le filtre)
+  const availableCategories = useMemo(() => {
+    if (!categories || !filteredProducts) return [];
 
-      // 1. Filtrer les produits avec au moins une variante
-      filteredData = filteredData.filter(
-        (product) => product.variants && product.variants.length > 0
-      );
+    return categories.filter(c =>
+      c.products?.some(x => x.variants.length > 0)
+    );
+  }, [categories, filteredProducts]);
 
-      // 2. Filtrer par catégorie
-      if (selectedCategoryIds.length > 0) {
-        filteredData = filteredData.filter((product) =>
-          product.categoryId !== null && selectedCategoryIds.includes(product.categoryId)
-        );
-      }
+  console.log(availableCategories);
+  
 
-      // 3. Filtrer par prix et disponibilité
-      filteredData = filteredData.filter((product) =>
-        product.variants?.some((variant) => {
-          const matchesPrice = variant.price <= price;
-          const matchesAvailability = !availableOnly;
-          return matchesPrice && matchesAvailability;
-        })
-      );
-
-      // 4. Filtrer par recherche textuelle
-      if (searchTerm.trim() !== "") {
-        const search = searchTerm.trim().toLowerCase();
-        filteredData = filteredData.filter((product) =>
-          product.name.toLowerCase().includes(search)
-        );
-      }
-
-      console.log(filteredData);
-
-      return filteredData;
-    }, [allProducts, price, selectedCategoryIds, availableOnly, searchTerm]);
-
-    return filtered;
-  };
-
-
-  const filteredProducts = useFilteredProducts({
-    allProducts,
-    price,
-    selectedCategories,
-    availableOnly,
-    searchTerm,
-  });
-
-  if (categoryData.isLoading) return <Loading status="loading" />;
-  if (categoryData.isError) return <Loading status="failed" />;
-
-  const categoriesWithProducts = categoryData.data && categoryData.data.filter((cat) =>
-    cat.products?.some((product) => product.variants && product.variants.length > 0)
-  );
+  if (categoriesLoading || productsLoading) return <Loading status="loading" />;
+  if (!categories || !allProducts) return <Loading status="failed" />;
 
   return (
     <div className="flex justify-center w-full">
       <div className="flex flex-col gap-5 px-7 py-8 max-w-[1400px] w-full">
-        <div>{"Home > Products"}</div>
+        <Bread />
+        <p className="text-secondary text-[36px] w-full text-center">
+          {t("allProducts")}
+        </p>
 
-        <p className="text-secondary text-[36px] w-full text-center">{t("allProducts")}</p>
-
-        {/* Search */}
+        {/* Barre de recherche */}
         <div className="flex justify-center">
-        <div className="relative max-w-[360px] w-full">
-          <Input
-            type="search"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search a product"
-            className="h-10"
+          <div className="relative max-w-[360px] w-full">
+            <Input
+              type="search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder={t("search") + "..."}
+              className="h-10"
             />
-          <Button className="absolute h-8 right-1 top-1">{t("search")}</Button>
+            <Button className="absolute h-8 right-1 top-1">
+              {t("search")}
+            </Button>
+          </div>
         </div>
-            </div>
 
-        <div className="px-7 flex flex-row items-start justify-start gap-5">
+        <div className="md:px-7 flex flex-col md:flex-row items-start justify-start gap-5">
+          {/* Composant Filtre */}
           <Filter
-            maxPrice={10000}
-            categories={categoriesWithProducts!}
+            maxPrice={PRICE_RANGE.MAX}
+            minPrice={PRICE_RANGE.MIN}
+            categories={availableCategories}
             selectedCategories={selectedCategories}
             setSelectedCategories={setSelectedCategories}
-            price={price}
-            setPrice={setPrice}
             availableOnly={availableOnly}
             setAvailableOnly={setAvailableOnly}
-          />
+            priceRange={priceRange}
+            setPriceRange={setPriceRange} />
 
-          <GridProduct
-            title=""
+          {/* Liste des produits */}
+          <AllProducts
             products={filteredProducts}
-            isLoading={categoryData.isLoading}
-            isSuccess={categoryData.isSuccess}
+            isLoading={categoriesLoading || productsLoading}
+            isSuccess={!!categories && !!allProducts}
             className="px-0 py-0"
+            promotions={promotions}
           />
         </div>
       </div>
