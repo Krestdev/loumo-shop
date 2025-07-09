@@ -1,7 +1,8 @@
 {
   "Maintenance": {
     "redaction": "Currently being written",
-    "maintenance": "Under maintenance"
+    "maintenance": "Under maintenance",
+    "emptyProduct": "No products available in your delivery area"
   },
   "Header": {
     "noResult": "No result found.",
@@ -118,7 +119,7 @@
     }
   },
   "Cart": {
-    "noAddress":"No address registered",
+    "noAddress": "No address registered",
     "cart": "Cart",
     "remove": "Remove",
     "delivery": "Delivery information",
@@ -135,7 +136,7 @@
     "shiping": "Shipping Charges",
     "discount": "Discount",
     "total": "Total",
-    "addAddress":"Add an Address",
+    "addAddress": "Add an Address",
     "Awaiting": {
       "title": "Awaiting payment",
       "description": "Please wait while we send the debit request to the number you provided.",

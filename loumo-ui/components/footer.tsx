@@ -87,7 +87,7 @@ const Footer = () => {
                             <div className='flex flex-col gap-3'>
                                 <Link href={"/faq"} className='text-[14px] font-medium text-gray-50' >{t("Help.faq")}</Link>
                                 <Link href={""} className='text-[14px] font-medium text-gray-50' >{t("Help.fees")}</Link>
-                                <Link href={"/policy"} className='text-[14px] font-medium text-gray-50' >{t("Help.policy")}</Link>
+                                <Link href={"/condition"} className='text-[14px] font-medium text-gray-50' >{t("Help.policy")}</Link>
                                 <Link href={"/contact"} className='text-[14px] font-medium text-gray-50' >{t("Help.contact")}</Link>
                             </div>
                         </div>
@@ -97,7 +97,7 @@ const Footer = () => {
                                 {
                                     categoryData.data?.slice(0, 6).map((x, i) => {
                                         return (
-                                            <Link key={i} href={""} className='text-[14px] font-medium text-gray-50' >{x.name}</Link>
+                                            <Link key={i} href={`/categories/${x.slug}`} className='text-[14px] font-medium text-gray-50' >{x.name}</Link>
                                         )
                                     })
                                 }
@@ -106,8 +106,8 @@ const Footer = () => {
                         <div className='flex flex-col gap-5'>
                             <p className='text-[16px] text-gray-50 font-semibold'>{t("About.about")}</p>
                             <div className='flex flex-col gap-3'>
-                                <Link href={""} className='text-[14px] font-medium text-gray-50' >{t("About.term")}</Link>
-                                <Link href={""} className='text-[14px] font-medium text-gray-50' >{t("About.privacy")}</Link>
+                                <Link href={"/condition"} className='text-[14px] font-medium text-gray-50' >{t("About.term")}</Link>
+                                <Link href={"/condition"} className='text-[14px] font-medium text-gray-50' >{t("About.privacy")}</Link>
                             </div>
                         </div>
                         <div className='flex flex-col gap-5'>

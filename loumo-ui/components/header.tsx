@@ -79,7 +79,7 @@ const Header = () => {
         <div className="flex items-center gap-4 w-full">
           <img
             onClick={() => router.push("/")}
-            src="/Images/logo.png"
+            src="/Images/Logo.png"
             alt="logo"
             className="h-7 w-[102px] object-cover cursor-pointer hover:opacity-80 transition-opacity"
           />
@@ -173,17 +173,23 @@ const Header = () => {
             <LocalSwitcher />
           </span>
 
-          <DropdownMenu>
+          {user ?
+            <DropdownMenu>
               <DropdownMenuTrigger className="md:hidden flex group text-nowrap gap-2 items-center border border-input px-3 py-2 rounded-[20px] cursor-pointer hover:bg-gray-50">
-                {t("myAccount")}
                 <LucideUserCircle size={18} />
+                {t("myAccount")}
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem onClick={() => router.push("/profile")}>{t("profile")}</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => router.push("/profile/history")}>{t("history")}</DropdownMenuItem>
                 <DropdownMenuItem onClick={logout}>{t("logOut")}</DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> :
+            <Button variant={"outline"} onClick={() => router.push("/auth/login")} className="flex md:hidden">
+              <LucideUserCircle size={18} />
+              {t("login")}
+            </Button>
+          }
 
           <Button
             variant="ghost"
@@ -230,7 +236,7 @@ const Header = () => {
         <div className="flex md:hidden items-center justify-center px-7 py-2 gap-2 w-full mx-auto bg-secondary">
           <div className="flex items-center gap-2">
             <LucideMapPin size={24} className="text-white flex-shrink-0" />
-            <div className="flex flex-row w-full overflow-hidden">
+            <div className="flex flex-row gap-1 w-full overflow-hidden">
               <p className="text-xs text-white">{t("address")}</p>
               <p className="text-sm truncate">{address?.street}</p>
             </div>
