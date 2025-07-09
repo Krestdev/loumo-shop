@@ -92,10 +92,6 @@ export default function LoginForm() {
         },)
       } else if ("phone" in values) {
         setMethod("email")
-        // userData.mutate({
-        //   phone: values.phone,
-        //   password: values.password,
-        // })
       }
     })
   }

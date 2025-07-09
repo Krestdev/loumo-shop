@@ -88,13 +88,11 @@ const ProductDetails = ({ slug }: { slug: string }) => {
       (stock) => stock.productVariantId === currentvar
     );
 
-    // On regarde si au moins un stock appartient à un shop dans la bonne zone
     const isAvailableInZone = currentVariantStocks.some((stock) => {
       const shop = shopData.data.find((s) => s.id === stock.shopId);
       return shop?.address?.zoneId === addressId;
     });
 
-    // Redirection si aucun stock du variant sélectionné ne correspond à la zone
     if (!isAvailableInZone) {
       router.push("/");
     }
