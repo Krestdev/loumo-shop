@@ -30,7 +30,7 @@ COPY --from=builder /app/next.config.ts ./next.config.ts
 COPY --from=builder /app/tsconfig.json ./tsconfig.json 
 
 # If you use any runtime-only files (e.g. env, i18n, middlewares), copy them too
-# COPY --from=builder /app/...
+COPY --from=builder /app/.env.prod ./.end
 
 # Expose default Next.js port
 EXPOSE 3000
