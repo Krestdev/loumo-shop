@@ -1,8 +1,6 @@
 "use client";
 
-import { LoginDialog } from "@/components/Auth/loginDialog";
 import { AddToCard } from "@/components/Catalog/AddToCard";
-import ReviewsProduct from "@/components/Catalog/ReviewsProduct";
 import GridProduct from "@/components/Home/GridProduct";
 import { AddAddress } from "@/components/select-address";
 import Loading from "@/components/setup/loading";
@@ -90,13 +88,11 @@ const ProductDetails = ({ slug }: { slug: string }) => {
       (stock) => stock.productVariantId === currentvar
     );
 
-    // On regarde si au moins un stock appartient à un shop dans la bonne zone
     const isAvailableInZone = currentVariantStocks.some((stock) => {
       const shop = shopData.data.find((s) => s.id === stock.shopId);
       return shop?.address?.zoneId === addressId;
     });
 
-    // Redirection si aucun stock du variant sélectionné ne correspond à la zone
     if (!isAvailableInZone) {
       router.push("/");
     }
@@ -218,40 +214,32 @@ const ProductDetails = ({ slug }: { slug: string }) => {
 
               <div className="w-full grid grid-cols-2 items-center gap-4">
                 {address ? (
-                  usersData.data ? (
-                    <AddToCard
-                      promotions={promotionData.data}
-                      product={productData.data}
-                      variant={productItem}
-                      setVariant={(v) => {
-                        if (typeof v === "function") {
-                          const current = productData.data?.variants?.find((x) => x.id === currentvar);
-                          const result = v(current);
-                          if (result?.id) setCurrentvar(result.id);
-                        } else if (v?.id) {
-                          setCurrentvar(v.id);
-                        }
-                      }}
-                      initialQuantity={quantity}
-                    >
-                      <Button className="h-12 rounded-[24px]">
-                        <LucideShoppingCart />
-                        {t("addToCart")}
-                      </Button>
-                    </AddToCard>
-                  ) : (
-                    <LoginDialog>
-                      <Button className="h-12 rounded-[24px]">
-                        <LucideShoppingCart />
-                        {t("addToCart")}
-                      </Button>
-                    </LoginDialog>
-                  )
+                  <AddToCard
+                    promotions={promotionData.data}
+                    product={productData.data}
+                    variant={productItem}
+                    setVariant={(v) => {
+                      if (typeof v === "function") {
+                        const current = productData.data?.variants?.find((x) => x.id === currentvar);
+                        const result = v(current);
+                        if (result?.id) setCurrentvar(result.id);
+                      } else if (v?.id) {
+                        setCurrentvar(v.id);
+                      }
+                    }}
+                    initialQuantity={quantity}
+                  >
+                    <Button className="h-12 rounded-[24px]">
+                      <LucideShoppingCart />
+                      {t("addToCart")}
+                    </Button>
+                  </AddToCard>
                 ) : (
                   <AddAddress>
                     <Button className="h-12 rounded-[24px]">{t("addToCart")}</Button>
                   </AddAddress>
-                )}
+                )
+                }
 
                 <Button
                   variant="outline"
@@ -300,7 +288,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
         />
       )}
 
-      <ReviewsProduct />
+      {/* <ReviewsProduct /> */}
     </div>
   );
 };

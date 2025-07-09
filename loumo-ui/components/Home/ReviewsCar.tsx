@@ -8,10 +8,10 @@ import {
 } from "@/components/ui/carousel";
 import { useReviews } from "@/data/data";
 import Stars from "../ui/stars";
+import { EmblaCarouselType } from "embla-carousel";
 
 export function ReviewsCar() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [emblaRef, setEmblaRef] = React.useState<any>(null);
+  const [emblaRef, setEmblaRef] = React.useState<EmblaCarouselType | undefined>(undefined);
   const reviews = useReviews();
 
   React.useEffect(() => {

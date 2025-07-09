@@ -8,12 +8,14 @@ import { useQuery } from '@tanstack/react-query';
 import ProductQuery from '@/queries/product';
 import PromotionQuery from '@/queries/promotion';
 import HowStep from './HowStep';
-import ReviewsGrid from './ReviewsGrid';
+// import ReviewsGrid from './ReviewsGrid';
 import { CategoryMenu } from '../CategoryMenu';
 import { useStore } from '@/providers/datastore';
+import Redaction from '../redaction';
 
 const Home = () => {
   const t = useTranslations("HomePage.GridProducts");
+  const t1 = useTranslations("Maintenance")
   const { address } = useStore()
 
   const product = new ProductQuery();
@@ -33,9 +35,6 @@ const Home = () => {
 
 
   const addressId = address?.zoneId
-
-  console.log(addressId);
-
 
   // ✅ Filtrage des produits par zone de livraison
   const filteredProducts = React.useMemo(() => {
@@ -67,9 +66,7 @@ const Home = () => {
           isSuccess={productData.isSuccess}
           promotions={promotionData.data}
         />
-        : <div className='py-32'>
-          <h3>{"Aucun produit disponible dans votre zone de livraison"}</h3>
-        </div>
+        : <Redaction message={t1("emptyProduct")} className={"text-primary text-[40px] font-bold text-center"} />
       }
 
       {filteredProducts.filter(x => x.variants.some(x => x.stock.some(x => x.promotionId))).length > 0
@@ -82,7 +79,7 @@ const Home = () => {
         />}
 
       <HowStep />
-      <ReviewsGrid />
+      {/* <ReviewsGrid /> */}
     </div>
   );
 };

@@ -111,7 +111,7 @@ export function Menu({ children }: Props) {
         <div className="mx-auto w-full max-w-sm min-h-screen flex flex-col overflow-y-auto pb-20">
           {!user && (
             <DrawerTitle className="sticky top-0 bg-white z-10">
-              <div className="w-full flex flex-col items-center gap-2 px-6 py-5">
+              <div className="w-full flex flex-col items-center gap-2 px-6 py-3">
                 <Button
                   onClick={() => router.push("/auth/login")}
                   className="w-full"
@@ -135,7 +135,7 @@ export function Menu({ children }: Props) {
             </DrawerTitle>
           )}
 
-          <div className="w-full flex flex-col items-start px-7 py-5 border-b">
+          <div className="w-full flex flex-col items-start px-7 border-b">
             {currentOrderItems.length <= 0 ? (
               <Select
                 open={selectOpen}

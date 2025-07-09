@@ -91,15 +91,10 @@ export default function LoginForm() {
           password: values.password,
         },)
       } else if ("phone" in values) {
-        // userData.mutate({
-        //   phone: values.phone,
-        //   password: values.password,
-        // })
+        setMethod("email")
       }
     })
   }
-
-  setMethod("email")
 
   return (
     <Form {...form}>
