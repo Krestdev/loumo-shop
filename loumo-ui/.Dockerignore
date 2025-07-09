@@ -1,3 +1,14 @@
-node_modules
-.next
-out
+# Node
+node_modules/
+.next/
+
+# build
+out/
+build/
+
+#git
+.git
+.github
+
+# Docker
+Dockerfile
