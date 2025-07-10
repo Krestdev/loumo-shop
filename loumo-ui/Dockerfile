@@ -11,6 +11,9 @@ RUN npm ci
 # Copy app source code
 COPY . .
 
+ARG NEXT_PUBLIC_API_BASE_URL
+ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
+
 # Build Next.js app (generates .next folder)
 RUN npm run build
 
