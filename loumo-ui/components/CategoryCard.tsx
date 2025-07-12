@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import { Category } from '@/types/types'
 
 const CategoryCard = ({ category }: { category: Category }) => {
+    const env = process.env.NEXT_PUBLIC_API_BASE_URL
 
     return (
         <Link href={`/categories/${category.slug}`}>
@@ -16,7 +17,8 @@ const CategoryCard = ({ category }: { category: Category }) => {
             >
                 {category.imgUrl ? (
                     <motion.img
-                        src={category.slug}
+                        // src={category.slug}
+                        src={category.imgUrl.includes("http") ? category.imgUrl : `${env}/${category.imgUrl}`} 
                         alt={category.name}
                         className='w-full max-h-[150px] aspect-auto object-cover rounded-[12px]'
                         initial={{ opacity: 0 }}

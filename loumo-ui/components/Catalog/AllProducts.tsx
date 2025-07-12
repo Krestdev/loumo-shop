@@ -24,8 +24,6 @@ const AllProducts = (
 
     const t = useTranslations("HomePage.GridProducts")
 
-    console.log(products);
-    
     return (
         <div className={`max-w-[1400px] w-full flex flex-col ${className}`}>
             <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5'>
