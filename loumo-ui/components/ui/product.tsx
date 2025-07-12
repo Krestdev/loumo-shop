@@ -109,7 +109,7 @@ const ProductComp = ({ product, promotions }: Props) => {
 
                 {address ? <Link className='w-full h-full' href={`/catalog/${product.slug}`}>
                     {variant.imgUrl ? (
-                        <img src={`${env}/${variant.imgUrl}`} alt={variant.name} className='w-full aspect-square h-auto object-cover' />
+                        <img src={variant.imgUrl.includes("http") ? variant.imgUrl : `${env}/${variant.imgUrl}`} alt={variant.name} className='w-full aspect-square h-auto object-cover' />
                     ) : (
                         <div className='flex items-center justify-center w-full h-auto aspect-square object-cover bg-gray-100 text-white'>
                             <LucideDatabase size={80} />
@@ -119,7 +119,7 @@ const ProductComp = ({ product, promotions }: Props) => {
                     <AddAddress>
                         <Button className='px-0 py-0 w-full h-full bg-transparent hover:bg-transparent rounded-none'>
                             {variant.imgUrl ? (
-                                <img src={`${env}/${variant.imgUrl}`} alt={variant.name} className='w-full aspect-square h-auto object-cover' />
+                                <img src={variant.imgUrl.includes("http") ? variant.imgUrl : `${env}/${variant.imgUrl}`} alt={variant.name} className='w-full aspect-square h-auto object-cover' />
                             ) : (
                                 <div className='flex items-center justify-center w-full h-auto aspect-square object-cover bg-gray-100 text-white'>
                                     <LucideDatabase size={80} />

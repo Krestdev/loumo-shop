@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import React from 'react'
 import Loading from './setup/loading';
+import SettingQuery from '@/queries/setting';
 
 const Footer = () => {
     const t = useTranslations("Footer")
@@ -13,6 +14,10 @@ const Footer = () => {
     const categoryData = useQuery({
         queryKey: ["categoryFetchAll"],
         queryFn: () => category.getAll(),
+    });
+    const { data: settingData } = useQuery({
+        queryKey: ["topicData"],
+        queryFn: () => new SettingQuery().getAll(),
     });
 
     if (categoryData.isLoading) {
@@ -106,8 +111,13 @@ const Footer = () => {
                         <div className='flex flex-col gap-5'>
                             <p className='text-[16px] text-gray-50 font-semibold'>{t("About.about")}</p>
                             <div className='flex flex-col gap-3'>
-                                <Link href={"/condition"} className='text-[14px] font-medium text-gray-50' >{t("About.term")}</Link>
-                                <Link href={"/condition"} className='text-[14px] font-medium text-gray-50' >{t("About.privacy")}</Link>
+                                {
+                                    settingData?.map((x, i) => {
+                                        return (
+                                            <Link key={i} href={`/info/${x.name}`} className='text-[14px] font-medium text-gray-50' >{x.name}</Link>
+                                        )
+                                    })
+                                }
                             </div>
                         </div>
                         <div className='flex flex-col gap-5'>

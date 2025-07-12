@@ -21,9 +21,9 @@ const CategoryComp = ({ slug }: { slug: string }) => {
         queryFn: () => category.getAll(),
     });
 
-     useEffect(() => {
+    useEffect(() => {
         if (categoryData.isSuccess) {
-            setCateg(categoryData.data.find(x => x.slug === slug))
+            setCateg(categoryData.data.find(x => x.slug === decodeURIComponent(slug)))
         }
     }, [categoryData.data, categoryData.isSuccess, slug])
 
@@ -47,7 +47,7 @@ const CategoryComp = ({ slug }: { slug: string }) => {
                 </div>
                 <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-5'>
                     {
-                        categ?.products?.map((x,i) => {
+                        categ?.products?.map((x, i) => {
                             return (
                                 <ProductComp key={i} product={x} promotions={undefined} />
                             )
