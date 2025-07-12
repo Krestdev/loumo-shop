@@ -157,9 +157,6 @@ const Page = () => {
     );
   }, [categories, filteredProducts]);
 
-  console.log(availableCategories);
-  
-
   if (categoriesLoading || productsLoading) return <Loading status="loading" />;
   if (!categories || !allProducts) return <Loading status="failed" />;
 
