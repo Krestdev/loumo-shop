@@ -11,6 +11,9 @@ RUN npm ci
 # Copy app source code
 COPY . .
 
+ARG NEXT_PUBLIC_API_BASE_URL
+ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
+
 # Build Next.js app (generates .next folder)
 RUN npm run build
 
@@ -30,7 +33,7 @@ COPY --from=builder /app/next.config.ts ./next.config.ts
 COPY --from=builder /app/tsconfig.json ./tsconfig.json 
 
 # If you use any runtime-only files (e.g. env, i18n, middlewares), copy them too
-# COPY --from=builder /app/...
+# COPY --from=builder /app/.env.prod ./.end
 
 # Expose default Next.js port
 EXPOSE 3000
