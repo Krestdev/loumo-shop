@@ -150,14 +150,24 @@ const ProductComp = ({ product, promotions }: Props) => {
                                 {va.name}
                             </Button>
                         ))}
-                        {(product?.variants?.length ?? 0) > 2 && (
-                            <Link
-                                href={`/catalog/${product.slug}`}
-                                className='px-2 py-1 h-[26px] hover:bg-gray-50 rounded-[20px]'
-                            >
-                                <div className='h-[18px] w-4 flex items-center justify-center'>+</div>
-                            </Link>
-                        )}
+                        {address ?
+                            (product?.variants?.length ?? 0) > 2 && (
+                                <Link
+                                    href={`/catalog/${product.slug}`}
+                                    className='px-2 py-1 h-[26px] hover:bg-gray-50 rounded-[20px]'
+                                >
+                                    <div className='h-[18px] w-4 flex items-center justify-center'>+</div>
+                                </Link>
+                            ) :
+                            <AddAddress>
+                                <Button
+                                variant={"ghost"}
+                                    className='px-2 py-1 h-[26px] hover:bg-gray-50 hover:text-black rounded-[20px] w-fit'
+                                >
+                                    <div className='h-[18px] w-4 flex items-center justify-center'>+</div>
+                                </Button>
+                            </AddAddress>
+                        }
                     </div>
 
                     <PriceDisplay
@@ -172,12 +182,12 @@ const ProductComp = ({ product, promotions }: Props) => {
 
                 {address ? (
                     <AddToCard product={product} variant={variant} setVariant={setVariant} promotions={promotions}>
-                        <Button variant={"default"}>{t("addToCart")}</Button>
+                        <Button disabled={((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0)} variant={"default"}>{t("addToCart")}</Button>
                     </AddToCard>
                 ) : (
                     // user ?
                     <AddAddress>
-                        <Button>{t("addToCart")}</Button>
+                        <Button disabled={((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0)}>{t("addToCart")}</Button>
                     </AddAddress>
                     // :
                     // <LoginDialog>

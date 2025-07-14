@@ -11,6 +11,7 @@ import { Bread } from '../Bread';
 const CategoriesGrid = () => {
 
     const category = new CategoryQuery();
+    const env = process.env.NEXT_PUBLIC_API_BASE_URL;
     const categoryData = useQuery({
         queryKey: ["categoryFetchAll"],
         queryFn: () => category.getAll(),
@@ -32,11 +33,11 @@ const CategoriesGrid = () => {
                 {categoryData.isLoading && Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="w-[301px] h-[254px] rounded-none" />)}
                 {
                     categoryData.isSuccess &&
-                    categoryData.data.filter(category => category.products?.some(product => product.variants && product.variants.length > 0)).map((x,i) => {
+                    categoryData.data.filter(category => category.products?.some(product => product.variants && product.variants.length > 0)).map((x, i) => {
                         return (
                             <Link key={i} href={`/categories/${x.slug}`} className='flex flex-col gap-2'>
                                 <img
-                                    src={"/Images/imgUrl.png"}
+                                    src={x.imgUrl?.includes("http") ? x.imgUrl : `${env}/${x.imgUrl}`}
                                     alt={x.name}
                                     className='w-full aspect-[4/3] object-cover rounded-[12px]'
                                 />

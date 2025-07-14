@@ -1,3 +1,5 @@
+// RootLayout.tsx (async server component)
+
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
@@ -10,6 +12,7 @@ import { NextIntlClientProvider } from "next-intl";
 import Header from "@/components/header";
 import Notification from "@/components/ui/notification";
 import Footer from "@/components/footer";
+import CartController from "@/components/Cart/CartController";
 
 const font_sans = DM_Sans({
   variable: "--font-sans",
@@ -35,7 +38,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   const locale = await getLocale();
 
   return (
@@ -48,9 +50,10 @@ export default async function RootLayout({
             <NotificationProvider>
               <Notification />
               <Header />
+              <CartController /> 
               {children}
               <Footer />
-              </NotificationProvider>
+            </NotificationProvider>
           </QueryProvider>
         </NextIntlClientProvider>
       </body>

@@ -58,7 +58,7 @@ export function AddToCard({ children, product, variant, setVariant, initialQuant
         <div className="flex flex-row gap-3 w-full">
           {variant?.imgUrl ? (
             <img
-              src={`${env}${variant.imgUrl}`}
+              src={variant.imgUrl.includes("http") ? variant.imgUrl : `${env}/${variant.imgUrl}`}
               alt={variant.name}
               onError={(e) => (e.currentTarget.src = "/fallback.jpg")}
               className="w-[75px] h-[75px] aspect-square"
@@ -96,6 +96,7 @@ export function AddToCard({ children, product, variant, setVariant, initialQuant
                 productVariantId: s.productVariantId,
               }))}
               variants={product?.variants}
+              quantity={quantity}
             />
 
             {/* <div className="flex gap-1 items-center">

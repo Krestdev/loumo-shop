@@ -85,7 +85,7 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                             <div className="flex flex-col gap-1">
                                 <p className="text-primary text-[14px] font-[300]">{t("to")}</p>
                                 <p className="text-[14px] text-black font-normal">
-                                    {user?.addresses?.[0]?.description || t("noAddress")}
+                                    {user?.addresses?.[0]?.street || t("noAddress")}
                                 </p>
                             </div>
                         </div>

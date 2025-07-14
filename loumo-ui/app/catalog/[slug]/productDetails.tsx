@@ -138,7 +138,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
         <div className="flex flex-col gap-7">
           {productItem?.imgUrl ? (
             <img
-              src={`${env}${productItem.imgUrl}`}
+              src={productItem.imgUrl.includes("http") ? productItem.imgUrl : `${env}/${productItem.imgUrl}`}
               alt={productItem.name}
               onError={(e) => (e.currentTarget.src = "/fallback.jpg")}
               className="w-full h-auto aspect-[4/3] rounded-[20px]"
@@ -158,7 +158,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
                   className={`p-1 rounded-[8px] cursor-pointer ${currentvar === x.id ? "ring-2 ring-primary" : ""}`}
                 >
                   <img
-                    src={`${env}${x.imgUrl}` || "/placeholder.jpg"}
+                    src={x.imgUrl?.includes("http") ? x.imgUrl : `${env}/${x.imgUrl}`}
                     onError={(e) => (e.currentTarget.src = "/fallback.jpg")}
                     alt={x.name}
                     className="max-w-[120px] w-full h-auto aspect-[4/3] rounded-[6px]"
@@ -199,6 +199,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
                 variants={productData.data?.variants}
                 className1="text-[36px] text-primary font-medium"
                 className2="text-[24px] text-gray-500 font-normal line-through"
+                quantity={quantity}
               />
 
               <div className="flex flex-row items-center gap-2">

@@ -121,6 +121,7 @@
   "Cart": {
     "noAddress": "No address registered",
     "cart": "Cart",
+    "checkout": "Checkout",
     "remove": "Remove",
     "delivery": "Delivery information",
     "to": "Deliver to",

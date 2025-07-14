@@ -121,6 +121,7 @@
   "Cart": {
     "noAddress": "Aucune adresse enregistrée",
     "cart": "Panier",
+    "checkout": "Passer commande",
     "remove": "Supprimer",
     "delivery": "Informations de livraison",
     "to": "Livrer à",

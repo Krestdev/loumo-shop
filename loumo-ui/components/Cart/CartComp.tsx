@@ -89,7 +89,7 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                                 <div key={i} className="flex gap-4 p-4 rounded-[12px] text-gray-50">
                                     {x.productVariant?.imgUrl ? (
                                         <img
-                                            src={`${env}${x.productVariant?.imgUrl}`}
+                                            src={x.productVariant?.imgUrl.includes("http") ? x.productVariant?.imgUrl : `${env}/${x.productVariant?.imgUrl}`}
                                             alt={x.productVariant?.name}
                                             className="max-w-[120px] w-full h-auto aspect-square rounded-[6px]"
                                         />
@@ -99,16 +99,6 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                                         </div>
                                     )}
                                     <div className="flex flex-col gap-1 w-full">
-                                        <div className="w-full flex justify-end">
-                                            <Button
-                                                onClick={() => removeOrderItem(x.productVariantId)}
-                                                variant="ghost"
-                                                className="text-red-600 h-[19px] hover:bg-gray-50 hover:text-red-600"
-                                            >
-                                                <LucideTrash />
-                                                {t("remove")}
-                                            </Button>
-                                        </div>
                                         <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                                             <div className="flex flex-col gap-1">
                                                 <p className="text-gray-700 font-semibold">{product?.name}</p>
@@ -149,36 +139,46 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                                                 })()}
                                             </div>
 
-                                            <div className="flex flex-row items-center gap-2">
+                                            <div className='flex flex-col gap-2 h-full justify-end-end'>
                                                 <Button
-                                                    type="button"
-                                                    onClick={() => decrementOrderItem(x.productVariantId, promotions!)}
-                                                    variant="outline"
-                                                    className="w-8 h-8 p-0 text-black hover:text-white"
-                                                    disabled={!x.productVariant}
+                                                    onClick={() => removeOrderItem(x.productVariantId)}
+                                                    variant="ghost"
+                                                    className="text-white bg-red-600 w-fit h-[25px] hover:bg-gray-50 hover:text-red-600"
                                                 >
-                                                    -
+                                                    <LucideTrash />
+                                                    {t("remove")}
                                                 </Button>
-                                                <Input
-                                                    value={quantity}
-                                                    onChange={(e) =>
-                                                        addOrderItem({
-                                                            variant: x.productVariant!, note: "",
-                                                            promotions: promotions!
-                                                        }, parseInt(e.target.value))
-                                                    }
-                                                    className="w-12 text-center text-black"
-                                                    disabled={!x.productVariant}
-                                                />
-                                                <Button
-                                                    type="button"
-                                                    onClick={() => incrementOrderItem(x.productVariantId, promotions!)}
-                                                    variant="outline"
-                                                    className="w-8 h-8 p-0 text-black hover:text-white"
-                                                    disabled={!x.productVariant}
-                                                >
-                                                    +
-                                                </Button>
+                                                <div className="flex flex-row items-center gap-2">
+                                                    <Button
+                                                        type="button"
+                                                        onClick={() => decrementOrderItem(x.productVariantId, promotions!)}
+                                                        variant="outline"
+                                                        className="w-8 h-8 p-0 text-black hover:text-white"
+                                                        disabled={!x.productVariant}
+                                                    >
+                                                        -
+                                                    </Button>
+                                                    <Input
+                                                        value={quantity}
+                                                        onChange={(e) =>
+                                                            addOrderItem({
+                                                                variant: x.productVariant!, note: "",
+                                                                promotions: promotions!
+                                                            }, parseInt(e.target.value))
+                                                        }
+                                                        className="w-12 text-center text-black"
+                                                        disabled={!x.productVariant}
+                                                    />
+                                                    <Button
+                                                        type="button"
+                                                        onClick={() => incrementOrderItem(x.productVariantId, promotions!)}
+                                                        variant="outline"
+                                                        className="w-8 h-8 p-0 text-black hover:text-white"
+                                                        disabled={!x.productVariant}
+                                                    >
+                                                        +
+                                                    </Button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
