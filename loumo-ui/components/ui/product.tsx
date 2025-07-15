@@ -80,7 +80,7 @@ const ProductComp = ({ product, promotions }: Props) => {
                 </div>}
                 <div className='absolute z-10 top-2 right-2 flex items-center justify-between'>
                     {user ? (
-                        user?.addresses && user.addresses.length > 0 ? (
+                        address ? (
                             <Button
                                 onClick={() => toggleFavorite(product.id)}
                                 variant={"ghost"}

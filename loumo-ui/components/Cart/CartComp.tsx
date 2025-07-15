@@ -25,6 +25,7 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
         decrementOrderItem,
         incrementOrderItem,
         user,
+        address
     } = useStore();
     const env = process.env.NEXT_PUBLIC_API_BASE_URL
 
@@ -70,11 +71,8 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
             return total + price * item.quantity;
         }, 0);
     };
-
-    console.log(currentOrderItems);
-
-
-
+    const frais = address?.zone?.price || 0;
+    const totalPrice = getCartTotal() + frais;
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-7 max-w-[1400px] w-full">
             <div className="flex flex-col gap-5 px-6 py-7 rounded-[12px] max-w-[515px] w-full">
@@ -143,7 +141,7 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                                                 <Button
                                                     onClick={() => removeOrderItem(x.productVariantId)}
                                                     variant="ghost"
-                                                    className="text-white bg-red-600 w-fit h-[25px] hover:bg-gray-50 hover:text-red-600"
+                                                    className="text-red-600 bg-red-600/10 w-fit h-[25px] hover:bg-gray-50 hover:text-red-600"
                                                 >
                                                     <LucideTrash />
                                                     {t("remove")}
@@ -193,7 +191,7 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
 
             {/* ✅ Passe onValidate ici */}
             {currentOrderItems.length > 0 && (
-                <DeliveryPaymentForm user={user} onValidate={onValidate ?? (() => { })} totalPrice={getCartTotal()} />
+                <DeliveryPaymentForm user={user} onValidate={onValidate ?? (() => { })} totalPrice={totalPrice} />
             )}
         </div>
     );

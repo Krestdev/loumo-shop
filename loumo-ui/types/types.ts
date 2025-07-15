@@ -80,6 +80,7 @@ export type Order = {
   status: "FAILED" | "COMPLETED" | "PROCESSING" | "REJECTED" | "ACCEPTED" | "PENDING";
   weight: number;
   deliveryFee: number;
+  user: User;
 };
 
 export type OrderItem = {

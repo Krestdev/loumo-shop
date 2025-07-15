@@ -1,26 +1,31 @@
 "use client";
 
 import CartComp from "@/components/Cart/CartComp";
+import { Failed } from "@/components/Cart/Dialog/Failed";
+import Pending from "@/components/Cart/Dialog/Pending";
+import { Success } from "@/components/Cart/Dialog/Success";
 import { useStore } from "@/providers/datastore";
 import OrderQuery from "@/queries/order";
 import PromotionQuery from "@/queries/promotion";
 import UserQuery from "@/queries/user";
 import { Order, OrderItem } from "@/types/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import {  useState } from "react";
 
 const Page = () => {
   const order = new OrderQuery();
   const userQuery = new UserQuery();
   const promotion = new PromotionQuery();
 
-  const { currentOrderItems, user, setUser, resetOrderDraft } = useStore();
-  const router = useRouter();
+  const { currentOrderItems, user, setUser, resetOrderDraft, address } = useStore();
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [failedOpen, setFailedOpen] = useState(false);
+  const [pendingOpen, setPendingOpen] = useState(false);
 
   const createOrder = useMutation({
     mutationKey: ["createOrder"],
     mutationFn: (
-      newOrder: Omit<Order, "id" | "orderItems" | "createdAt" | "address"> & {
+      newOrder: Omit<Order, "id" | "orderItems" | "createdAt" | "address" | "user"> & {
         orderItems?: Partial<OrderItem>[];
       }
     ) => order.create(newOrder),
@@ -40,16 +45,16 @@ const Page = () => {
   })
 
   const handleSubmitOrder = () => {
-    if (user && user?.addresses?.[0].id && currentOrderItems.length > 0) {
+    if (user && address?.id && currentOrderItems.length > 0) {
 
       const total = currentOrderItems.reduce(
         (acc, item) => acc + (item.total || 0),
         0
       );
       const weight = currentOrderItems.reduce((acc, item) => acc + (item.productVariant.weight || 0), 0)
-      const payload: Omit<Order, "id" | "createdAt" | "address"> = {
+      const payload: Omit<Order, "id" | "createdAt" | "address" | "user"> = {
         userId: user.id,
-        addressId: user?.addresses?.[0].id as number,
+        addressId: address?.id as number,
         note: "note",
         total: total,
         status: "PENDING",
@@ -66,12 +71,23 @@ const Page = () => {
         }),
       };
 
+      setPendingOpen(true);
       createOrder.mutate(payload,
         {
           onSuccess: () => {
-            resetOrderDraft()
-            router.push("/")
-          }
+            setPendingOpen(false);
+            resetOrderDraft();
+            setSuccessOpen(true);
+            // setTimeout(() => {
+            //   setSuccessOpen(false);
+            //   router.push("/");
+            // }, 5000);
+          },
+          onError: (error) => {
+            setPendingOpen(false);
+            console.error("Error creating order:", error);
+            setFailedOpen(true);
+          },
         }
       );
       userData.refetch().then(res => {
@@ -83,7 +99,10 @@ const Page = () => {
 
   return (
     <div className="w-full flex justify-center">
-        <CartComp onValidate={handleSubmitOrder} promotions={promotionData.data} />
+      <CartComp onValidate={handleSubmitOrder} promotions={promotionData.data} />
+      <Success open={successOpen} setOpen={setSuccessOpen} />
+      <Failed open={failedOpen} setOpen={setFailedOpen} />
+      <Pending open={pendingOpen} setOpen={setPendingOpen} />
     </div>
   );
 };

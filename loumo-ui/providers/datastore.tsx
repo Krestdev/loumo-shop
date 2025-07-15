@@ -23,6 +23,9 @@ type Store = {
   orders: Order[];
   setOrders: (order: Order[]) => void;
   resetUser: () => void;
+  setIsHydrated: (v: boolean) => void;
+  isHydrated: boolean;
+
 
   currentOrderItems: OrderItem[];
 
@@ -37,6 +40,8 @@ type Store = {
 
   removeOrderItem: (variantId: number) => void;
 
+  clearCart: () => void;
+
   getOrderTotal: () => number;
 
   orderNote: string;
@@ -49,10 +54,12 @@ type Store = {
 export const useStore = create<Store>()(
   persist(
     (set, get) => ({
+      isHydrated: false,
+      setIsHydrated: (v) => set(() => ({ isHydrated: v })),
       user: null,
       setUser: (user) => set(() => ({ user })),
       address: null,
-      setAddress: (address) => set(() => ({address})),
+      setAddress: (address) => set(() => ({ address })),
       logout: () => set({ user: null }),
       categories: [],
       setCategories: (categories) => set(() => ({ categories })),
@@ -113,7 +120,7 @@ export const useStore = create<Store>()(
             if (x.productVariantId === variantId) {
               const price = getBestPromotionPrice(x.productVariant!, promotions);
               console.log(price);
-              
+
               return {
                 ...x,
                 quantity: x.quantity + 1,
@@ -152,6 +159,8 @@ export const useStore = create<Store>()(
           ),
         })),
 
+      clearCart: () => set({ currentOrderItems: [] }),
+
       getOrderTotal: () =>
         get().currentOrderItems.reduce((total, item) => total + item.total, 0),
 
@@ -176,7 +185,10 @@ export const useStore = create<Store>()(
         orderAddressId: state.orderAddressId,
         currentOrderItems: state.currentOrderItems,
         orderNote: state.orderNote
-      })
+      }),
+      onRehydrateStorage: () => (state) => {
+        state?.setIsHydrated(true); // ✅ proper Zustand update
+      },
     }
   )
 );

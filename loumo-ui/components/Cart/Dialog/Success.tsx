@@ -7,21 +7,18 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog"
 import { useTranslations } from "next-intl"
 
 interface Props {
-    children: React.JSX.Element
+    open: boolean
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function Success({ children }: Props) {
+export function Success({ open, setOpen }: Props) {
     const t = useTranslations("Cart.Success")
     return (
-        <Dialog>
-            <DialogTrigger asChild>
-                {children}
-            </DialogTrigger>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>{t("title")}</DialogTitle>

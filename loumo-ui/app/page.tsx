@@ -1,4 +1,5 @@
 "use client";
+
 import Home from "@/components/Home/Home";
 import Loading from "@/components/setup/loading";
 import ProductQuery from "@/queries/product";
