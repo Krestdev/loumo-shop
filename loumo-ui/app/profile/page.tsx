@@ -1,6 +1,5 @@
 "use client";
 import Profile from "@/components/Profile/Profile";
-import RequireAuth from "@/components/RequireAuth";
 import Loading from "@/components/setup/loading";
 import UserQuery from "@/queries/user";
 import { useQuery } from "@tanstack/react-query";
@@ -23,9 +22,7 @@ const Page = () => {
   if (userData.isSuccess) {
     return (
       <div className="w-full flex justify-center">
-        <RequireAuth>
           <Profile user={userData.data} />
-        </RequireAuth>
       </div>
     );
   }

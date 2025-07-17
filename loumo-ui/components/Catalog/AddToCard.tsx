@@ -53,12 +53,19 @@ export function AddToCard({ children, product, variant, setVariant, initialQuant
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] w-full">
         <DialogHeader>
-          <DialogTitle>{t("add")}</DialogTitle>
+          <DialogTitle className="flex gap-2 items-center">
+            {t("add")}
+            {!!((variant?.stock && variant?.stock[0] && variant?.stock[0].quantity <= 0) || (variant?.stock && variant?.stock.length <= 0)) && (
+                <div className='bg-red-700 p-2 z-10 w-fit'>
+                  <p className='text-white text-sm font-semibold'>{t("outOfStock")}</p>
+                </div>
+              )}
+            </DialogTitle>
         </DialogHeader>
         <div className="flex flex-row gap-3 w-full">
           {variant?.imgUrl ? (
             <img
-              src={`${env}${variant.imgUrl}`}
+              src={variant.imgUrl.includes("http") ? variant.imgUrl : `${env}/${variant.imgUrl}`}
               alt={variant.name}
               onError={(e) => (e.currentTarget.src = "/fallback.jpg")}
               className="w-[75px] h-[75px] aspect-square"
@@ -70,9 +77,9 @@ export function AddToCard({ children, product, variant, setVariant, initialQuant
           )}
 
           <div className="flex flex-col gap-2 flex-1 w-full">
-            <p className="text-[16px] text-gray-900 font-semibold">{product?.name}</p>
+              <p className="text-[16px] text-gray-900 font-semibold">{product?.name}</p>
             <div className="pb-1 w-full">
-              <div className="inline-flex gap-2">
+              <div className="inline-flex flex-wrap gap-2">
                 {product?.variants?.map((va, idx) => (
                   <Button
                     key={idx}
@@ -96,6 +103,7 @@ export function AddToCard({ children, product, variant, setVariant, initialQuant
                 productVariantId: s.productVariantId,
               }))}
               variants={product?.variants}
+              quantity={quantity}
             />
 
             {/* <div className="flex gap-1 items-center">
@@ -121,7 +129,7 @@ export function AddToCard({ children, product, variant, setVariant, initialQuant
         </div>
 
         <DialogFooter className="mt-4">
-          <Button onClick={addToCart}>
+          <Button disabled={!!((variant?.stock && variant?.stock[0] && variant?.stock[0].quantity <= 0) || (variant?.stock && variant?.stock.length <= 0))} onClick={addToCart}>
             <LucideShoppingCart size={16} className="mr-2" />
             {t("add")}
           </Button>

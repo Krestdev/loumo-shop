@@ -27,7 +27,8 @@
     "close": "Fermer",
     "save": "Enregistrer",
     "noResult": "Aucun résultat trouvé.",
-    "search": "Rechercher"
+    "search": "Rechercher",
+    "loading": "Chargement..."
   },
   "Footer": {
     "Info": {
@@ -101,7 +102,8 @@
     },
     "Cart": {
       "add": "Ajouter au panier",
-      "close": "Fermer"
+      "close": "Fermer",
+      "outOfStock": "En rupture"
     },
     "ProductDetail": {
       "options": "Options",
@@ -121,6 +123,7 @@
   "Cart": {
     "noAddress": "Aucune adresse enregistrée",
     "cart": "Panier",
+    "checkout": "Passer commande",
     "remove": "Supprimer",
     "delivery": "Informations de livraison",
     "to": "Livrer à",
@@ -137,20 +140,44 @@
     "discount": "Remise",
     "total": "Total",
     "addAddress": "Ajouter une adresse",
+    "clearCart": "Vider le panier",
     "Awaiting": {
       "title": "Paiement en attente",
       "description": "Veuillez patienter pendant que nous envoyons la demande de débit au numéro fourni.",
       "action": "⚠️ Action requise maintenant",
       "step1": "Vérifiez les notifications sur votre téléphone.",
-      "step2": "Confirmez la transaction depuis l'application Orange Money ou via le SMS reçu.",
+      "step2": "Confirmez la transaction en tapant le #150# pour orange money ou le *126# pour MTN",
       "conclusion": "Une fois confirmé, vous recevrez un reçu par email et votre commande sera finalisée.",
       "thank": "Merci pour votre confiance ! 🙌",
       "close": "Fermer"
     },
     "Success": {
-      "title": "Paiement validé avec succès !",
-      "description": "Paiement confirmé ! Merci pour votre achat. Votre commande est en cours de traitement. Consultez votre email pour plus de détails.",
+      "title": "Voici votre facture :",
+      "description": "Paiement confirmé ! Merci pour votre achat. Votre commande est en cours de traitement. Téléchargez votre reçu dans votre historique de commande",
       "close": "Fermer"
+    },
+    "Failed": {
+      "title": "Paiement non confirmé",
+      "description": "Paiement non confirmé ! Veuillez contacter le service client.",
+      "close": "Fermer"
+    },
+    "Invoice": {
+      "title": "Facture",
+      "order": "Commande",
+      "of": "du",
+      "client": "Client",
+      "name": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "address": "Adresse",
+      "zone": "Zone",
+      "product": "Produit",
+      "quantity": "Quantité",
+      "unitPrice": "Prix unitaire",
+      "total": "Total",
+      "unknownProduct": "Produit inconnu",
+      "subtotal": "Sous-total",
+      "deliveryFee": "Frais de livraison"
     }
   },
   "Login": {

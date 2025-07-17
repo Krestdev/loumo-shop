@@ -25,8 +25,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { User } from "@/types/types"
 import { useState } from "react"
-import { AddAddress } from "../select-address"
 import { LoginDialog } from "../Auth/loginDialog"
+import { useStore } from "@/providers/datastore"
+import { useQuery } from "@tanstack/react-query"
+import ZoneQuery from "@/queries/zone"
 
 
 const formSchema = z.object({
@@ -50,20 +52,28 @@ type FormValues = z.infer<typeof formSchema>
 const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | null; onValidate: () => void; totalPrice: number }) => {
     const t = useTranslations("Cart")
     const [level, setLevel] = useState<"summary" | "paiement">("summary")
+    const { address } = useStore();
+
+    const zoneQuery = new ZoneQuery();
+    const zoneData = useQuery({
+        queryKey: ["zoneData"],
+        queryFn: () => zoneQuery.getAll()
+    })
+
+    const frais = zoneData.data?.find(x => x.id === address?.zoneId)?.price ?? 0
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             tel: user?.tel?.toString() || "",
             paymentMethod: "cash",
-            paymentNumber: "",
+            paymentNumber: user?.tel?.toString() || "",
         },
     })
 
     const paymentMethod = form.watch("paymentMethod")
 
-    const onSubmit = (values: FormValues) => {
-        console.log("Form submitted:", values)
+    const onSubmit = () => {
         onValidate()
     }
 
@@ -85,13 +95,10 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                             <div className="flex flex-col gap-1">
                                 <p className="text-primary text-[14px] font-[300]">{t("to")}</p>
                                 <p className="text-[14px] text-black font-normal">
-                                    {user?.addresses?.[0]?.description || t("noAddress")}
+                                    {address?.street || t("noAddress")}
                                 </p>
                             </div>
                         </div>
-                        <AddAddress>
-                            <Button className="w-fit">{t("addAddress")}</Button>
-                        </AddAddress>
                     </div>
 
                     <FormField
@@ -101,7 +108,7 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                             <FormItem className="flex flex-col gap-2">
                                 <FormLabel className="font-medium text-[14px] text-gray-900">{t("contact")}</FormLabel>
                                 <FormControl>
-                                    <Input type="tel" {...field} />
+                                    <Input defaultValue={user?.tel?.toString()} type="tel" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -125,7 +132,7 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                             </div>
                             <div className="grid grid-cols-2 gap-5">
                                 <p className="text-gray-600 font-medium">{t("shiping")}</p>
-                                <p className="text-secondary font-medium text-end">{"0 FCFA"}</p>
+                                <p className="text-secondary font-medium text-end">{`${frais} FCFA`}</p>
                             </div>
                             <div className="grid grid-cols-2 gap-5">
                                 <p className="text-gray-600 font-medium">{t("discount")}</p>
@@ -135,7 +142,7 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
 
                         <div className="grid grid-cols-2 gap-5 pt-5 border-t">
                             <p className="text-gray-600 font-bold text-[18px]">{t("total")}</p>
-                            <p className="text-secondary font-bold text-[18px] text-end">{totalPrice}</p>
+                            <p className="text-secondary font-bold text-[18px] text-end">{`${totalPrice} FCFA`}</p>
                         </div>
 
                         {
@@ -192,7 +199,7 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                                         <FormItem className="flex flex-col gap-2">
                                             <FormLabel className="font-medium text-[14px] text-gray-900">{t("number")}</FormLabel>
                                             <FormControl>
-                                                <Input type="tel" {...field} />
+                                                <Input defaultValue={user?.tel?.toString()} type="tel" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>

@@ -11,11 +11,11 @@ interface PriceDisplayProps {
   variants: ProductVariant[] | undefined;
   className1?: string
   className2?: string
+  quantity?: number
 }
 
-export const PriceDisplay = ({ price, stocks, variants, className1="text-[20px] font-bold text-black", className2="text-[14px] text-gray-500" }: PriceDisplayProps) => {
+export const PriceDisplay = ({ price, stocks, variants, className1 = "text-[20px] font-bold text-black", className2 = "text-[14px] text-gray-500", quantity }: PriceDisplayProps) => {
   const now = new Date();
-
   const promotion = new PromotionQuery();
 
   const promotionsData = useQuery({
@@ -23,7 +23,7 @@ export const PriceDisplay = ({ price, stocks, variants, className1="text-[20px] 
     queryFn: () => promotion.getAll(),
   });
 
-  const promotions = promotionsData.data
+  const promotions = promotionsData.data;
 
   const getPromotionById = (id: number | null): Promotion | null => {
     if (!id) return null;
@@ -68,17 +68,19 @@ export const PriceDisplay = ({ price, stocks, variants, className1="text-[20px] 
             <div key={variant.id} className="flex flex-col gap-1 border-b pb-2">
               <div className="flex gap-2 items-center">
                 <p className={`text-nowrap ${className1}`}>
-                  {formatPrice(discounted)} FCFA
+                  {formatPrice(discounted * (quantity ?? 1))} FCFA
                 </p>
                 <p className={`line-through text-nowrap ${className2}`}>
-                  {formatPrice(variant.price)} FCFA
+                  {formatPrice(variant.price * (quantity ?? 1))} FCFA
                 </p>
               </div>
             </div>
           );
         })
       ) : (
-        <p className={`${className1} text-nowrap`}>{formatPrice(price)} FCFA</p>
+        <p className={`${className1} text-nowrap`}>
+          {formatPrice((price ?? 0) * (quantity ?? 1))} FCFA
+        </p>
       )}
     </div>
   );

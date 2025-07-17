@@ -1,4 +1,5 @@
 "use client";
+import { OrderInvoice } from "@/components/Cart/OrderInvoice";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -20,10 +21,12 @@ import {
 } from "@/components/ui/table";
 import { XAF } from "@/lib/utils";
 import OrderQuery from "@/queries/order";
+import ProductQuery from "@/queries/product";
 import ProductVariantQuery from "@/queries/productVariant";
 import PromotionQuery from "@/queries/promotion";
 import ZoneQuery from "@/queries/zone";
-import { Order } from "@/types/types";
+import { Order, ProductVariant } from "@/types/types";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import {
@@ -43,10 +46,17 @@ type Props = {
 
 function ViewOrder({ ord, addressId, children }: Props) {
   const t = useTranslations("Profile.Orders.Detail")
+  const t1 = useTranslations("Cart.Invoice")
   const variantQuery = new ProductVariantQuery();
   const promotion = new PromotionQuery();
   const orders = new OrderQuery();
-  
+   const product = new ProductQuery();
+
+  const productData = useQuery({
+    queryKey: ["productFetchAll"],
+    queryFn: () => product.getAll(),
+  });
+
   const ordersData = useQuery({
     queryKey: ["ordersFetchAll"],
     queryFn: () => orders.getAll(),
@@ -236,14 +246,48 @@ function ViewOrder({ ord, addressId, children }: Props) {
           </Card>
         </div>
         <div className="flex justify-end gap-2">
-          <DialogClose>
+
+          <PDFDownloadLink
+            document={
+              <OrderInvoice
+                order={order}
+                products={productData.data}
+                variants={order.orderItems?.map((item) => getVariants.data?.find((x) => x.id === item.productVariantId)) as ProductVariant[]}
+                zones={Array.isArray(order.address?.zone) ? order.address.zone : []}
+                translations={{
+                  title: t1("title"),
+                  order: t1("order"),
+                  of: t1("of"),
+                  client: t1("client"),
+                  name: t1("name"),
+                  email: t1("email"),
+                  phone: t1("phone"),
+                  address: t1("address"),
+                  zone: t1("zone"),
+                  product: t1("product"),
+                  quantity: t1("quantity"),
+                  unitPrice: t1("unitPrice"),
+                  total: t1("total"),
+                  unknownP: t1("unknownProduct"),
+                  subtotal: t1("subtotal"),
+                  deliveryFee: t1("deliveryFee"),
+                }}
+              />
+            }
+            fileName={`facture - loumo - ${order.id}.pdf`}
+          >
+            {({ loading }) => (
+              <Button>{loading ? "Génération..." : "Télécharger la facture"}</Button>
+            )}
+          </PDFDownloadLink>
+          <DialogClose asChild>
             <Button variant={"outline"}>
               {`${t("close")}`}
             </Button>
           </DialogClose>
         </div>
       </DialogContent>
-    </Dialog>
+    </Dialog >
   );
 }
 

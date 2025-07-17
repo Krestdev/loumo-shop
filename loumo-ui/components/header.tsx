@@ -25,32 +25,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
-import AddressQuery from "@/queries/address";
-import { useQuery } from "@tanstack/react-query";
+import { AddAddress } from "./select-address";
 
 const Header = () => {
   const t = useTranslations("Header");
-  const { user, currentOrderItems, logout, setAddress, address } = useStore();
+  const { user, currentOrderItems, logout, address } = useStore();
   const router = useRouter();
   const [isClient, setIsClient] = React.useState(true);
-  const [search, setSearch] = React.useState("");
-  const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
     setIsClient(true);
@@ -60,12 +45,6 @@ const Header = () => {
     (total, item) => total + item.quantity,
     0
   );
-
-  const addresses = new AddressQuery();
-  const addressData = useQuery({
-    queryKey: ["addressFetchAll"],
-    queryFn: () => addresses.getAll(),
-  });
 
   return (
     <div className="w-full flex flex-col items-center sticky top-0 z-50 bg-background border-b">
@@ -96,63 +75,80 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Adresse sélectionnable uniquement si panier vide */}
         <div className="flex flex-row items-center gap-2 md:gap-4">
+          {/* Adresse sélectionnable uniquement si panier vide */}
+
           {currentOrderItems.length <= 0 ? (
-            <Popover open={open} onOpenChange={setOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  aria-expanded={open}
-                  className="hidden md:flex group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer max-w-[250px] border border-input"
-                >
-                  <LucideMapPin size={20} className="flex-shrink-0" />
-                  <div className="flex flex-col w-full overflow-hidden text-left hover:text-white">
-                    <p className="text-xs text-muted-foreground hover:text-white">{t("address")}</p>
-                    <span className="truncate text-sm">
-                      {address?.street || t("select")}
-                    </span>
-                  </div>
-                  <LucideChevronDown size={16} className="ml-auto opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-[250px] h-[600px] p-0 overflow-y-auto">
-                <Command>
-                  <CommandInput
-                    placeholder={t("search")}
-                    value={search}
-                    onValueChange={setSearch}
-                    className="h-9"
-                  />
-                  <CommandEmpty>{t("noResult")}</CommandEmpty>
-                  <CommandGroup className="overflow-y-auto">
-                    {addressData.data
-                      ?.filter((addr) =>
-                        addr.local.toLowerCase().includes(search.toLowerCase())
-                      )
-                      .map((addr) => (
-                        <CommandItem
-                          key={addr.id}
-                          value={addr.id.toString()}
-                          onSelect={() => {
-                            setAddress(addr);
-                            setOpen(false);
-                          }}
-                        >
-                          {addr.street}
-                          {address?.id === addr.id && (
-                            <LucideMapPin className="ml-auto h-4 w-4 opacity-50" />
-                          )}
-                        </CommandItem>
-                      ))}
-                  </CommandGroup>
-                </Command>
-              </PopoverContent>
-            </Popover>
+            // <Popover open={open} onOpenChange={setOpen}>
+            //   <PopoverTrigger asChild>
+            //     <Button
+            //       variant="outline"
+            //       role="combobox"
+            //       aria-expanded={open}
+            //       className="hidden md:flex group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer max-w-[250px] border border-input"
+            //     >
+            //       <LucideMapPin size={20} className="flex-shrink-0" />
+            //       <div className="flex flex-col w-full overflow-hidden text-left hover:text-white">
+            //         <p className="text-xs text-muted-foreground hover:text-white">{t("address")}</p>
+            //         <span className="truncate text-sm">
+            //           {address?.street || t("select")}
+            //         </span>
+            //       </div>
+            //       <LucideChevronDown size={16} className="ml-auto opacity-50" />
+            //     </Button>
+            //   </PopoverTrigger>
+            //   <PopoverContent className="w-[250px] h-[600px] p-0 overflow-y-auto">
+            //     <Command>
+            //       <CommandInput
+            //         placeholder={t("search")}
+            //         value={search}
+            //         onValueChange={setSearch}
+            //         className="h-9"
+            //       />
+            //       <CommandEmpty>{t("noResult")}</CommandEmpty>
+            //       <CommandGroup className="overflow-y-auto">
+            //         {addressData.data
+            //           ?.filter((addr) =>
+            //             addr.local.toLowerCase().includes(search.toLowerCase())
+            //           )
+            //           .map((addr) => (
+            //             <CommandItem
+            //               key={addr.id}
+            //               value={addr.id.toString()}
+            //               onSelect={() => {
+            //                 setAddress(addr);
+            //                 setOpen(false);
+            //               }}
+            //             >
+            //               {addr.street}
+            //               {address?.id === addr.id && (
+            //                 <LucideMapPin className="ml-auto h-4 w-4 opacity-50" />
+            //               )}
+            //             </CommandItem>
+            //           ))}
+            //       </CommandGroup>
+            //     </Command>
+            //   </PopoverContent>
+            // </Popover>
+            <AddAddress>
+              <Button
+                variant="outline"
+                role="combobox"
+                className="hidden md:flex group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer max-w-[250px] border border-input"
+              >
+                <LucideMapPin size={20} className="flex-shrink-0" />
+                <div className="flex flex-col w-full overflow-hidden text-left hover:text-white">
+                  <p className="text-xs text-muted-foreground hover:text-white">{t("address")}</p>
+                  <span className="truncate text-sm">
+                    {address?.street || t("select")}
+                  </span>
+                </div>
+                <LucideChevronDown size={16} className="ml-auto opacity-50" />
+              </Button>
+            </AddAddress>
           ) : (
             <Tooltip>
-              <TooltipTrigger asChild>
+              <TooltipTrigger asChild className="border px-4 rounded-[20px]">
                 <div className="hidden md:flex items-center gap-2 cursor-not-allowed">
                   <LucideMapPin size={16} className="flex-shrink-0 text-gray-300" />
                   <div className="flex flex-col w-full overflow-hidden text-left">
@@ -164,7 +160,7 @@ const Header = () => {
               </TooltipTrigger>
               <TooltipContent className="flex flex-col gap-2 justify-center">
                 <p className="w-[150px]">{t("emptyCart")}</p>
-                <Button variant={"ghost"} className="bg-white text-black hover:bg-gray-50 hover:text-black">{t("goCart")}</Button>
+                <Button onClick={() => router.push("/cart")} variant={"ghost"} className="bg-white text-black hover:bg-gray-50 hover:text-black">{t("goCart")}</Button>
               </TooltipContent>
             </Tooltip>
           )}

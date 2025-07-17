@@ -4,7 +4,7 @@ import { Order, OrderItem } from "@/types/types";
 export default class OrderQuery {
   route = "/orders";
   create = async (
-    data: Omit<Order, "id" | "orderItems" | "createdAt" | "address"> & {
+    data: Omit<Order, "id" | "orderItems" | "createdAt" | "address" | "user"> & {
       orderItems?: Partial<OrderItem>[];
     }
   ): Promise<Order> => {

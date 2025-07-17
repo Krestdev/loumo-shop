@@ -9,6 +9,7 @@ import ProductComp from '../ui/product';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { ChevronRight } from 'lucide-react';
+import PromotionQuery from '@/queries/promotion';
 
 const CategoryComp = ({ slug }: { slug: string }) => {
 
@@ -16,6 +17,13 @@ const CategoryComp = ({ slug }: { slug: string }) => {
     const t = useTranslations("HomePage");
 
     const category = new CategoryQuery();
+    const promotion = new PromotionQuery();
+
+    const promotionData = useQuery({
+        queryKey: ["promotionFetchAll"],
+        queryFn: () => promotion.getAll(),
+    });
+
     const categoryData = useQuery({
         queryKey: ["categoryFetchAll"],
         queryFn: () => category.getAll(),
@@ -49,7 +57,7 @@ const CategoryComp = ({ slug }: { slug: string }) => {
                     {
                         categ?.products?.map((x, i) => {
                             return (
-                                <ProductComp key={i} product={x} promotions={undefined} />
+                                <ProductComp key={i} product={x} promotions={promotionData.data} />
                             )
                         })
                     }

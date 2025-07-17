@@ -25,6 +25,8 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
         decrementOrderItem,
         incrementOrderItem,
         user,
+        address,
+        clearCart
     } = useStore();
     const env = process.env.NEXT_PUBLIC_API_BASE_URL
 
@@ -70,15 +72,25 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
             return total + price * item.quantity;
         }, 0);
     };
-
-    console.log(currentOrderItems);
-
-
-
+    const frais = address?.zone?.price || 0;
+    const totalPrice = getCartTotal() + frais;
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-7 max-w-[1400px] w-full">
             <div className="flex flex-col gap-5 px-6 py-7 rounded-[12px] max-w-[515px] w-full">
-                <p className="text-[24px] text-secondary font-semibold">{t("cart")}</p>
+                <div className='flex items-center justify-between'>
+                    <p className="text-[24px] text-secondary font-semibold">{t("cart")}</p>
+                {
+                    currentOrderItems && currentOrderItems.length > 0 ? (
+                        <Button
+                            variant="outline"
+                            className="bg-red-500 text-white hover:bg-red-500/80 mb-2 w-fit"
+                            onClick={clearCart}
+                        >
+                            {t("clearCart")}
+                        </Button>
+                    ) : null
+                }
+                </div>
                 <div className="flex flex-col gap-2">
                     {currentOrderItems && currentOrderItems.length > 0 ? (
                         currentOrderItems.map((x, i) => {
@@ -89,7 +101,7 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                                 <div key={i} className="flex gap-4 p-4 rounded-[12px] text-gray-50">
                                     {x.productVariant?.imgUrl ? (
                                         <img
-                                            src={`${env}${x.productVariant?.imgUrl}`}
+                                            src={x.productVariant?.imgUrl.includes("http") ? x.productVariant?.imgUrl : `${env}/${x.productVariant?.imgUrl}`}
                                             alt={x.productVariant?.name}
                                             className="max-w-[120px] w-full h-auto aspect-square rounded-[6px]"
                                         />
@@ -99,16 +111,6 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                                         </div>
                                     )}
                                     <div className="flex flex-col gap-1 w-full">
-                                        <div className="w-full flex justify-end">
-                                            <Button
-                                                onClick={() => removeOrderItem(x.productVariantId)}
-                                                variant="ghost"
-                                                className="text-red-600 h-[19px] hover:bg-gray-50 hover:text-red-600"
-                                            >
-                                                <LucideTrash />
-                                                {t("remove")}
-                                            </Button>
-                                        </div>
                                         <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                                             <div className="flex flex-col gap-1">
                                                 <p className="text-gray-700 font-semibold">{product?.name}</p>
@@ -149,36 +151,46 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                                                 })()}
                                             </div>
 
-                                            <div className="flex flex-row items-center gap-2">
+                                            <div className='flex flex-col gap-2 h-full justify-end-end'>
                                                 <Button
-                                                    type="button"
-                                                    onClick={() => decrementOrderItem(x.productVariantId, promotions!)}
-                                                    variant="outline"
-                                                    className="w-8 h-8 p-0 text-black hover:text-white"
-                                                    disabled={!x.productVariant}
+                                                    onClick={() => removeOrderItem(x.productVariantId)}
+                                                    variant="ghost"
+                                                    className="text-red-600 bg-red-600/10 w-fit h-[25px] hover:bg-gray-50 hover:text-red-600"
                                                 >
-                                                    -
+                                                    <LucideTrash />
+                                                    {t("remove")}
                                                 </Button>
-                                                <Input
-                                                    value={quantity}
-                                                    onChange={(e) =>
-                                                        addOrderItem({
-                                                            variant: x.productVariant!, note: "",
-                                                            promotions: promotions!
-                                                        }, parseInt(e.target.value))
-                                                    }
-                                                    className="w-12 text-center text-black"
-                                                    disabled={!x.productVariant}
-                                                />
-                                                <Button
-                                                    type="button"
-                                                    onClick={() => incrementOrderItem(x.productVariantId, promotions!)}
-                                                    variant="outline"
-                                                    className="w-8 h-8 p-0 text-black hover:text-white"
-                                                    disabled={!x.productVariant}
-                                                >
-                                                    +
-                                                </Button>
+                                                <div className="flex flex-row items-center gap-2">
+                                                    <Button
+                                                        type="button"
+                                                        onClick={() => decrementOrderItem(x.productVariantId, promotions!)}
+                                                        variant="outline"
+                                                        className="w-8 h-8 p-0 text-black hover:text-white"
+                                                        disabled={!x.productVariant}
+                                                    >
+                                                        -
+                                                    </Button>
+                                                    <Input
+                                                        value={quantity}
+                                                        onChange={(e) =>
+                                                            addOrderItem({
+                                                                variant: x.productVariant!, note: "",
+                                                                promotions: promotions!
+                                                            }, parseInt(e.target.value))
+                                                        }
+                                                        className="w-12 text-center text-black"
+                                                        disabled={!x.productVariant}
+                                                    />
+                                                    <Button
+                                                        type="button"
+                                                        onClick={() => incrementOrderItem(x.productVariantId, promotions!)}
+                                                        variant="outline"
+                                                        className="w-8 h-8 p-0 text-black hover:text-white"
+                                                        disabled={!x.productVariant}
+                                                    >
+                                                        +
+                                                    </Button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -193,7 +205,7 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
 
             {/* ✅ Passe onValidate ici */}
             {currentOrderItems.length > 0 && (
-                <DeliveryPaymentForm user={user} onValidate={onValidate ?? (() => { })} totalPrice={getCartTotal()} />
+                <DeliveryPaymentForm user={user} onValidate={onValidate ?? (() => { })} totalPrice={totalPrice} />
             )}
         </div>
     );

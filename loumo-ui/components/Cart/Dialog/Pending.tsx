@@ -1,34 +1,34 @@
-import { Button } from "@/components/ui/button"
+"use client";
+
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import { useTranslations } from "next-intl"
+} from "@/components/ui/dialog";
+import { Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface Props {
-    children: React.JSX.Element
+    open: boolean,
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
-
-export function Awaiting({ children }: Props) {
+export default function Pending({ open, setOpen }: Props) {
     const t = useTranslations("Cart.Awaiting")
     return (
-        <Dialog>
-            <DialogTrigger asChild>
-                {children}
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent className="flex flex-col items-center justify-center gap-4 py-10">
                 <DialogHeader>
-                    <DialogTitle>{t("title")}</DialogTitle>
-                    <DialogDescription>
+                    <DialogTitle className="text-center text-xl font-bold">
+                        {t("title")}
+                    </DialogTitle>
+                    <DialogDescription className="text-center">
                         {t("description")}
                     </DialogDescription>
                 </DialogHeader>
+
+                <Loader2 className="h-20 w-20 animate-spin text-primary" />
                 <div className="flex flex-col px-3 gap-3">
                     <p className="text-[14px] text-gray-900 font-normal">{t("action")}</p>
                     <div className="flex flex-col gap-2 pl-1">
@@ -41,12 +41,7 @@ export function Awaiting({ children }: Props) {
                     </div>
 
                 </div>
-                <DialogFooter>
-                    <DialogClose asChild>
-                        <Button variant="outline">{t("close")}</Button>
-                    </DialogClose>
-                </DialogFooter>
             </DialogContent>
         </Dialog>
-    )
+    );
 }
