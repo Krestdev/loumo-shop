@@ -102,7 +102,8 @@
     },
     "Cart": {
       "add": "Ajouter au panier",
-      "close": "Fermer"
+      "close": "Fermer",
+      "outOfStock": "En rupture"
     },
     "ProductDetail": {
       "options": "Options",
@@ -151,7 +152,7 @@
       "close": "Fermer"
     },
     "Success": {
-      "title": "Paiement validé avec succès !",
+      "title": "Voici votre facture :",
       "description": "Paiement confirmé ! Merci pour votre achat. Votre commande est en cours de traitement. Téléchargez votre reçu dans votre historique de commande",
       "close": "Fermer"
     },

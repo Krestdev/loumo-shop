@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/table";
 import { XAF } from "@/lib/utils";
 import OrderQuery from "@/queries/order";
+import ProductQuery from "@/queries/product";
 import ProductVariantQuery from "@/queries/productVariant";
 import PromotionQuery from "@/queries/promotion";
 import ZoneQuery from "@/queries/zone";
@@ -49,6 +50,12 @@ function ViewOrder({ ord, addressId, children }: Props) {
   const variantQuery = new ProductVariantQuery();
   const promotion = new PromotionQuery();
   const orders = new OrderQuery();
+   const product = new ProductQuery();
+
+  const productData = useQuery({
+    queryKey: ["productFetchAll"],
+    queryFn: () => product.getAll(),
+  });
 
   const ordersData = useQuery({
     queryKey: ["ordersFetchAll"],
@@ -243,7 +250,8 @@ function ViewOrder({ ord, addressId, children }: Props) {
           <PDFDownloadLink
             document={
               <OrderInvoice
-              order={order}
+                order={order}
+                products={productData.data}
                 variants={order.orderItems?.map((item) => getVariants.data?.find((x) => x.id === item.productVariantId)) as ProductVariant[]}
                 zones={Array.isArray(order.address?.zone) ? order.address.zone : []}
                 translations={{

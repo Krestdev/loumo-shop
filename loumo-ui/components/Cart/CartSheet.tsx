@@ -52,7 +52,7 @@ export function CartSheet({ open, setOpen }: Props) {
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
-            <SheetContent className="max-w-[340px] w-full max-h-[1080px] h-full overflow-y-auto flex flex-col justify-between">
+            <SheetContent className="max-w-[340px] w-full max-h-[1080px] h-full overflow-y-auto flex flex-col">
                 <div className="flex flex-col">
                     <SheetHeader>
                         <SheetTitle className="text-primary text-[36px] font-semibold border-b border-gray-200">
@@ -165,7 +165,7 @@ export function CartSheet({ open, setOpen }: Props) {
                             setOpen(false);
                             router.push("/cart");
                         }}
-                        className="w-full mb-5 px-5"
+                        className="w-full mb-5 px-5 mt-10 mx-auto max-w-[330px]"
                     >
                         {t("checkout")}
                     </Button>

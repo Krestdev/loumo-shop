@@ -144,7 +144,7 @@ const ProductComp = ({ product, promotions }: Props) => {
                             <Button
                                 key={va.id ?? idx}
                                 onClick={() => setVariant(va)}
-                                className="px-2 py-1 h-[26px] max-w-[50px] truncate flex justify-start"
+                                className="px-2 py-1 h-[26px] truncate flex justify-start"
                                 variant={variant?.id === va.id ? "default" : "ghost"}
                             >
                                 {va.name}
@@ -152,16 +152,19 @@ const ProductComp = ({ product, promotions }: Props) => {
                         ))}
                         {address ?
                             (product?.variants?.length ?? 0) > 2 && (
-                                <Link
-                                    href={`/catalog/${product.slug}`}
-                                    className='px-2 py-1 h-[26px] hover:bg-gray-50 rounded-[20px]'
-                                >
-                                    <div className='h-[18px] w-4 flex items-center justify-center'>+</div>
-                                </Link>
+                                // <Link
+                                //     href={`/catalog/${product.slug}`}
+                                //     className='px-2 py-1 h-[26px] hover:bg-gray-50 rounded-[20px]'
+                                // >
+                                //     <div className='h-[18px] w-4 flex items-center justify-center'>+</div>
+                                // </Link>
+                                <AddToCard product={product} variant={variant} setVariant={setVariant} promotions={promotions}>
+                                    <div className='h-[18px] w-4 flex items-center justify-center cursor-pointer'>+</div>
+                                </AddToCard>
                             ) :
                             <AddAddress>
                                 <Button
-                                variant={"ghost"}
+                                    variant={"ghost"}
                                     className='px-2 py-1 h-[26px] hover:bg-gray-50 hover:text-black rounded-[20px] w-fit'
                                 >
                                     <div className='h-[18px] w-4 flex items-center justify-center'>+</div>

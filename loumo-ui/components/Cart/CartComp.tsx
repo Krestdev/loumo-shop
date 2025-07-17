@@ -25,7 +25,8 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
         decrementOrderItem,
         incrementOrderItem,
         user,
-        address
+        address,
+        clearCart
     } = useStore();
     const env = process.env.NEXT_PUBLIC_API_BASE_URL
 
@@ -76,7 +77,20 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-7 max-w-[1400px] w-full">
             <div className="flex flex-col gap-5 px-6 py-7 rounded-[12px] max-w-[515px] w-full">
-                <p className="text-[24px] text-secondary font-semibold">{t("cart")}</p>
+                <div className='flex items-center justify-between'>
+                    <p className="text-[24px] text-secondary font-semibold">{t("cart")}</p>
+                {
+                    currentOrderItems && currentOrderItems.length > 0 ? (
+                        <Button
+                            variant="outline"
+                            className="bg-red-500 text-white hover:bg-red-500/80 mb-2 w-fit"
+                            onClick={clearCart}
+                        >
+                            {t("clearCart")}
+                        </Button>
+                    ) : null
+                }
+                </div>
                 <div className="flex flex-col gap-2">
                     {currentOrderItems && currentOrderItems.length > 0 ? (
                         currentOrderItems.map((x, i) => {

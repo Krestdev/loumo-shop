@@ -1,11 +1,13 @@
 "use client";
-import { Order, ProductVariant, Zone } from "@/types/types";
+
+import { Order, Product, ProductVariant, Zone } from "@/types/types";
 import {
   Document,
   Page,
   StyleSheet,
   Text,
   View,
+  Image
 } from "@react-pdf/renderer";
 import { format } from "date-fns";
 
@@ -59,7 +61,8 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  order: Order;
+  products?: Product[]
+  order?: Order;
   variants: ProductVariant[];
   zones: Zone[];
   translations: {
@@ -84,36 +87,37 @@ type Props = {
 
 export const OrderInvoice = ({
   order,
+  products,
   variants,
   zones,
   translations,
 }: Props) => {
   const zoneName =
-    zones.find((z) => z.id === order.address?.id)?.name || "-";
+    zones.find((z) => z.id === order?.address?.id)?.name || "-";
 
   return (
     <Document>
       <Page size="A5" style={styles.page}>
         <View style={styles.header}>
-            <img src={"/Images/Logo.png"} style={styles.logo} alt="logo" />
+          <Image src={"/logo.png"} style={styles.logo} />
           <Text style={styles.title}>{translations.title}</Text>
-          <Text>{`${translations.order} #${order.id} ${translations.of} ${format(
+          <Text>{`${translations.order} #${order?.id} ${translations.of} ${order?.createdAt ? format(
             order.createdAt,
             "dd/MM/yyyy - HH:mm"
-          )}`}</Text>
+          ) : "-"}`}</Text>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.bold}>{translations.client} :</Text>
           <Text>
-            {translations.name} : {order.user.name}
+            {translations.name} : {order?.user.name}
           </Text>
           <Text>
-            {translations.email} : {order.user.email}
+            {translations.email} : {order?.user.email}
           </Text>
-          {order.user.tel && (
+          {order?.user.tel && (
             <Text>
-              {translations.phone} : {order.user.tel}
+              {translations.phone} : {order?.user.tel}
             </Text>
           )}
         </View>
@@ -121,7 +125,7 @@ export const OrderInvoice = ({
         <View style={styles.section}>
           <Text style={styles.bold}>Livraison :</Text>
           <Text>
-            {translations.address} : {order.address?.street}
+            {translations.address} : {order?.address?.street}
           </Text>
           <Text>
             {translations.zone} : {zoneName}
@@ -137,14 +141,16 @@ export const OrderInvoice = ({
             <Text style={styles.cell}>{translations.unitPrice}</Text>
             <Text style={styles.cell}>{translations.total}</Text>
           </View>
-          {order.orderItems?.map((item, i) => {
+          {order?.orderItems?.map((item, i) => {
             const variant = variants.find(
               (v) => v.id === item.productVariantId
             );
+            const product = products?.find(p => p.variants.some(v => v.id === variant?.id))
+
             return (
               <View style={styles.tableRow} key={i}>
                 <Text style={[styles.cell, { flex: 2 }]}>
-                  {variant?.name || translations.unknownP}
+                  {`${product?.name} (${variant?.name})` || translations.unknownP}
                 </Text>
                 <Text style={styles.cell}>{item.quantity}</Text>
                 <Text style={styles.cell}>
@@ -161,16 +167,16 @@ export const OrderInvoice = ({
         <View style={[styles.section, { marginTop: 10 }]}>
           <View style={styles.row}>
             <Text>{translations.subtotal} :</Text>
-            <Text>{order.total} FCFA</Text>
+            <Text>{order?.total} FCFA</Text>
           </View>
           <View style={styles.row}>
             <Text>{translations.deliveryFee} :</Text>
-            <Text>{order.deliveryFee} FCFA</Text>
+            <Text>{order?.deliveryFee} FCFA</Text>
           </View>
           <View style={styles.row}>
             <Text style={styles.bold}>{translations.total} :</Text>
             <Text style={styles.bold}>
-              {order.total + order.deliveryFee} FCFA
+              {(order?.total ?? 0) + (order?.deliveryFee ?? 0)} FCFA
             </Text>
           </View>
         </View>
