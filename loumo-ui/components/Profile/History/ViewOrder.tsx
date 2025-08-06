@@ -253,7 +253,7 @@ function ViewOrder({ ord, addressId, children }: Props) {
                 order={order}
                 products={productData.data}
                 variants={order.orderItems?.map((item) => getVariants.data?.find((x) => x.id === item.productVariantId)) as ProductVariant[]}
-                zones={Array.isArray(order.address?.zone) ? order.address.zone : []}
+                zones={order.address.zone}
                 translations={{
                   title: t1("title"),
                   order: t1("order"),
@@ -271,6 +271,9 @@ function ViewOrder({ ord, addressId, children }: Props) {
                   unknownP: t1("unknownProduct"),
                   subtotal: t1("subtotal"),
                   deliveryFee: t1("deliveryFee"),
+                  conditions: t1("conditions"),
+                  status: t1("status"),
+                  lieu: t1("lieu"),
                 }}
               />
             }

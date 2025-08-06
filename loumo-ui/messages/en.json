@@ -1,7 +1,7 @@
 {
   "Maintenance": {
     "redaction": "Under construction",
-    "maintenance": "Under maintenance",
+    "maintenance": "The application is currently under maintenance",
     "emptyProduct": "No products available in your delivery area"
   },
   "Header": {
@@ -121,6 +121,8 @@
     }
   },
   "Cart": {
+    "lieu": "Place name",
+    "exLieu": "ex: Bonamoussadi Public School",
     "noAddress": "No saved addresses",
     "cart": "Cart",
     "checkout": "Checkout",
@@ -180,7 +182,10 @@
       "total": "Total",
       "unknownProduct": "Unknown product",
       "subtotal": "Subtotal",
-      "deliveryFee": "Delivery fee"
+      "deliveryFee": "Delivery fee",
+      "conditions": "Products sold are neither returned nor exchanged.",
+      "status": "Status",
+      "lieu":"Place name"
     }
   },
   "Login": {
@@ -193,7 +198,9 @@
     "password": "Password",
     "forgot": "Forgot password?",
     "notYet": "Not registered yet?",
-    "signIn": "Sign up"
+    "signIn": "Sign up",
+    "withGoogle": "Log in with Google",
+    "or": "or"
   },
   "SignUp": {
     "signUp": "Sign up",
@@ -207,7 +214,8 @@
     "forgot": "Forgot password?",
     "alreaddy": "Already have an account?",
     "login": "Log in",
-    "verified": "Email verified"
+    "verified": "Email verified",
+    "or": "or"
   },
   "Password": {
     "resetPassword": "Password reset",

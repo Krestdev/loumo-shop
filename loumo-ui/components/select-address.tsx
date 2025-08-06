@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useTranslations } from "next-intl";
-import {  useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import AddressQuery from "@/queries/address";
 import { LucideMapPin } from "lucide-react";
@@ -25,6 +25,7 @@ import {
   CommandGroup,
   CommandItem,
 } from "@/components/ui/command";
+import ZoneQuery from "@/queries/zone";
 
 interface Props {
   children: React.ReactNode;
@@ -39,12 +40,18 @@ export function AddAddress({ children }: Props) {
   const debouncedSearch = useDebounce(search, 300);
 
   const addressQ = new AddressQuery();
+  const zoneQuery = new ZoneQuery();
+
+  const zoneData = useQuery({
+    queryKey: ["zoneData"],
+    queryFn: () => zoneQuery.getAll()
+  })
   const { data: addresses = [], isLoading } = useQuery({
     queryKey: ["addressData"],
     queryFn: () => addressQ.getAll(),
   });
 
-  const filteredAddresses = addresses.filter((addr) =>
+  const filteredAddresses = zoneData.data?.filter((zone) => zone.status === "ACTIVE").flatMap((zone) => zone.addresses).filter((addr) =>
     addr.street?.toLowerCase().includes(debouncedSearch.toLowerCase())
   );
 
@@ -77,7 +84,7 @@ export function AddAddress({ children }: Props) {
               <>
                 <CommandEmpty>{t("noResult")}</CommandEmpty>
                 <CommandGroup>
-                  {filteredAddresses.map((addr) => (
+                  {filteredAddresses?.map((addr) => (
                     <CommandItem
                       key={addr.id}
                       value={addr.id.toString()}

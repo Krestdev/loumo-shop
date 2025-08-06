@@ -51,7 +51,7 @@ const CategoriesNav = () => {
                 <div className="inline-flex gap-3">
                     {categoryData.isLoading && Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="w-20 h-10 rounded-none" />)}
                     {categoryData.isSuccess &&
-                        categoryData.data.filter(category => category.products?.some(product => product.variants && product.variants.length > 0 && product.variants.some((variant) =>
+                        categoryData.data.filter(category => category.display === true && category.products?.some(product => product.variants && product.variants.length > 0 && product.variants.some((variant) =>
                             variant.stock?.some((stock) =>
                                 stock.shop?.address?.zoneId === address?.zoneId
                             )))).map((x, i) => {

@@ -79,57 +79,6 @@ const Header = () => {
           {/* Adresse sélectionnable uniquement si panier vide */}
 
           {currentOrderItems.length <= 0 ? (
-            // <Popover open={open} onOpenChange={setOpen}>
-            //   <PopoverTrigger asChild>
-            //     <Button
-            //       variant="outline"
-            //       role="combobox"
-            //       aria-expanded={open}
-            //       className="hidden md:flex group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer max-w-[250px] border border-input"
-            //     >
-            //       <LucideMapPin size={20} className="flex-shrink-0" />
-            //       <div className="flex flex-col w-full overflow-hidden text-left hover:text-white">
-            //         <p className="text-xs text-muted-foreground hover:text-white">{t("address")}</p>
-            //         <span className="truncate text-sm">
-            //           {address?.street || t("select")}
-            //         </span>
-            //       </div>
-            //       <LucideChevronDown size={16} className="ml-auto opacity-50" />
-            //     </Button>
-            //   </PopoverTrigger>
-            //   <PopoverContent className="w-[250px] h-[600px] p-0 overflow-y-auto">
-            //     <Command>
-            //       <CommandInput
-            //         placeholder={t("search")}
-            //         value={search}
-            //         onValueChange={setSearch}
-            //         className="h-9"
-            //       />
-            //       <CommandEmpty>{t("noResult")}</CommandEmpty>
-            //       <CommandGroup className="overflow-y-auto">
-            //         {addressData.data
-            //           ?.filter((addr) =>
-            //             addr.local.toLowerCase().includes(search.toLowerCase())
-            //           )
-            //           .map((addr) => (
-            //             <CommandItem
-            //               key={addr.id}
-            //               value={addr.id.toString()}
-            //               onSelect={() => {
-            //                 setAddress(addr);
-            //                 setOpen(false);
-            //               }}
-            //             >
-            //               {addr.street}
-            //               {address?.id === addr.id && (
-            //                 <LucideMapPin className="ml-auto h-4 w-4 opacity-50" />
-            //               )}
-            //             </CommandItem>
-            //           ))}
-            //       </CommandGroup>
-            //     </Command>
-            //   </PopoverContent>
-            // </Popover>
             <AddAddress>
               <Button
                 variant="outline"

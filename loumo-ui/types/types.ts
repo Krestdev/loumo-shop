@@ -18,6 +18,7 @@ export type Zone = {
   id: number;
   price: number;
   addresses: Address[];
+  status: string;
 };
 
 export type Agent = {
@@ -36,6 +37,7 @@ export type Category = {
   products?: Product[];
   imgUrl?: string;
   slug: string;
+  display: boolean;
 };
 
 export type Delivery = {

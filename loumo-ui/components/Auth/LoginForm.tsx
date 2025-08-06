@@ -22,6 +22,7 @@ import { useStore } from "@/providers/datastore"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Loader } from "lucide-react"
+import GoogleLogin from "./GoogleLogin"
 
 const phoneSchema = z.object({
   phone: z.string().min(9, "Numéro invalide"),
@@ -106,10 +107,13 @@ export default function LoginForm() {
           <h1 className="text-center">{t("login")}</h1>
           <p className="text-[14px] text-gray-700 text-center">{t("description")}</p>
         </div>
+        <div className="flex flex-col items-center gap-5">
+          <GoogleLogin />
 
-        <div className="max-w-[360px] w-full flex flex-col items-center gap-7">
-          <div className="flex flex-col items-center gap-4 w-full">
-            {/* {method === "phone" ? (
+          <p className="text-[14px] text-gray-700 text-center">{t("or")}</p>
+          <div className="max-w-[360px] w-full flex flex-col items-center gap-7">
+            <div className="flex flex-col items-center gap-4 w-full">
+              {/* {method === "phone" ? (
               <Button type="button" onClick={() => setMethod("email")} variant="outline">
                 {t("emailLog")}
               </Button>
@@ -119,41 +123,61 @@ export default function LoginForm() {
               </Button>
             )} */}
 
-            {method === "phone" ? (
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>{t("phone")}</FormLabel>
-                    <FormControl>
-                      <div className="w-full relative">
-                        <Input
-                          type="tel"
-                          placeholder="ex: 677 77 88 88"
-                          {...field}
-                          className="w-full pl-14"
-                        />
-                        <div className="absolute bg-accent/20 rounded-l-[20px] top-[0%] h-9 flex items-center justify-center px-2 -z-10">
-                          <p className="text-gray-900">{"+237"}</p>
+              {method === "phone" ? (
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>{t("phone")}</FormLabel>
+                      <FormControl>
+                        <div className="w-full relative">
+                          <Input
+                            type="tel"
+                            placeholder="ex: 677 77 88 88"
+                            {...field}
+                            className="w-full pl-14"
+                          />
+                          <div className="absolute bg-accent/20 rounded-l-[20px] top-[0%] h-9 flex items-center justify-center px-2 -z-10">
+                            <p className="text-gray-900">{"+237"}</p>
+                          </div>
                         </div>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            ) : (
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ) : (
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>{t("email")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="email"
+                          placeholder="ex: exemple@email.com"
+                          {...field}
+                          className="w-full"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
               <FormField
                 control={form.control}
-                name="email"
+                name="password"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>{t("email")}</FormLabel>
+                    <FormLabel>{t("password")}</FormLabel>
                     <FormControl>
                       <Input
-                        type="email"
-                        placeholder="ex: exemple@email.com"
+                        type="password"
+                        placeholder="********"
                         {...field}
                         className="w-full"
                       />
@@ -162,37 +186,18 @@ export default function LoginForm() {
                   </FormItem>
                 )}
               />
-            )}
 
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>{t("password")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="********"
-                      {...field}
-                      className="w-full"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="flex flex-col gap-4 w-full">
-              <Button disabled={userData.isPending || isPending} type="submit" className="w-full">
-                {isPending || userData.isPending && <Loader className='animate-spin mr-2' size={16} />}
-                {t("login")}
-              </Button>
-              <div className="flex items-center justify-between w-full">
-                <Link href={"/auth/restore-password"} className="px-0 text-[14px] text-primary underline font-semibold">{t("forgot")}</Link>
-                <div className="flex items-center gap-2">
-                  <Button variant={"link"} className="px-0 cursor-default no-underline text-black">{t("notYet")}</Button>
-                  <Link href={"/auth/register"} className="px-0 text-[14px] text-primary underline font-semibold">{t("signIn")}</Link>
+              <div className="flex flex-col gap-4 w-full">
+                <Button disabled={userData.isPending || isPending} type="submit" className="w-full">
+                  {isPending || userData.isPending && <Loader className='animate-spin mr-2' size={16} />}
+                  {t("login")}
+                </Button>
+                <div className="flex items-center justify-between w-full">
+                  <Link href={"/auth/restore-password"} className="px-0 text-[14px] text-primary underline font-semibold">{t("forgot")}</Link>
+                  <div className="flex items-center gap-2">
+                    <Button variant={"link"} className="px-0 cursor-default no-underline text-black">{t("notYet")}</Button>
+                    <Link href={"/auth/register"} className="px-0 text-[14px] text-primary underline font-semibold">{t("signIn")}</Link>
+                  </div>
                 </div>
               </div>
             </div>

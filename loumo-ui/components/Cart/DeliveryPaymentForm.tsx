@@ -25,11 +25,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { User } from "@/types/types"
 import { useState } from "react"
-import { LoginDialog } from "../Auth/loginDialog"
 import { useStore } from "@/providers/datastore"
 import { useQuery } from "@tanstack/react-query"
 import ZoneQuery from "@/queries/zone"
-
+import { AuthDialog } from "../Auth/Dialog"
 
 const formSchema = z.object({
     tel: z.string().min(8, { message: "Numéro trop court" }).max(15, { message: "Numéro trop long" }),
@@ -47,12 +46,16 @@ const formSchema = z.object({
     }
 });
 
+const formSchema2 = z.object({
+    lieu: z.string().min(2, { message: "Description requise" }),
+})
+
 type FormValues = z.infer<typeof formSchema>
 
 const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | null; onValidate: () => void; totalPrice: number }) => {
     const t = useTranslations("Cart")
     const [level, setLevel] = useState<"summary" | "paiement">("summary")
-    const { address } = useStore();
+    const { address, setOrderNote} = useStore();
 
     const zoneQuery = new ZoneQuery();
     const zoneData = useQuery({
@@ -71,6 +74,13 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
         },
     })
 
+    const form2 = useForm({
+        resolver: zodResolver(formSchema2),
+        defaultValues: {
+            lieu: "",
+        },
+    })
+
     const paymentMethod = form.watch("paymentMethod")
 
     const onSubmit = () => {
@@ -80,11 +90,13 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col max-w-[515px] w-full gap-7">
+
                 {/* LIVRAISON */}
                 <div className="flex flex-col gap-5 px-6 py-7 rounded-[12px]">
                     <p className="text-[24px] text-secondary font-semibold pb-5 border-b">
                         {t("delivery")}
                     </p>
+
                     <div className="flex flex-col gap-2">
                         <div className="flex gap-4 items-end">
                             <img
@@ -101,6 +113,23 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                         </div>
                     </div>
 
+                    {/* Champ lieu avec validation visible */}
+                    <Form {...form2}>
+                        <FormField
+                            control={form2.control}
+                            name="lieu"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-col gap-2">
+                                    <FormLabel className="font-medium text-[14px] text-gray-900">{t("lieu")}</FormLabel>
+                                    <FormControl>
+                                        <Input type="text" {...field} placeholder={t("exLieu")} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </Form>
+
                     <FormField
                         control={form.control}
                         name="tel"
@@ -108,7 +137,7 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                             <FormItem className="flex flex-col gap-2">
                                 <FormLabel className="font-medium text-[14px] text-gray-900">{t("contact")}</FormLabel>
                                 <FormControl>
-                                    <Input defaultValue={user?.tel?.toString()} type="tel" {...field} />
+                                    <Input type="tel" {...field} placeholder="ex: 6 77 77 77 77" />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -116,6 +145,7 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                     />
                 </div>
 
+                {/* ÉTAPE SUMMARY */}
                 {level === "summary" ? (
                     <div className="flex flex-col gap-5 px-6 py-7 rounded-[12px] w-full">
                         <p className="text-[24px] text-secondary font-semibold">{t("summary")}</p>
@@ -142,23 +172,37 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
 
                         <div className="grid grid-cols-2 gap-5 pt-5 border-t">
                             <p className="text-gray-600 font-bold text-[18px]">{t("total")}</p>
-                            <p className="text-secondary font-bold text-[18px] text-end">{`${totalPrice} FCFA`}</p>
+                            <p className="text-secondary font-bold text-[18px] text-end">{`${totalPrice + frais} FCFA`}</p>
                         </div>
 
-                        {
-                            user ?
-                                <Button onClick={() => setLevel("paiement")} className="h-12 rounded-[24px]">
+                        {user ? (
+                            <Button
+                                type="button"
+                                className="h-12 rounded-[24px]"
+                                onClick={async (e) => {
+                                        e.preventDefault();
+                                        const isValid = await form2.trigger();
+                                        if (isValid) {
+                                            setOrderNote(form2.getValues("lieu"));
+                                            setLevel("paiement");
+                                        }
+                                    }}
+                            >
+                                {t("continue")}
+                            </Button>
+                        ) : (
+                            <AuthDialog>
+                                <Button
+                                    type="button"
+                                    className="h-12 rounded-[24px]"
+                                >
                                     {t("continue")}
                                 </Button>
-                                :
-                                <LoginDialog>
-                                    <Button className="h-12 rounded-[24px]">
-                                        {t("continue")}
-                                    </Button>
-                                </LoginDialog>
-                        }
+                            </AuthDialog>
+                        )}
                     </div>
                 ) : (
+                    // ÉTAPE PAIEMENT
                     <div className="flex flex-col gap-5 px-6 py-7 rounded-[12px]">
                         <p className="text-[24px] text-secondary font-semibold pb-5 border-b">{t("payment")}</p>
 
@@ -171,7 +215,7 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                                         <FormLabel className="font-medium text-[14px] text-gray-900 w-full">
                                             {t("payment")}
                                         </FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <Select onValueChange={field.onChange} value={field.value}>
                                             <FormControl>
                                                 <SelectTrigger className="w-full">
                                                     <SelectValue placeholder={t("payment")} />
@@ -199,7 +243,7 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                                         <FormItem className="flex flex-col gap-2">
                                             <FormLabel className="font-medium text-[14px] text-gray-900">{t("number")}</FormLabel>
                                             <FormControl>
-                                                <Input defaultValue={user?.tel?.toString()} type="tel" {...field} />
+                                                <Input type="tel" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -207,18 +251,17 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                                 />
                             )}
 
-                            {
-                                user ?
-                                    <Button type="submit" className="h-12 rounded-[24px]">
+                            {user ? (
+                                <Button type="submit" className="h-12 rounded-[24px]">
+                                    {t("continue")}
+                                </Button>
+                            ) : (
+                                <AuthDialog>
+                                    <Button className="h-12 rounded-[24px]">
                                         {t("continue")}
                                     </Button>
-                                    :
-                                    <LoginDialog>
-                                        <Button className="h-12 rounded-[24px]">
-                                            {t("continue")}
-                                        </Button>
-                                    </LoginDialog>
-                            }
+                                </AuthDialog>
+                            )}
                         </div>
                     </div>
                 )}

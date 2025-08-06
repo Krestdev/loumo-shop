@@ -1,12 +1,13 @@
 import { PDFViewer } from '@react-pdf/renderer'
 import React from 'react'
 import { OrderInvoice } from '../OrderInvoice'
-import { Order, Product, ProductVariant } from '@/types/types'
+import { Order, Product, ProductVariant, Zone } from '@/types/types'
 
 interface Props {
     order?: Order
     products?: Product[]
     getVariants: ProductVariant[]
+    zones?: Zone[]
     translations: {
         title: string;
         order: string;
@@ -24,10 +25,15 @@ interface Props {
         unknownP: string;
         subtotal: string;
         deliveryFee: string;
+        conditions: string;
+        status: string;
+        lieu: string;
     }
 }
 
-const Pdfview = ({order, getVariants, translations, products}: Props) => {
+const Pdfview = ({order, getVariants, translations, products, zones}: Props) => {
+
+  const zone = zones?.find((z) => z.id === order?.address?.zoneId) 
     
   return (
     <>
@@ -37,7 +43,7 @@ const Pdfview = ({order, getVariants, translations, products}: Props) => {
             <OrderInvoice
               order={order}
               variants={getVariants ?? []}
-              zones={Array.isArray(order?.address?.zone) ? order.address.zone : []} 
+              zones={zone} 
               translations={translations}
               products={products}
             />

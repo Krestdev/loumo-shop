@@ -1,7 +1,7 @@
 {
   "Maintenance": {
     "redaction": "En cours de rédaction",
-    "maintenance": "En maintenance",
+    "maintenance": "L'application est actuellement en maintenance",
     "emptyProduct": "Aucun produit disponible dans votre zone de livraison"
   },
   "Header": {
@@ -121,6 +121,8 @@
     }
   },
   "Cart": {
+    "lieu": "Lieu dit",
+    "exLieu": "ex: Ecole publique Bonamoussadi",
     "noAddress": "Aucune adresse enregistrée",
     "cart": "Panier",
     "checkout": "Passer commande",
@@ -177,7 +179,10 @@
       "total": "Total",
       "unknownProduct": "Produit inconnu",
       "subtotal": "Sous-total",
-      "deliveryFee": "Frais de livraison"
+      "deliveryFee": "Frais de livraison",
+      "conditions": "Les marchandises vendues ne sont ni reprises ni échangées.",
+      "status": "Statut",
+      "lieu":"Lieu dit"
     }
   },
   "Login": {
@@ -190,7 +195,9 @@
     "password": "Mot de passe",
     "forgot": "Mot de passe oublié ?",
     "notYet": "Pas encore inscrit ?",
-    "signIn": "S'inscrire"
+    "signIn": "S'inscrire",
+    "withGoogle": "Se connecter avec Google",
+    "or": "ou"
   },
   "SignUp": {
     "signUp": "Inscription",
@@ -204,7 +211,8 @@
     "forgot": "Mot de passe oublié ?",
     "alreaddy": "Vous avez déjà un compte ?",
     "login": "Se connecter",
-    "verified": "Email vérifié"
+    "verified": "Email vérifié",
+    "or": "ou"
   },
   "Password": {
     "resetPassword": "Réinitialisation du mot de passe",

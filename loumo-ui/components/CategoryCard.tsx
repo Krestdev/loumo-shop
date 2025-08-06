@@ -49,5 +49,3 @@ const CategoryCard = ({ category }: { category: Category }) => {
 }
 
 export default CategoryCard
-
-

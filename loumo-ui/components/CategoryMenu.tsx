@@ -32,6 +32,7 @@ export function CategoryMenu() {
     // Sinon, on filtre les catégories avec produits en stock dans la zone
     return allCategories
       .filter((category) =>
+        category.display === true &&
         category.products?.some((product) =>
           product.variants?.some((variant) =>
             variant.stock?.some((stock) =>

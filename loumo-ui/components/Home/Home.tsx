@@ -18,8 +18,8 @@ const Home = () => {
   const t1 = useTranslations("Maintenance")
   const { address } = useStore()
 
-  const product = new ProductQuery();
   const promotion = new PromotionQuery();
+  const product = new ProductQuery();
 
   // 🔄 Récupération des produits
   const productData = useQuery({

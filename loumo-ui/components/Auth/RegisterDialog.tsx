@@ -16,13 +16,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Loader } from "lucide-react"
 import { useTranslations } from "next-intl"
-import Link from "next/link"
 import { useMutation } from "@tanstack/react-query"
 import UserQuery from "@/queries/user"
-import { useRouter } from "next/navigation"
-import { useTransition } from "react"
-import { Loader } from "lucide-react"
+import React, { useTransition } from "react"
 import { RegisterPayload } from "@/types/types"
 import GoogleLogin from "./GoogleLogin"
 
@@ -44,10 +42,13 @@ const formSchema = z
 
 type FormData = z.infer<typeof formSchema>
 
+interface Props {
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+    setPage: React.Dispatch<React.SetStateAction<"login" | "register">>
+}
 
-export default function SignUpForm() {
+export default function SignUpDialog({ setOpen, setPage }: Props) {
     const t = useTranslations("SignUp")
-    const router = useRouter()
     const user = new UserQuery()
     const [isPending, startTransition] = useTransition()
 
@@ -67,7 +68,7 @@ export default function SignUpForm() {
         mutationKey: ["register"],
         mutationFn: (data: RegisterPayload) => user.register(data),
         onSuccess: () => {
-            router.push("/auth/login")
+            setOpen(false)
         },
         onError: (err) => {
             console.error("Erreur d'inscription", err)
@@ -87,22 +88,17 @@ export default function SignUpForm() {
 
     return (
         <Form {...form}>
-            <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="w-full max-w-[512px] mx-auto py-24 flex flex-col items-center gap-10"
-            >
-                <div className="flex flex-col gap-2">
-                    <h1 className="text-center">{t("signUp")}</h1>
-                    <p className="text-[14px] text-gray-700 text-center">{t("description")}</p>
-                </div>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+
+                <p className="text-sm text-center text-gray-700">{t("description")}</p>
+
                 <div className="flex flex-col items-center gap-5">
 
+
                     <GoogleLogin />
-
                     <p className="text-[14px] text-gray-700 text-center">{t("or")}</p>
-
-                    <div className="max-w-[360px] w-full flex flex-col gap-6">
-                        {/* Nom */}
+                    
+                    <div className="space-y-4">
                         <FormField
                             control={form.control}
                             name="name"
@@ -117,7 +113,6 @@ export default function SignUpForm() {
                             )}
                         />
 
-                        {/* Email */}
                         <FormField
                             control={form.control}
                             name="email"
@@ -132,7 +127,6 @@ export default function SignUpForm() {
                             )}
                         />
 
-                        {/* Téléphone */}
                         <FormField
                             control={form.control}
                             name="phone"
@@ -140,14 +134,13 @@ export default function SignUpForm() {
                                 <FormItem>
                                     <FormLabel>{t("phone")}</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="ex: 677778888" type="tel" {...field} />
+                                        <Input type="tel" placeholder="ex: 677778888" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
 
-                        {/* Mot de passe */}
                         <FormField
                             control={form.control}
                             name="password"
@@ -155,14 +148,13 @@ export default function SignUpForm() {
                                 <FormItem>
                                     <FormLabel>{t("password")}</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="********" type="password" {...field} />
+                                        <Input type="password" placeholder="********" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
 
-                        {/* Confirmation mot de passe */}
                         <FormField
                             control={form.control}
                             name="cfPassword"
@@ -170,14 +162,13 @@ export default function SignUpForm() {
                                 <FormItem>
                                     <FormLabel>{t("cfPassword")}</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="********" type="password" {...field} />
+                                        <Input type="password" placeholder="********" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
 
-                        {/* Conditions d'utilisation */}
                         <FormField
                             control={form.control}
                             name="condition"
@@ -190,26 +181,30 @@ export default function SignUpForm() {
                                         />
                                     </FormControl>
                                     <div className="text-sm leading-none">
-                                        <FormLabel>
-                                            {t("accept")}
-                                        </FormLabel>
+                                        <FormLabel>{t("accept")}</FormLabel>
                                     </div>
                                 </FormItem>
                             )}
                         />
 
-                        <div className="flex flex-col gap-4 w-full">
-                            <Button disabled={isPending || userRegister.isPending} type="submit" className="w-full">
-                                {isPending || userRegister.isPending && <Loader className='animate-spin mr-2' size={16} />}
-                                {t("signUp")}
+                        <Button
+                            type="button"
+                            className="w-full"
+                            disabled={isPending || userRegister.isPending}
+                            onClick={() => form.handleSubmit(onSubmit)()}
+                        >
+                            {(isPending || userRegister.isPending) && (
+                                <Loader className="animate-spin mr-2" size={16} />
+                            )}
+                            {t("signUp")}
+                        </Button>
+
+
+                        <div className="flex items-center gap-1">
+                            <span>{t("alreaddy")}</span>
+                            <Button type="button" variant="link" onClick={() => setPage("login")} className="text-primary underline py-0">
+                                {t("login")}
                             </Button>
-                            <div className="flex items-center justify-between w-full">
-                                <Link href={"/auth/restore-password"} className="px-0 text-[14px] text-primary underline font-semibold">{t("forgot")}</Link>
-                                <div className="flex items-center gap-2">
-                                    <Button variant={"link"} className="px-0 cursor-default text-black hover:no-underline">{t("alreaddy")}</Button>
-                                    <Link href={"/auth/login"} className="px-0 text-[14px] text-primary underline font-semibold">{t("login")}</Link>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

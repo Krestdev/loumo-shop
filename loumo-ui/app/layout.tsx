@@ -5,14 +5,15 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import "react18-json-view/src/style.css";
 import QueryProvider from "@/providers/queryProvider";
-import NotificationProvider from "@/providers/notifications";
+// import NotificationProvider from "@/providers/notifications";
 import { getLocale } from "next-intl/server";
 import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
-import Header from "@/components/header";
-import Notification from "@/components/ui/notification";
-import Footer from "@/components/footer";
-import CartController from "@/components/Cart/CartController";
+// import Header from "@/components/header";
+// import Notification from "@/components/ui/notification";
+// import Footer from "@/components/footer";
+// import CartController from "@/components/Cart/CartController";
+import Maintenance from "./maintenance";
 
 const font_sans = DM_Sans({
   variable: "--font-sans",
@@ -34,7 +35,6 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({
-  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
@@ -42,18 +42,24 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
+      <head>
+        {/* Google Identity script */}
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+      </head>
+
       <body
         className={`${font_sans.variable} ${font_mono_bold.variable} ${font_mono_semibold.variable} antialiased`}
       >
         <NextIntlClientProvider locale={locale}>
           <QueryProvider>
-            <NotificationProvider>
+            {/* <NotificationProvider>
               <Notification />
               <Header />
-              <CartController /> 
+              <CartController />
               {children}
               <Footer />
-            </NotificationProvider>
+            </NotificationProvider> */}
+            <Maintenance />
           </QueryProvider>
         </NextIntlClientProvider>
       </body>
