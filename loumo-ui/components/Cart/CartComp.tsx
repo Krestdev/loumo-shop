@@ -79,17 +79,17 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
             <div className="flex flex-col gap-5 px-6 py-7 rounded-[12px] max-w-[515px] w-full">
                 <div className='flex items-center justify-between'>
                     <p className="text-[24px] text-secondary font-semibold">{t("cart")}</p>
-                {
-                    currentOrderItems && currentOrderItems.length > 0 ? (
-                        <Button
-                            variant="outline"
-                            className="bg-red-500 text-white hover:bg-red-500/80 mb-2 w-fit"
-                            onClick={clearCart}
-                        >
-                            {t("clearCart")}
-                        </Button>
-                    ) : null
-                }
+                    {
+                        currentOrderItems && currentOrderItems.length > 0 ? (
+                            <Button
+                                variant="outline"
+                                className="bg-red-500 text-white hover:bg-red-500/80 mb-2 w-fit"
+                                onClick={clearCart}
+                            >
+                                {t("clearCart")}
+                            </Button>
+                        ) : null
+                    }
                 </div>
                 <div className="flex flex-col gap-2">
                     {currentOrderItems && currentOrderItems.length > 0 ? (
@@ -101,10 +101,15 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                                 <div key={i} className="flex gap-4 p-4 rounded-[12px] text-gray-50">
                                     {x.productVariant?.imgUrl ? (
                                         <img
-                                            src={x.productVariant?.imgUrl.includes("http") ? x.productVariant?.imgUrl : `${env}/${x.productVariant?.imgUrl}`}
+                                            src={
+                                                x.productVariant.imgUrl.includes("http")
+                                                    ? x.productVariant.imgUrl
+                                                    : `${env?.replace(/\/$/, "")}/${x.productVariant.imgUrl.replace(/^\//, "")}`
+                                            }
                                             alt={x.productVariant?.name}
                                             className="max-w-[120px] w-full h-auto aspect-square rounded-[6px]"
                                         />
+
                                     ) : (
                                         <div className="flex items-center justify-center max-w-[120px] w-full h-auto aspect-square bg-gray-100 text-white rounded-[6px]">
                                             <LucideDatabase size={40} />

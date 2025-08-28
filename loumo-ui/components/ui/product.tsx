@@ -109,7 +109,16 @@ const ProductComp = ({ product, promotions }: Props) => {
 
                 {address ? <Link className='w-full h-full' href={`/catalog/${product.slug}`}>
                     {variant.imgUrl ? (
-                        <img src={variant.imgUrl.includes("http") ? variant.imgUrl : `${env}${variant.imgUrl}`} alt={variant.name} className='w-full aspect-square h-auto object-cover' />
+                        <img
+                            src={
+                                variant.imgUrl.includes("http")
+                                    ? variant.imgUrl
+                                    : `${env?.replace(/\/$/, "")}/${variant.imgUrl.replace(/^\//, "")}`
+                            }
+                            alt={variant.name}
+                            className="w-full aspect-square h-auto object-cover"
+                        />
+
                     ) : (
                         <div className='flex items-center justify-center w-full h-auto aspect-square object-cover bg-gray-100 text-white'>
                             <LucideDatabase size={80} />

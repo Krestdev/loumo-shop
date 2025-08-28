@@ -5,15 +5,15 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import "react18-json-view/src/style.css";
 import QueryProvider from "@/providers/queryProvider";
-// import NotificationProvider from "@/providers/notifications";
 import { getLocale } from "next-intl/server";
 import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
-// import Header from "@/components/header";
-// import Notification from "@/components/ui/notification";
-// import Footer from "@/components/footer";
-// import CartController from "@/components/Cart/CartController";
 import Maintenance from "./maintenance";
+import NotificationProvider from "@/providers/notifications";
+import Notification from "@/components/ui/notification";
+import Header from "@/components/header";
+import CartController from "@/components/Cart/CartController";
+import Footer from "@/components/footer";
 
 const font_sans = DM_Sans({
   variable: "--font-sans",
@@ -35,6 +35,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
@@ -52,14 +53,14 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider locale={locale}>
           <QueryProvider>
-            {/* <NotificationProvider>
+            <NotificationProvider>
               <Notification />
               <Header />
               <CartController />
               {children}
               <Footer />
-            </NotificationProvider> */}
-            <Maintenance />
+            </NotificationProvider>
+            {/* <Maintenance /> */}
           </QueryProvider>
         </NextIntlClientProvider>
       </body>

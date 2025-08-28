@@ -38,6 +38,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
 
   const [currentvar, setCurrentvar] = useState<number>();
   const [quantity, setQuantity] = useState(1);
+  const [available, setAvailable] = useState(true);
 
   const userData = useMutation({
     mutationKey: ["favorite"],
@@ -93,9 +94,14 @@ const ProductDetails = ({ slug }: { slug: string }) => {
       return shop?.address?.zoneId === addressId;
     });
 
-    if (!isAvailableInZone) {
-      router.push("/");
-    }
+    setAvailable(!isAvailableInZone);
+
+    console.log(available);
+    
+
+    // if (!isAvailableInZone) {
+    //   router.push("/");
+    // }
   }, [stockData.data, shopData.data, currentvar, addressId, router]);
 
 
@@ -180,10 +186,10 @@ const ProductDetails = ({ slug }: { slug: string }) => {
                     <div
                       key={i}
                       onClick={() => setCurrentvar(x.id)}
-                      className={`cursor-pointer flex flex-col items-center justify-center rounded-[6px] px-3 py-2 w-[153.33px] h-[64px] ${currentvar === x.id ? "bg-primary text-white" : "bg-white text-black border border-gray-300"
+                      className={`cursor-pointer flex flex-col items-center justify-center rounded-[6px] px-3 py-2 w-[155px] h-[64px] ${currentvar === x.id ? "bg-primary text-white" : "bg-white text-black border border-gray-300"
                         }`}
                     >
-                      <p className="text-[18px]">{`${x.weight} KG`}</p>
+                      <p className="text-[18px] text-nowrap">{`${x.name + " " + x.quantity + " " + x.unit}`}</p>
                       <p className="text-[18px]">{`${x.price} FCFA`}</p>
                     </div>
                   ))}
@@ -230,7 +236,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
                     }}
                     initialQuantity={quantity}
                   >
-                    <Button className="h-12 rounded-[24px]">
+                    <Button disabled={available} className="h-12 rounded-[24px]">
                       <LucideShoppingCart />
                       {t("addToCart")}
                     </Button>
@@ -264,6 +270,10 @@ const ProductDetails = ({ slug }: { slug: string }) => {
             <span className="flex gap-3">
               <p className="text-secondary text-[14px] font-semibold">{t("categories")}</p>
               <p className="text-gray-700 text-[16px] font-normal">{similaire?.name}</p>
+            </span>
+            <span className="flex flex-col gap-2">
+              <p className="text-secondary text-[14px] font-semibold">{t("description")}</p>
+              <p className="text-gray-700 text-[16px] font-normal">{productData.data?.description}</p>
             </span>
           </div>
         </div>

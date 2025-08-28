@@ -81,9 +81,9 @@ export function CartSheet({ open, setOpen }: Props) {
                                             {item.productVariant?.imgUrl ? (
                                                 <img
                                                     src={
-                                                        item.productVariant?.imgUrl.includes("http")
-                                                            ? item.productVariant?.imgUrl
-                                                            : `${env}/${item.productVariant?.imgUrl}`
+                                                        item.productVariant.imgUrl.includes("http")
+                                                            ? item.productVariant.imgUrl
+                                                            : `${env?.replace(/\/$/, "")}/${item.productVariant.imgUrl.replace(/^\//, "")}`
                                                     }
                                                     alt={item.productVariant?.name}
                                                     className="w-[75px] h-[75px] rounded-[8px] object-cover"

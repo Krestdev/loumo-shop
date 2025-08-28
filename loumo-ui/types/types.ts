@@ -125,6 +125,7 @@ export type Product = {
   categoryId: number | null;
   category?: Category;
   variants: ProductVariant[];
+  description: string;
 };
 
 export type ProductVariant = {
@@ -137,6 +138,8 @@ export type ProductVariant = {
   productId: number;
   product?: Product;
   stock: Stock[];
+  quantity: number;
+  unit: string;
   createdAt: Date;
 };
 

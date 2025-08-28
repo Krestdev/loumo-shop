@@ -37,10 +37,15 @@ const CategoriesGrid = () => {
                         return (
                             <Link key={i} href={`/categories/${x.slug}`} className='flex flex-col gap-2'>
                                 <img
-                                    src={x.imgUrl?.includes("http") ? x.imgUrl : `${env}/${x.imgUrl}`}
+                                    src={
+                                        x.imgUrl?.includes("http")
+                                            ? x.imgUrl
+                                            : `${env?.replace(/\/$/, "")}/${x.imgUrl?.replace(/^\//, "")}`
+                                    }
                                     alt={x.name}
-                                    className='w-full aspect-[4/3] object-cover rounded-[12px]'
+                                    className="w-full aspect-square h-auto object-cover"
                                 />
+
                                 <p className='font-medium text-[16px] text-gray-900'>{x.name}</p>
                             </Link>
                         )

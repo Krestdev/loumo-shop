@@ -18,13 +18,18 @@ const CategoryCard = ({ category }: { category: Category }) => {
                 {category.imgUrl ? (
                     <motion.img
                         // src={category.slug}
-                        src={category.imgUrl.includes("http") ? category.imgUrl : `${env}/${category.imgUrl}`} 
+                        src={
+                            category.imgUrl.includes("http")
+                                ? category.imgUrl
+                                : `${env?.replace(/\/$/, "")}/${category.imgUrl.replace(/^\//, "")}`
+                        }
                         alt={category.name}
                         className='w-full max-h-[150px] aspect-auto object-cover rounded-[12px]'
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5 }}
                     />
+
                 ) : (
                     <motion.div
                         className='w-full h-[150px] aspect-auto rounded-[12px] flex items-center justify-center bg-gray-100 text-white'

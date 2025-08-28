@@ -100,7 +100,7 @@ const Footer = () => {
                             <p className='text-[16px] text-gray-50 font-semibold'>{t("category")}</p>
                             <div className='flex flex-col gap-3'>
                                 {
-                                    categoryData.data?.slice(0, 6).map((x, i) => {
+                                    categoryData.data?.filter(category => category.products?.some(product => product.variants && product.variants.length > 0)).slice(0, 6).map((x, i) => {
                                         return (
                                             <Link key={i} href={`/categories/${x.slug}`} className='text-[14px] font-medium text-gray-50' >{x.name}</Link>
                                         )
