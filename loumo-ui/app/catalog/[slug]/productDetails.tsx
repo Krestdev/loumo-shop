@@ -102,7 +102,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
     // if (!isAvailableInZone) {
     //   router.push("/");
     // }
-  }, [stockData.data, shopData.data, currentvar, addressId, router]);
+  }, [stockData.data, shopData.data, currentvar, addressId, router, available]);
 
 
 

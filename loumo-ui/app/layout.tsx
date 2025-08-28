@@ -8,7 +8,6 @@ import QueryProvider from "@/providers/queryProvider";
 import { getLocale } from "next-intl/server";
 import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
-import Maintenance from "./maintenance";
 import NotificationProvider from "@/providers/notifications";
 import Notification from "@/components/ui/notification";
 import Header from "@/components/header";
