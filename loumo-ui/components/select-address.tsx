@@ -51,9 +51,18 @@ export function AddAddress({ children }: Props) {
     queryFn: () => addressQ.getAll(),
   });
 
-  const filteredAddresses = zoneData.data?.filter((zone) => zone.status === "ACTIVE").flatMap((zone) => zone.addresses).filter((addr) =>
-    addr.street?.toLowerCase().includes(debouncedSearch.toLowerCase())
-  );
+  const filteredAddresses = zoneData.data
+    ?.filter((zone) => zone.status === "ACTIVE")
+    .flatMap((zone) => zone.addresses)
+    .filter((addr) =>
+      addr.street?.toLowerCase().includes(debouncedSearch.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (!a.street) return 1;
+      if (!b.street) return -1;
+      return a.street.localeCompare(b.street); // Tri alphabétique
+    });
+
 
   const handleSelectAddress = (addrId: number) => {
     const selectedAddr = addresses.find((addr) => addr.id === addrId);

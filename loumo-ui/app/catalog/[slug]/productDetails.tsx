@@ -97,7 +97,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
     setAvailable(!isAvailableInZone);
 
     console.log(available);
-    
+
 
     // if (!isAvailableInZone) {
     //   router.push("/");
@@ -144,7 +144,11 @@ const ProductDetails = ({ slug }: { slug: string }) => {
         <div className="flex flex-col gap-7">
           {productItem?.imgUrl ? (
             <img
-              src={productItem.imgUrl.includes("http") ? productItem.imgUrl : `${env}/${productItem.imgUrl}`}
+              src={
+                productItem.imgUrl.includes("http")
+                  ? productItem.imgUrl
+                  : `${env?.replace(/\/$/, "")}/${productItem.imgUrl.replace(/^\//, "")}`
+              }
               alt={productItem.name}
               onError={(e) => (e.currentTarget.src = "/fallback.jpg")}
               className="w-full h-auto aspect-[4/3] rounded-[20px]"
@@ -164,7 +168,11 @@ const ProductDetails = ({ slug }: { slug: string }) => {
                   className={`p-1 rounded-[8px] cursor-pointer ${currentvar === x.id ? "ring-2 ring-primary" : ""}`}
                 >
                   <img
-                    src={x.imgUrl?.includes("http") ? x.imgUrl : `${env}/${x.imgUrl}`}
+                    src={
+                      x.imgUrl?.includes("http")
+                        ? x.imgUrl
+                        : `${env?.replace(/\/$/, "")}/${x.imgUrl?.replace(/^\//, "")}`
+                    }
                     onError={(e) => (e.currentTarget.src = "/fallback.jpg")}
                     alt={x.name}
                     className="max-w-[120px] w-full h-auto aspect-[4/3] rounded-[6px]"
@@ -186,11 +194,11 @@ const ProductDetails = ({ slug }: { slug: string }) => {
                     <div
                       key={i}
                       onClick={() => setCurrentvar(x.id)}
-                      className={`cursor-pointer flex flex-col items-center justify-center rounded-[6px] px-3 py-2 w-[155px] h-[64px] ${currentvar === x.id ? "bg-primary text-white" : "bg-white text-black border border-gray-300"
+                      className={`cursor-pointer flex flex-col items-center justify-center rounded-[6px] px-3 py-2 w-[155px] h-fit ${currentvar === x.id ? "bg-primary text-white" : "bg-white text-black border border-gray-300"
                         }`}
                     >
                       <p className="text-[18px] text-nowrap">{`${x.name + " " + x.quantity + " " + x.unit}`}</p>
-                      <p className="text-[18px]">{`${x.price} FCFA`}</p>
+                      {/* <p className="text-[18px]">{`${x.price} FCFA`}</p> */}
                     </div>
                   ))}
                 </div>
@@ -279,7 +287,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
         </div>
       </div>
 
-      {similaire?.products && similaire?.products?.length > 0 && (
+      {similaire?.products && similaire?.products?.length >= 1 && (
         <GridProduct
           title={t("dans") + similaire.name}
           products={proSim}
@@ -289,7 +297,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
         />
       )}
 
-      {autreCat && (
+      {autreCat &&  autreCat.products && autreCat.products?.length > 1 && (
         <GridProduct
           title={autreCat.name}
           products={proAutre}
