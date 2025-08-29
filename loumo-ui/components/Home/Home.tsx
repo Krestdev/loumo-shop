@@ -66,7 +66,7 @@ const Home = () => {
           isSuccess={productData.isSuccess}
           promotions={promotionData.data}
         />
-        : <Redaction message={t1("emptyProduct")} className={"text-primary text-[40px] font-bold text-center"} />
+        : <Redaction show={false} message={t1("emptyProduct")} className={"text-primary text-[40px] font-bold text-center"} />
       }
 
       {filteredProducts.filter(x => x.variants.some(x => x.stock.some(x => x.promotionId))).length > 0

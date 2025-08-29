@@ -89,12 +89,13 @@ export function AddToCard({ children, product, variant, setVariant, initialQuant
                     key={idx}
                     type="button"
                     onClick={() => setVariant(va)}
-                    className={`px-2 py-1 h-[26px] ${variant?.id === va.id
+                    className={`px-2 py-1 h-[26px] flex flex-col items-center justify-center ${variant?.id === va.id
                       ? "bg-primary text-white"
                       : "bg-gray-100 text-gray-800"
                       }`}
                   >
-                    {va.name}
+                    {va.name + " "}
+                    {va.weight + " " + va.unit}
                   </Button>
                 ))}
               </div>
