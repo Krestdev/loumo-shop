@@ -97,9 +97,9 @@ export default function SignUpForm() {
                 </div>
                 <div className="flex flex-col items-center gap-5">
 
-                    <GoogleLogin />
+                    {/* <GoogleLogin />
 
-                    <p className="text-[14px] text-gray-700 text-center">{t("or")}</p>
+                    <p className="text-[14px] text-gray-700 text-center">{t("or")}</p> */}
 
                     <div className="max-w-[360px] w-full flex flex-col gap-6">
                         {/* Nom */}

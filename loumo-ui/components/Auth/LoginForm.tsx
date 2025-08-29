@@ -108,9 +108,9 @@ export default function LoginForm() {
           <p className="text-[14px] text-gray-700 text-center">{t("description")}</p>
         </div>
         <div className="flex flex-col items-center gap-5">
-          <GoogleLogin />
+          {/* <GoogleLogin /> */}
 
-          <p className="text-[14px] text-gray-700 text-center">{t("or")}</p>
+          {/* <p className="text-[14px] text-gray-700 text-center">{t("or")}</p> */}
           <div className="max-w-[360px] w-full flex flex-col items-center gap-7">
             <div className="flex flex-col items-center gap-4 w-full">
               {/* {method === "phone" ? (
