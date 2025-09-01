@@ -163,7 +163,7 @@ const ProductComp = ({ product, promotions }: Props) => {
                                 variant={variant?.id === va.id ? "default" : "ghost"}
                             >
                                 {va.name + " "}
-                                {va.weight + " " + va.unit}
+                                {va.quantity + " " + va.unit}
                             </Button>
                         ))}
                         {address ?

@@ -197,7 +197,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
                       className={`cursor-pointer flex flex-col items-center justify-center rounded-[6px] px-3 py-2 w-[155px] h-fit ${currentvar === x.id ? "bg-primary text-white" : "bg-white text-black border border-gray-300"
                         }`}
                     >
-                      <p className="text-[18px] text-nowrap">{`${x.name + " " + x.weight + " " + x.unit}`}</p>
+                      <p className="text-[18px] text-nowrap">{`${x.name + " " + x.quantity + " " + x.unit}`}</p>
                       {/* <p className="text-[18px]">{`${x.price} FCFA`}</p> */}
                     </div>
                   ))}

@@ -95,7 +95,7 @@ export function AddToCard({ children, product, variant, setVariant, initialQuant
                       }`}
                   >
                     {va.name + " "}
-                    {va.weight + " " + va.unit}
+                    {va.quantity + " " + va.unit}
                   </Button>
                 ))}
               </div>
