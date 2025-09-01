@@ -24,7 +24,7 @@ const CategoryCard = ({ category }: { category: Category }) => {
                                 : `${env?.replace(/\/$/, "")}/${category.imgUrl.replace(/^\//, "")}`
                         }
                         alt={category.name}
-                        className='w-full max-h-[150px] aspect-auto object-cover rounded-[12px]'
+                        className='max-w-[200px] w-full aspect-[4/3] object-cover rounded-[12px]'
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5 }}
