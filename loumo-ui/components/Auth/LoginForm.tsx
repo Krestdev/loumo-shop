@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
 import {
   Form,
@@ -11,38 +11,38 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { useTranslations } from "next-intl"
-import { useEffect, useState, useTransition } from "react"
-import UserQuery from "@/queries/user"
-import { useMutation } from "@tanstack/react-query"
-import { useStore } from "@/providers/datastore"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { Loader } from "lucide-react"
-import GoogleLogin from "./GoogleLogin"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
+import { useEffect, useState, useTransition } from "react";
+import UserQuery from "@/queries/user";
+import { useMutation } from "@tanstack/react-query";
+import { useStore } from "@/providers/datastore";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Loader } from "lucide-react";
+// import GoogleLogin from "./GoogleLogin"
 
 const phoneSchema = z.object({
   phone: z.string().min(9, "Numéro invalide"),
   password: z.string().min(6, { message: "Mot de passe trop court" }),
-})
+});
 
 const emailSchema = z.object({
   email: z.string().email({ message: "Email invalide" }),
   password: z.string().min(6, { message: "Mot de passe trop court" }),
-})
+});
 
 // union des deux
-const loginSchema = z.union([phoneSchema, emailSchema])
+const loginSchema = z.union([phoneSchema, emailSchema]);
 
-type LoginFormData = z.infer<typeof loginSchema>
+type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function LoginForm() {
-  const t = useTranslations("Login")
-  const [method, setMethod] = useState<"phone" | "email">("email")
-  const [isPending, startTransition] = useTransition()
+  const t = useTranslations("Login");
+  const [method, setMethod] = useState<"phone" | "email">("email");
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -50,8 +50,8 @@ export default function LoginForm() {
       phone: "",
       email: "",
       password: "",
-    }
-  })
+    },
+  });
 
   const user = new UserQuery();
 
@@ -67,7 +67,6 @@ export default function LoginForm() {
       console.error("Échec de connexion :", error);
     },
   });
-
 
   const { setUser } = useStore();
 
@@ -90,12 +89,12 @@ export default function LoginForm() {
         userData.mutate({
           email: values.email.toLowerCase(),
           password: values.password,
-        },)
+        });
       } else if ("phone" in values) {
-        setMethod("email")
+        setMethod("email");
       }
-    })
-  }
+    });
+  };
 
   return (
     <Form {...form}>
@@ -105,7 +104,9 @@ export default function LoginForm() {
       >
         <div className="flex flex-col gap-2">
           <h1 className="text-center">{t("login")}</h1>
-          <p className="text-[14px] text-gray-700 text-center">{t("description")}</p>
+          <p className="text-[14px] text-gray-700 text-center">
+            {t("description")}
+          </p>
         </div>
         <div className="flex flex-col items-center gap-5">
           {/* <GoogleLogin /> */}
@@ -188,15 +189,37 @@ export default function LoginForm() {
               />
 
               <div className="flex flex-col gap-4 w-full">
-                <Button disabled={userData.isPending || isPending} type="submit" className="w-full">
-                  {isPending || userData.isPending && <Loader className='animate-spin mr-2' size={16} />}
+                <Button
+                  disabled={userData.isPending || isPending}
+                  type="submit"
+                  className="w-full"
+                >
+                  {isPending ||
+                    (userData.isPending && (
+                      <Loader className="animate-spin mr-2" size={16} />
+                    ))}
                   {t("login")}
                 </Button>
                 <div className="flex items-center justify-between w-full">
-                  <Link href={"/auth/restore-password"} className="px-0 text-[14px] text-primary underline font-semibold">{t("forgot")}</Link>
+                  <Link
+                    href={"/auth/restore-password"}
+                    className="px-0 text-[14px] text-primary underline font-semibold"
+                  >
+                    {t("forgot")}
+                  </Link>
                   <div className="flex items-center gap-2">
-                    <Button variant={"link"} className="px-0 cursor-default no-underline text-black">{t("notYet")}</Button>
-                    <Link href={"/auth/register"} className="px-0 text-[14px] text-primary underline font-semibold">{t("signIn")}</Link>
+                    <Button
+                      variant={"link"}
+                      className="px-0 cursor-default no-underline text-black"
+                    >
+                      {t("notYet")}
+                    </Button>
+                    <Link
+                      href={"/auth/register"}
+                      className="px-0 text-[14px] text-primary underline font-semibold"
+                    >
+                      {t("signIn")}
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -205,5 +228,5 @@ export default function LoginForm() {
         </div>
       </form>
     </Form>
-  )
+  );
 }
