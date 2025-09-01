@@ -162,7 +162,8 @@ const ProductComp = ({ product, promotions }: Props) => {
                                 className="px-2 py-1 h-[26px] truncate flex justify-start"
                                 variant={variant?.id === va.id ? "default" : "ghost"}
                             >
-                                {va.name}
+                                {va.name + " "}
+                                {va.weight + " " + va.unit}
                             </Button>
                         ))}
                         {address ?

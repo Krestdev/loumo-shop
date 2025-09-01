@@ -281,7 +281,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
             </span>
             <span className="flex flex-col gap-2">
               <p className="text-secondary text-[14px] font-semibold">{t("description")}</p>
-              <p className="text-gray-700 text-[16px] font-normal">{productData.data?.description}</p>
+              <p className="text-gray-700 text-[16px] font-normal first-letter:uppercase">{productData.data?.description}</p>
             </span>
           </div>
         </div>

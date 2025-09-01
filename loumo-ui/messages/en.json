@@ -18,7 +18,7 @@
     "select": "Select your address",
     "noAddress": "No saved addresses",
     "addAddress": "Add address",
-    "emptyCart": "Empty your cart to change address.",
+    "emptyCart": "To change address you must empty the cart.",
     "goCart": "Go to cart"
   },
   "Address": {

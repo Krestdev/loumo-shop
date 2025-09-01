@@ -18,7 +18,7 @@
     "select": "Sélectionnez votre adresse",
     "noAddress": "Aucune adresse enregistrée",
     "addAddress": "Ajouter une adresse",
-    "emptyCart": "Videz votre panier pour changer d'adresse.",
+    "emptyCart": "Pour changer d'adresse vous devez vider le panier.",
     "goCart": "Aller au panier"
   },
   "Address": {
@@ -108,7 +108,7 @@
     "ProductDetail": {
       "options": "Options",
       "addToCart": "Ajouter au panier",
-      "addToWishlist": "Ajouter à la liste de souhaits",
+      "addToWishlist": "Ajouter aux favoris",
       "about": "À propos de ce produit",
       "weight": "Poids",
       "categories": "Catégories",
