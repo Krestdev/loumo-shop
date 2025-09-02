@@ -23,7 +23,7 @@ function LocaleSelect({ defaultValue, children }: Props) {
 
   return (
     <Select defaultValue={defaultValue} onValueChange={onChange} disabled={isPending}>
-      <SelectTrigger className='flex items-center w-[91px] !gap-0 uppercase bg-transparent text-black border-none shadow-none h-4 text-[14px] font-medium cursor-pointer'>
+      <SelectTrigger className='flex items-center w-[90px] sm:w-[50px] !gap-0 uppercase bg-transparent text-black border-none shadow-none h-4 text-[14px] font-medium cursor-pointer'>
         <Image
           src={`/flags/${defaultValue}.svg`}
           width={20}

@@ -73,7 +73,7 @@ const ProductComp = ({ product, promotions }: Props) => {
 
     return (
         product && variant &&
-        <div className='flex flex-col gap-4 h-fit'>
+        <div className='flex flex-col gap-4 h-full justify-between'>
             <div className='relative flex gap-3 w-full h-auto'>
                 {isNewProduct(product) && <div className='absolute top-2 left-2 flex items-center justify-center p-2 rounded-sm bg-[#FFFEF8] text-primary'>
                     {t("new")}
@@ -151,10 +151,10 @@ const ProductComp = ({ product, promotions }: Props) => {
                 )}
             </div>
 
-            <div className='flex flex-col justify-between'>
+            <div className='flex flex-col justify-between h-full'>
                 <div className='flex flex-col gap-1'>
                     <p className='text-[16px] text-gray-700'>{product.name}</p>
-                    <div className='flex flex-row items-center gap-1'>
+                    <div className='flex flex-wrap md:flex-row md:items-center gap-1'>
                         {product?.variants?.slice(0, 2).map((va, idx) => (
                             <Button
                                 key={va.id ?? idx}

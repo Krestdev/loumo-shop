@@ -60,7 +60,7 @@ const Header = () => {
             onClick={() => router.push("/")}
             src="/Images/Logo.png"
             alt="logo"
-            className="h-7 w-[102px] object-cover cursor-pointer hover:opacity-80 transition-opacity"
+            className="sm:h-7 sm:max-w-[102px] w-full object-cover cursor-pointer hover:opacity-80 transition-opacity"
           />
 
           <div className="hidden md:flex w-full">
@@ -75,7 +75,7 @@ const Header = () => {
           </div>
         </div>
 
-        <div className="flex flex-row items-center gap-2 md:gap-4">
+        <div className="flex flex-row items-center gap-1 md:gap-4">
           {/* Adresse sélectionnable uniquement si panier vide */}
 
           {currentOrderItems.length <= 0 ? (
@@ -87,7 +87,7 @@ const Header = () => {
               >
                 <LucideMapPin size={20} className="flex-shrink-0" />
                 <div className="flex flex-col w-full overflow-hidden text-left hover:text-white">
-                  <p className="text-xs text-muted-foreground hover:text-white">{t("address")}</p>
+                  {/* <p className="text-xs text-muted-foreground hover:text-white">{t("address")}</p> */}
                   <span className="truncate text-sm">
                     {address?.street || t("select")}
                   </span>
@@ -101,7 +101,7 @@ const Header = () => {
                 <div className="hidden md:flex items-center gap-2 cursor-not-allowed">
                   <LucideMapPin size={16} className="flex-shrink-0 text-gray-300" />
                   <div className="flex flex-col w-full overflow-hidden text-left">
-                    <p className="text-xs text-muted-foreground text-nowrap">{t("address")}</p>
+                    {/* <p className="text-xs text-muted-foreground text-nowrap">{t("address")}</p> */}
                     <p className="text-sm text-black">{address?.street}</p>
                   </div>
                   <LucideChevronDown size={20} className="text-gray-300" />
@@ -114,9 +114,7 @@ const Header = () => {
             </Tooltip>
           )}
 
-          <span className="hidden md:flex">
             <LocalSwitcher />
-          </span>
 
           {user ?
             <DropdownMenu>

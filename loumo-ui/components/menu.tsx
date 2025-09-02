@@ -10,7 +10,7 @@ import {
 import { Button } from "./ui/button";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { LucideChevronDown, LucideMapPin, LucideSearch } from "lucide-react";
+import { ArrowRight, LucideChevronDown, LucideMapPin, LucideSearch } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { useStore } from "@/providers/datastore";
 import AddressQuery from "@/queries/address";
@@ -111,7 +111,7 @@ export function Menu({ children }: Props) {
         <div className="mx-auto w-full max-w-sm min-h-screen flex flex-col overflow-y-auto pb-20">
           {!user && (
             <DrawerTitle className="sticky top-0 bg-white z-10">
-              <div className="w-full flex flex-col items-center gap-2 px-6 py-3">
+              <div className="w-full flex flex-col items-center px-6 py-3">
                 <Button
                   onClick={() => router.push("/auth/login")}
                   className="w-full"
@@ -135,7 +135,7 @@ export function Menu({ children }: Props) {
             </DrawerTitle>
           )}
 
-          <div className="w-full flex flex-col items-start px-7 border-b">
+          <div className="w-full flex flex-row items-start px-7 pb-4 border-b">
             {currentOrderItems.length <= 0 ? (
               <Select
                 open={selectOpen}
@@ -152,12 +152,9 @@ export function Menu({ children }: Props) {
                 }}
                 value={address?.id?.toString()}
               >
-                <SelectTrigger className="flex group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer max-w-[250px] border border-input">
+                <SelectTrigger className="flex group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer max-w-[200px] w-full border border-input">
                   <LucideMapPin size={20} className="flex-shrink-0" />
                   <div className="flex flex-col w-full overflow-hidden text-left">
-                    <p className="text-xs text-muted-foreground">
-                      {t("address")}
-                    </p>
                     <SelectValue placeholder={t("select")} />
                   </div>
                 </SelectTrigger>
@@ -207,9 +204,6 @@ export function Menu({ children }: Props) {
                   <div className="flex items-center gap-2 cursor-not-allowed">
                     <LucideMapPin size={16} className="text-gray-300" />
                     <div className="flex flex-col w-full overflow-hidden text-left">
-                      <p className="text-xs text-muted-foreground text-nowrap">
-                        {t("address")}
-                      </p>
                       <p className="text-sm text-black">{address?.street}</p>
                     </div>
                     <LucideChevronDown size={20} className="text-gray-300" />
@@ -226,26 +220,27 @@ export function Menu({ children }: Props) {
                 </TooltipContent>
               </Tooltip>
             )}
-            <LocaleSwitcher />
+            <span className="w-[150px]">
+              <LocaleSwitcher />
+            </span>
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-5 px-6 pt-8">
             {visibleCategories.map((cat) => {
-              const productsInCat = visibleProducts.filter(
-                (p) => p.categoryId === cat.id
-              );
 
               return (
-                <div key={cat.id} className="flex flex-col py-5">
-                  <div className="flex px-6 py-4 gap-2">
+                <div key={cat.id} className="flex flex-col border-b">
+                  <div className="flex  items-center justify-between">
                     <Link
+                      onClick={() => setOpen(false)}
                       href={`/categories/${cat.slug}`}
-                      className="text-[18px] font-bold text-gray-900"
+                      className="text-[18px] font-bold text-gray-900 flex"
                     >
                       {cat.name}
                     </Link>
+                    <ArrowRight className="w-4 h-4" />
                   </div>
-                  <div className="flex flex-col">
+                  {/* <div className="flex flex-col">
                     {productsInCat.map((p) => (
                       <div key={p.id} className="py-4 px-6">
                         <Link
@@ -256,7 +251,7 @@ export function Menu({ children }: Props) {
                         </Link>
                       </div>
                     ))}
-                  </div>
+                  </div> */}
                 </div>
               );
             })}
