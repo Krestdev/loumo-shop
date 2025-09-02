@@ -119,7 +119,7 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                                         <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                                             <div className="flex flex-col gap-1">
                                                 <p className="text-gray-700 font-semibold">{product?.name}</p>
-                                                <Badge variant="outline">{x.productVariant?.name}</Badge>
+                                                <Badge variant="outline">{x.productVariant?.name + x.productVariant?.quantity + x.productVariant?.unit}</Badge>
                                                 {(() => {
                                                     const promo = x.productVariant
                                                         ? getValidPromotionByStock(x.productVariant, promotionData.data)

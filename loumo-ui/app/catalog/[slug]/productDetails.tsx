@@ -161,7 +161,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
 
           <section className="grid overflow-x-auto">
             <div className="inline-flex gap-5">
-              {productData.data?.variants?.filter((x) => x.quantity > 0).map((x: ProductVariant, i: number) => (
+              {productData.data?.variants?.map((x: ProductVariant, i: number) => (
                 <div
                   key={i}
                   onClick={() => setCurrentvar(x.id)}
@@ -190,7 +190,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
               <p>{t("options")}</p>
               <section className="grid overflow-x-auto pb-1">
                 <div className="inline-flex gap-5">
-                  {productData.data?.variants?.filter((x) => x.quantity > 0).map((x: ProductVariant, i: number) => (
+                  {productData.data?.variants?.map((x: ProductVariant, i: number) => (
                     <div
                       key={i}
                       onClick={() => setCurrentvar(x.id)}

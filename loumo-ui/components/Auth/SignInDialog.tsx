@@ -21,7 +21,6 @@ import { useMutation } from "@tanstack/react-query"
 import { useStore } from "@/providers/datastore"
 import Link from "next/link"
 import { Loader } from "lucide-react"
-import GoogleLogin from "./GoogleLogin"
 
 const phoneSchema = z.object({
     phone: z.string().min(9, "Numéro invalide"),
@@ -100,9 +99,9 @@ export default function SignInDialog({ setOpen, setPage }: Props) {
                 <div className="flex flex-col items-center gap-5">
 
 
-                    <GoogleLogin />
+                    {/* <GoogleLogin /> */}
 
-                    <p className="text-[14px] text-gray-700 text-center">{t("or")}</p>
+                    {/* <p className="text-[14px] text-gray-700 text-center">{t("or")}</p> */}
 
                     <div className="space-y-4">
                         {method === "phone" ? (

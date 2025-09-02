@@ -154,7 +154,7 @@ const ProductComp = ({ product, promotions }: Props) => {
             <div className='flex flex-col justify-between'>
                 <div className='flex flex-col gap-1'>
                     <p className='text-[16px] text-gray-700'>{product.name}</p>
-                    <div className='flex flex-row items-center gap-2'>
+                    <div className='flex flex-row items-center gap-1'>
                         {product?.variants?.slice(0, 2).map((va, idx) => (
                             <Button
                                 key={va.id ?? idx}
@@ -162,18 +162,11 @@ const ProductComp = ({ product, promotions }: Props) => {
                                 className="px-2 py-1 h-[26px] truncate flex justify-start"
                                 variant={variant?.id === va.id ? "default" : "ghost"}
                             >
-                                {va.name + " "}
-                                {va.quantity + " " + va.unit}
+                                {va.name + " " + va.quantity + " " + va.unit}
                             </Button>
                         ))}
                         {address ?
                             (product?.variants?.length ?? 0) > 2 && (
-                                // <Link
-                                //     href={`/catalog/${product.slug}`}
-                                //     className='px-2 py-1 h-[26px] hover:bg-gray-50 rounded-[20px]'
-                                // >
-                                //     <div className='h-[18px] w-4 flex items-center justify-center'>+</div>
-                                // </Link>
                                 <AddToCard product={product} variant={variant} setVariant={setVariant} promotions={promotions}>
                                     <div className='h-[18px] w-4 flex items-center justify-center cursor-pointer'>+</div>
                                 </AddToCard>

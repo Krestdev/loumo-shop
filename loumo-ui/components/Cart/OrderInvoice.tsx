@@ -171,7 +171,9 @@ export const OrderInvoice = ({
             return (
               <View style={styles.tableRow} key={i}>
                 <Text style={[styles.cell, { flex: 2 }]}>
-                  {`${product?.name} (${variant?.name})` || translations.unknownP}
+                  {product?.name && variant?.name && variant?.quantity && variant?.unit
+                    ? `${product.name} (${variant.name}${variant.quantity}${variant.unit})`
+                    : translations.unknownP}
                 </Text>
                 <Text style={styles.cell}>{item.quantity}</Text>
                 <Text style={styles.cell}>

@@ -95,7 +95,7 @@ export function CartSheet({ open, setOpen }: Props) {
                                             )}
                                             <div className="flex flex-col gap-1 flex-1">
                                                 <p className="text-[16px] text-gray-900 font-semibold">
-                                                    {product?.name} ({item.productVariant?.name})
+                                                    {product?.name} ({item.productVariant?.name + item.productVariant?.quantity + item.productVariant?.unit})
                                                 </p>
                                                 <PriceDisplay
                                                     price={item.productVariant?.price}

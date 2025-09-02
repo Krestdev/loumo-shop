@@ -22,7 +22,6 @@ import { useMutation } from "@tanstack/react-query"
 import UserQuery from "@/queries/user"
 import React, { useTransition } from "react"
 import { RegisterPayload } from "@/types/types"
-import GoogleLogin from "./GoogleLogin"
 
 const formSchema = z
     .object({
@@ -95,8 +94,8 @@ export default function SignUpDialog({ setOpen, setPage }: Props) {
                 <div className="flex flex-col items-center gap-5">
 
 
-                    <GoogleLogin />
-                    <p className="text-[14px] text-gray-700 text-center">{t("or")}</p>
+                    {/* <GoogleLogin />
+                    <p className="text-[14px] text-gray-700 text-center">{t("or")}</p> */}
                     
                     <div className="space-y-4">
                         <FormField

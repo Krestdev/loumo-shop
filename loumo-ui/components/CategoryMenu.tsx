@@ -20,7 +20,7 @@ export function CategoryMenu() {
     queryFn: () => category.getAll(),
   });
 
-  // ✅ Si pas d’adresse, on prend toutes les catégories (max 6)
+  // Si pas d’adresse, on prend toutes les catégories (max 6)
   const filteredCategories = React.useMemo(() => {
     const allCategories = categoryData.data || [];
 
@@ -42,9 +42,9 @@ export function CategoryMenu() {
         )
       )
       .slice(0, 6);
-  }, [categoryData.data, addressZoneId]);
+  }, [categoryData.data, addressZoneId]).filter(category => category.products && category.products?.length > 0);
 
-  // ✅ Auto-scroll du carousel
+  // Auto-scroll du carousel
   React.useEffect(() => {
     if (!emblaRef) return;
 
@@ -58,6 +58,9 @@ export function CategoryMenu() {
 
     return () => clearInterval(interval);
   }, [emblaRef]);
+
+  console.log(filteredCategories);
+  
 
   return (
     <div className="max-w-[1400px] w-full px-7 py-8 overflow-hidden">
