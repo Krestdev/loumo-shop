@@ -59,9 +59,6 @@ export function CategoryMenu() {
     return () => clearInterval(interval);
   }, [emblaRef]);
 
-  console.log(filteredCategories);
-  
-
   return (
     <div className="max-w-[1400px] w-full px-7 py-8 overflow-hidden">
       <Carousel
@@ -78,7 +75,7 @@ export function CategoryMenu() {
           {filteredCategories.map((category, index) => (
             <CarouselItem
               key={index}
-              className="basis-[50%] sm:basis-[30%] lg:basis-[16.7%] flex-shrink-0"
+              className="basis-[33.33%] sm:basis-[30%] lg:basis-[16.7%] flex-shrink-0"
             >
               <CategoryCard category={category} />
             </CarouselItem>

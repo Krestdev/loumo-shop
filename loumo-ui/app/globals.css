@@ -136,7 +136,7 @@
 
 @layer components {
   .hero-text{
-    @apply text-[clamp(2rem,5vw,3.75rem)]; /** Hero text size should be h1 */
+    @apply text-[clamp(2.5rem,5vw,3.75rem)] font-bold; /** Hero text size should be h1 */
   }
   .category-title{
     @apply text-[clamp(1.5rem,5vw,2.25rem)] font-semibold tracking-normal; /** Category title size should be h1 */

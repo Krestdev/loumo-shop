@@ -139,9 +139,9 @@ const ProductDetails = ({ slug }: { slug: string }) => {
   );
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-24 max-w-[1400px] w-full px-6 py-7">
-        <div className="flex flex-col gap-7">
+    <div className="w-full flex flex-col items-center overflow-clip">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-24 max-w-[1400px] w-full px-6 py-7">
+        <div className="flex flex-col gap-4 md:gap-7">
           {productItem?.imgUrl ? (
             <img
               src={
@@ -151,21 +151,21 @@ const ProductDetails = ({ slug }: { slug: string }) => {
               }
               alt={productItem.name}
               onError={(e) => (e.currentTarget.src = "/fallback.jpg")}
-              className="w-full h-auto aspect-[4/3] rounded-[20px]"
+              className="w-full h-auto aspect-[4/3] rounded-[20px] object-cover border p-3"
             />
           ) : (
-            <div className="flex items-center justify-center w-full h-auto aspect-[4/3] rounded-[20px] object-cover bg-gray-100 text-white">
+            <div className="flex items-center justify-center w-full h-auto aspect-[4/3] rounded-[20px] bg-gray-100 text-white">
               <LucideDatabase size={150} />
             </div>
           )}
 
-          <section className="grid overflow-x-auto">
-            <div className="inline-flex gap-5">
+          <section className="hidden md:grid overflow-x-auto mx-auto">
+            <div className="inline-flex gap-3">
               {productData.data?.variants?.map((x: ProductVariant, i: number) => (
                 <div
                   key={i}
                   onClick={() => setCurrentvar(x.id)}
-                  className={`p-1 rounded-[8px] cursor-pointer ${currentvar === x.id ? "ring-2 ring-primary" : ""}`}
+                  className={`p-1 cursor-pointer ${currentvar === x.id ? "border-b-3 border-primary" : ""}`}
                 >
                   <img
                     src={
@@ -175,7 +175,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
                     }
                     onError={(e) => (e.currentTarget.src = "/fallback.jpg")}
                     alt={x.name}
-                    className="max-w-[120px] w-full h-auto aspect-[4/3] rounded-[6px]"
+                    className="max-w-[80px] md:max-w-[120px] w-full h-auto aspect-[4/3] rounded-[6px] border object-cover"
                   />
                 </div>
               ))}
@@ -183,10 +183,10 @@ const ProductDetails = ({ slug }: { slug: string }) => {
           </section>
         </div>
 
-        <div className="flex flex-col gap-7">
+        <div className="flex flex-col gap-4 md:gap-7">
           <div className="flex flex-col gap-4 pb-5 border-b border-gray-200">
-            <h3 className="text-black">{productData.data?.name}</h3>
-            <div className="flex flex-col gap-3">
+            <h3 className="text-black text-center text-[28px]">{productData.data?.name}</h3>
+            <div className="flex flex-col gap-2 md:gap-3 items-center md:items-start">
               <p>{t("options")}</p>
               <section className="grid overflow-x-auto pb-1">
                 <div className="inline-flex gap-5">
@@ -197,7 +197,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
                       className={`cursor-pointer flex flex-col items-center justify-center rounded-[6px] px-3 py-2 w-fit h-fit ${currentvar === x.id ? "bg-primary text-white" : "bg-white text-black border border-gray-300"
                         }`}
                     >
-                      <p className="text-[18px] text-nowrap">{`${x.name + " " + x.quantity + " " + x.unit}`}</p>
+                      <p className="text-[14px] md:text-[18px] text-nowrap">{`${x.name + " " + x.quantity + " " + x.unit}`}</p>
                     </div>
                   ))}
                 </div>
@@ -210,8 +210,8 @@ const ProductDetails = ({ slug }: { slug: string }) => {
                   productVariantId: s.productVariantId,
                 }))}
                 variants={productData.data?.variants}
-                className1="text-[36px] text-primary font-medium"
-                className2="text-[24px] text-gray-500 font-normal line-through"
+                className1="text-[28px] md:text-[36px] text-primary font-medium"
+                className2="text-[20px] md:text-[28px] text-gray-500 font-normal line-through"
                 quantity={quantity}
               />
 
@@ -243,44 +243,44 @@ const ProductDetails = ({ slug }: { slug: string }) => {
                     }}
                     initialQuantity={quantity}
                   >
-                    <Button disabled={available} className="h-12 rounded-[24px]">
+                    <Button disabled={available} className="h-9 md:h-12 rounded-[24px]">
                       <LucideShoppingCart />
                       {t("addToCart")}
                     </Button>
                   </AddToCard>
                 ) : (
                   <AddAddress>
-                    <Button className="h-12 rounded-[24px]">{t("addToCart")}</Button>
+                    <Button className="h-9 md:h-12 rounded-[24px]">{t("addToCart")}</Button>
                   </AddAddress>
                 )
                 }
 
                 <Button
                   variant="outline"
-                  className={`h-12 rounded-[24px] ${isFavorite ? "bg-red-500 hover:bg-red-500/80 text-white" : "bg-white/50 text-gray-600"
+                  className={`h-9 md:h-12 rounded-[24px] ${isFavorite ? "bg-red-500 hover:bg-red-500/80 text-white" : "bg-white/50 text-gray-600"
                     }`}
                   onClick={() => toggleFavorite(productData.data!.id)}
                 >
-                  <LucideHeart />
+                  <LucideHeart size={12} />
                   {t("addToWishlist")}
                 </Button>
               </div>
             </div>
           </div>
 
-          <p className="font-semibold text-secondary text-[20px]">{t("about")}</p>
-          <div className="flex flex-col gap-5">
-            <span className="flex gap-3">
-              <p className="text-secondary text-[14px] font-semibold">{t("weight")}</p>
-              <p className="text-gray-700 text-[16px] font-normal">{productItem?.weight} Kg</p>
+          {/* <p className="font-semibold text-secondary text-[20px]">{t("about")}{' '}<span className="shadow px-1 py-1 text-[14px]">{`${productItem?.name + " " + productItem?.quantity + " " + productItem?.unit}`}</span></p> */}
+          <div className="flex flex-col md:gap-5">
+            <span className="flex items-center gap-1">
+              <p className="text-secondary text-[16px] font-semibold">{t("categories")}:</p>
+              <p className="text-gray-700 text-[14px] font-normal">{similaire?.name}</p>
             </span>
-            <span className="flex gap-3">
-              <p className="text-secondary text-[14px] font-semibold">{t("categories")}</p>
-              <p className="text-gray-700 text-[16px] font-normal">{similaire?.name}</p>
+            <span className="flex items-center gap-1">
+              <p className="text-secondary text-[16px] font-semibold">{t("weight")}:</p>
+              <p className="text-gray-700 text-[14px] font-normal">{productItem?.weight} Kg</p>
             </span>
-            <span className="flex flex-col gap-2">
-              <p className="text-secondary text-[14px] font-semibold">{t("description")}</p>
-              <p className="text-gray-700 text-[16px] font-normal first-letter:uppercase">{productData.data?.description}</p>
+            <span className="flex flex-col gap-1">
+              <p className="text-secondary text-[16px] font-semibold capitalize">{t("description")}:</p>
+              <p className="text-gray-700 text-[14px] font-normal first-letter:uppercase">{productData.data?.description}</p>
             </span>
           </div>
         </div>
@@ -296,7 +296,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
         />
       )}
 
-      {autreCat &&  autreCat.products && autreCat.products?.length > 1 && (
+      {autreCat && autreCat.products && autreCat.products?.length > 1 && (
         <GridProduct
           title={autreCat.name}
           products={proAutre}

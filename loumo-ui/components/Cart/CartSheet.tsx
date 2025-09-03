@@ -14,6 +14,7 @@ import { PriceDisplay } from "../ui/promotion-price"
 import { useRouter } from "next/navigation"
 import PromotionQuery from "@/queries/promotion"
 import { XAF } from "@/lib/utils"
+import { Input } from "../ui/input"
 
 interface Props {
     open: boolean
@@ -27,7 +28,8 @@ export function CartSheet({ open, setOpen }: Props) {
         removeOrderItem,
         incrementOrderItem,
         decrementOrderItem,
-        clearCart
+        clearCart,
+        updateOrderItem
     } = useStore();
     const router = useRouter();
     const env = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -55,20 +57,20 @@ export function CartSheet({ open, setOpen }: Props) {
             <SheetContent className="max-w-[340px] w-full max-h-[1080px] h-full overflow-y-auto flex flex-col">
                 <div className="flex flex-col">
                     <SheetHeader>
-                        <SheetTitle className="text-primary text-[36px] font-semibold border-b border-gray-200">
+                        <SheetTitle className="text-primary text-[20px] font-semibold border-b border-gray-200">
                             {t("cart")}
                         </SheetTitle>
                     </SheetHeader>
 
                     {currentOrderItems.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-8">
-                            <p className="text-gray-500">{t("emptyCart")}</p>
+                            <p className="text-gray-500">{t("cartEmpty")}</p>
                         </div>
                     ) : (
                         <>
                             <div className="flex flex-col gap-2">
                                 {currentOrderItems.map((item, i) => {
-                                    const quantity = item.quantity || 1;
+                                    const quantity = item.quantity;
                                     const product = productData.data?.find(
                                         (p) => p.id === item.productVariant?.productId
                                     );
@@ -86,7 +88,7 @@ export function CartSheet({ open, setOpen }: Props) {
                                                             : `${env?.replace(/\/$/, "")}/${item.productVariant.imgUrl.replace(/^\//, "")}`
                                                     }
                                                     alt={item.productVariant?.name}
-                                                    className="w-[75px] h-[75px] rounded-[8px] object-cover"
+                                                    className="w-[75px] h-[75px] rounded-[8px] object-cover border"
                                                 />
                                             ) : (
                                                 <div className="w-[75px] h-[75px] rounded-[8px] flex items-center bg-gray-200">
@@ -94,7 +96,7 @@ export function CartSheet({ open, setOpen }: Props) {
                                                 </div>
                                             )}
                                             <div className="flex flex-col gap-1 flex-1">
-                                                <p className="text-[16px] text-gray-900 font-semibold">
+                                                <p className="text-[16px] text-gray-900">
                                                     {product?.name} ({item.productVariant?.name + item.productVariant?.quantity + item.productVariant?.unit})
                                                 </p>
                                                 <PriceDisplay
@@ -112,11 +114,21 @@ export function CartSheet({ open, setOpen }: Props) {
                                                         variant="outline"
                                                         size="sm"
                                                         className="h-8 w-8 p-0"
-                                                        onClick={() => decrementOrderItem(item.productVariant?.id, promotionData?.data ? promotionData.data : [])}
+                                                        onClick={() => Math.max(1, quantity) > 1 && decrementOrderItem(item.productVariant?.id, promotionData?.data ? promotionData.data : [])}
                                                     >
                                                         <Minus className="h-4 w-4" />
                                                     </Button>
-                                                    <span className="text-sm w-6 text-center">{quantity}</span>
+                                                    {/* <span className="text-sm w-6 text-center">{quantity}</span> */}
+                                                    <Input
+                                                        type="number"
+                                                        min={1}
+                                                        defaultValue={quantity}
+                                                        value={quantity}
+                                                        onChange={(e) => {
+                                                            updateOrderItem(item.productVariantId, parseInt(e.target.value) || 1);
+                                                        }}
+                                                        className="w-12 text-center px-0"
+                                                    />
                                                     <Button
                                                         variant="outline"
                                                         size="sm"
@@ -165,7 +177,7 @@ export function CartSheet({ open, setOpen }: Props) {
                             setOpen(false);
                             router.push("/cart");
                         }}
-                        className="w-full mb-5 px-5 mt-10 mx-auto max-w-[330px]"
+                        className="w-full mb-5 px-5 mx-auto max-w-[330px]"
                     >
                         {t("checkout")}
                     </Button>

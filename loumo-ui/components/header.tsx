@@ -178,10 +178,10 @@ const Header = () => {
       {address && (
         <div className="flex md:hidden items-center justify-center px-7 py-2 gap-2 w-full mx-auto bg-secondary">
           <div className="flex items-center gap-2">
-            <LucideMapPin size={24} className="text-white flex-shrink-0" />
-            <div className="flex flex-row gap-1 w-full overflow-hidden">
+            <LucideMapPin size={16} className="text-white flex-shrink-0" />
+            <div className="flex flex-row items-center gap-1 w-full overflow-hidden">
               <p className="text-xs text-white">{t("address")}</p>
-              <p className="text-sm truncate">{address?.street}</p>
+              <p className="text-sm truncate text-white">{address?.street}</p>
             </div>
           </div>
         </div>

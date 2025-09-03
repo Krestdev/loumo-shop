@@ -7,7 +7,7 @@
   "Header": {
     "noResult": "Aucun résultat trouvé.",
     "search": "Rechercher",
-    "address": "Adresse de livraison",
+    "address": "votre adresse de livraison :",
     "login": "Connexion",
     "register": "Inscription",
     "or": "OU",
@@ -37,14 +37,15 @@
       "mobile": "Paiement mobile",
       "mobileDesc": "Nous acceptons Orange et MTN MOMO",
       "support": "Support",
-      "supportDesc": "Chat en direct 24/7 pour répondre à vos questions"
+      "supportDesc": "Chat en direct 24/7 pour répondre à vos questions",
+      "seeAll": "Voir tout"
     },
     "Help": {
       "help": "Aide",
       "faq": "FAQ",
       "fees": "Frais de livraison",
       "policy": "Politique de retour",
-      "contact": "Contact"
+      "contact": "Contactez-nous"
     },
     "About": {
       "about": "À propos",
@@ -56,7 +57,8 @@
     "copyright": "Copyright © 2025 KrestDev. Tous droits réservés."
   },
   "HomePage": {
-    "noConnect": "Vous n'êtes pas connecté",
+    "noConnect1": "Connectez-vous pour valider votre commande",
+    "noConnect2": "Créez votre compte pour valider votre commande",
     "login": "Connexion",
     "register": "Inscription",
     "fav": "Ma liste de souhaits",
@@ -74,7 +76,7 @@
     "GridProducts": {
       "star": "Produits phares",
       "promotions": "Promotions",
-      "addToCart": "Ajouter au panier",
+      "addToCart": "ADD",
       "new": "Nouveau",
       "outOfStock": "En rupture",
       "noProduct": "Aucun produit trouvé"
@@ -101,7 +103,7 @@
       "search": "Rechercher"
     },
     "Cart": {
-      "add": "Ajouter au panier",
+      "add": "Ajout au panier",
       "close": "Fermer",
       "outOfStock": "En rupture"
     },
@@ -124,16 +126,18 @@
     "lieu": "Lieu dit",
     "exLieu": "ex: Ecole publique Bonamoussadi",
     "noAddress": "Aucune adresse enregistrée",
-    "cart": "Panier",
+    "cart": "Votre panier",
     "checkout": "Passer commande",
     "remove": "Supprimer",
     "delivery": "Informations de livraison",
-    "to": "Livrer à",
+    "to": "Votre quartier",
+    "exContact": "Numéro à contacter par le livreur",
     "contact": "Contact",
     "payment": "Moyen de paiement",
     "number": "Numéro de paiement",
     "continue": "Continuer",
     "emptyCart": "Vider le panier",
+    "cartEmpty": "Votre panier est vide",
     "summary": "Récapitulatif de commande",
     "promo": "Code promo",
     "apply": "Appliquer",
@@ -187,6 +191,7 @@
   },
   "Login": {
     "login": "Connexion",
+    "register": "Je veux creer un compte",
     "description": "Content de vous revoir ! Connectez-vous pour accéder à votre compte.",
     "emailLog": "Connexion par email",
     "phoneLog": "Connexion par numéro de téléphone",
@@ -209,7 +214,7 @@
     "cfPassword": "Confirmer le mot de passe",
     "accept": "En continuant, vous acceptez les conditions générales de Loumo.",
     "forgot": "Mot de passe oublié ?",
-    "alreaddy": "Vous avez déjà un compte ?",
+    "alreaddy": "J'ai déja un compte",
     "login": "Se connecter",
     "verified": "Email vérifié",
     "or": "ou"

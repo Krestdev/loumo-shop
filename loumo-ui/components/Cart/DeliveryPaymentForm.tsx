@@ -89,24 +89,24 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col max-w-[515px] w-full gap-7">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col max-w-[515px] w-full gap-0 md:gap-7">
 
                 {/* LIVRAISON */}
-                <div className="flex flex-col gap-5 px-6 py-7 rounded-[12px]">
-                    <p className="text-[24px] text-secondary font-semibold pb-5 border-b">
+                <div className="flex flex-col gap-5 px-6 py-7 border-b">
+                    <p className="text-[24px] text-secondary font-semibold">
                         {t("delivery")}
                     </p>
 
                     <div className="flex flex-col gap-2">
-                        <div className="flex gap-4 items-end">
+                        <div className="flex gap-2 md:gap-4 items-center">
                             <img
                                 src="/Images/location.png"
                                 alt="Position"
-                                className="rounded-[12px] max-w-[80px] w-full h-auto aspect-square border"
+                                className="rounded-[12px] max-w-[50px] md:max-w-[80px] w-full h-auto aspect-square border"
                             />
-                            <div className="flex flex-col gap-1">
-                                <p className="text-primary text-[14px] font-[300]">{t("to")}</p>
-                                <p className="text-[14px] text-black font-normal">
+                            <div className="flex flex-col">
+                                <p className="text-primary text-[18px] font-[300] leading-[100%]">{t("to")}</p>
+                                <p className="text-[16px] text-black font-normal">
                                     {address?.street || t("noAddress")}
                                 </p>
                             </div>
@@ -119,8 +119,8 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                             control={form2.control}
                             name="lieu"
                             render={({ field }) => (
-                                <FormItem className="flex flex-col gap-2">
-                                    <FormLabel className="font-medium text-[14px] text-gray-900">{t("lieu")}</FormLabel>
+                                <FormItem className="flex flex-row md:flex-col gap-2">
+                                    <FormLabel className="font-medium text-[14px] text-gray-900 text-nowrap">{t("lieu")} :</FormLabel>
                                     <FormControl>
                                         <Input type="text" {...field} placeholder={t("exLieu")} />
                                     </FormControl>
@@ -134,10 +134,10 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                         control={form.control}
                         name="tel"
                         render={({ field }) => (
-                            <FormItem className="flex flex-col gap-2">
-                                <FormLabel className="font-medium text-[14px] text-gray-900">{t("contact")}</FormLabel>
+                            <FormItem className="flex flex-row md:flex-col gap-2">
+                                <FormLabel className="font-medium text-[14px] text-gray-900 text-nowrap">{t("contact")} :</FormLabel>
                                 <FormControl>
-                                    <Input type="tel" {...field} placeholder="ex: 6 77 77 77 77" />
+                                    <Input type="tel" {...field} placeholder={t("exContact")} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -147,12 +147,12 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
 
                 {/* ÉTAPE SUMMARY */}
                 {level === "summary" ? (
-                    <div className="flex flex-col gap-5 px-6 py-7 rounded-[12px] w-full">
+                    <div className="flex flex-col gap-5 px-6 py-5 md:py-7 rounded-[12px] w-full">
                         <p className="text-[24px] text-secondary font-semibold">{t("summary")}</p>
 
                         <div className="relative max-w-[360px] h-[40px] w-full rounded-[20px] gap-2">
                             <Input placeholder={t("promo")} className="h-full" />
-                            <Button className="h-8 absolute right-1 top-1">{t("apply")}</Button>
+                            <Button type="button" className="h-8 absolute right-1 top-1">{t("apply")}</Button>
                         </div>
 
                         <div className="flex flex-col gap-3 w-full">

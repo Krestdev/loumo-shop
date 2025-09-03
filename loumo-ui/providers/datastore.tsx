@@ -34,6 +34,8 @@ type Store = {
     quantity?: number
   ) => void;
 
+  updateOrderItem: (variantId: number, quantity: number) => void;
+
   incrementOrderItem: (variantId: number, promotions: Promotion[]) => void;
 
   decrementOrderItem: (variantId: number, promotions: Promotion[]) => void;
@@ -75,20 +77,20 @@ export const useStore = create<Store>()(
       orderAddressId: null,
 
       addOrderItem: ({ variant, note, promotions }, quantity = 1) => {
-        const existing = get().currentOrderItems.find(
-          (x) => x.productVariantId === variant.id
-        );
-
+        const { currentOrderItems } = get();
+        const existing = currentOrderItems.find(x => x.productVariantId === variant.id);
         const promoPrice = getBestPromotionPrice(variant, promotions);
 
         if (existing) {
+          const newQuantity = existing.quantity + quantity;
           set((state) => ({
             currentOrderItems: state.currentOrderItems.map((x) =>
               x.productVariantId === variant.id
                 ? {
                   ...x,
-                  quantity: x.quantity + quantity,
-                  total: (x.quantity + quantity) * promoPrice,
+                  quantity: newQuantity,
+                  total: newQuantity * promoPrice,
+                  note: note || x.note, // Garder la note existante si nouvelle note non fournie
                 }
                 : x
             ),
@@ -109,9 +111,36 @@ export const useStore = create<Store>()(
           set((state) => ({
             currentOrderItems: [...state.currentOrderItems, newItem],
           }));
-
           toast.success(`Added ${variant.name} to order`);
         }
+      },
+
+      updateOrderItem: (variantId, quantity) => {
+        // Vérifier que la quantité est valide
+        if (quantity <= 0) {
+          set((state) => ({
+            currentOrderItems: state.currentOrderItems.filter(
+              (x) => x.productVariantId !== variantId
+            ),
+          }));
+          return;
+        }
+
+        set((state) => {
+          const updatedItems = state.currentOrderItems.map((x) => {
+            if (x.productVariantId === variantId) {
+              const unitPrice = x.total / x.quantity; 
+              return {
+                ...x,
+                quantity,
+                total: unitPrice * quantity
+              };
+            }
+            return x;
+          });
+
+          return { currentOrderItems: updatedItems };
+        });
       },
 
       incrementOrderItem: (variantId, promotions) =>
@@ -188,7 +217,7 @@ export const useStore = create<Store>()(
       }),
       onRehydrateStorage: () => (state) => {
         state?.setIsHydrated(true); // ✅ proper Zustand update
-      },
+      },
     }
   )
 );

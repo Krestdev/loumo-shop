@@ -7,7 +7,7 @@
   "Header": {
     "noResult": "No results found.",
     "search": "Search",
-    "address": "Delivery address",
+    "address": "your delivery address",
     "login": "Login",
     "register": "Register",
     "or": "OR",
@@ -37,14 +37,15 @@
       "mobile": "Mobile payment",
       "mobileDesc": "We accept Orange and MTN MOMO",
       "support": "Support",
-      "supportDesc": "24/7 live chat to answer your questions"
+      "supportDesc": "24/7 live chat to answer your questions",
+      "seeAll": "See all"
     },
     "Help": {
       "help": "Help",
       "faq": "FAQ",
       "fees": "Delivery fees",
       "policy": "Return policy",
-      "contact": "Contact"
+      "contact": "Contact us"
     },
     "About": {
       "about": "About",
@@ -74,7 +75,7 @@
     "GridProducts": {
       "star": "Featured products",
       "promotions": "Promotions",
-      "addToCart": "Add to cart",
+      "addToCart": "ADD",
       "new": "New",
       "outOfStock": "Out of stock",
       "noProduct": "No products found"
@@ -124,11 +125,12 @@
     "lieu": "Place name",
     "exLieu": "ex: Bonamoussadi Public School",
     "noAddress": "No saved addresses",
-    "cart": "Cart",
+    "cart": "Your cart",
     "checkout": "Checkout",
     "remove": "Remove",
     "delivery": "Delivery information",
-    "to": "Deliver to",
+    "to": "Your address",
+    "exContact": "Contact number by deliveryman",
     "contact": "Contact",
     "payment": "Payment method",
     "number": "Payment number",

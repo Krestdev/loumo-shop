@@ -19,7 +19,7 @@ interface CartCompProps {
 const CartComp = ({ onValidate, promotions }: CartCompProps) => {
     const t = useTranslations("Cart");
     const {
-        addOrderItem,
+        updateOrderItem,
         removeOrderItem,
         currentOrderItems,
         decrementOrderItem,
@@ -75,10 +75,10 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
     const frais = address?.zone?.price || 0;
     const totalPrice = getCartTotal() + frais;
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-7 max-w-[1400px] w-full">
-            <div className="flex flex-col gap-5 px-6 py-7 rounded-[12px] max-w-[515px] w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-7 max-w-[1400px] w-full">
+            <div className="flex flex-col gap-5 px-6 py-4 md:py-7 max-w-[515px] w-full border-b">
                 <div className='flex items-center justify-between'>
-                    <p className="text-[24px] text-secondary font-semibold">{t("cart")}</p>
+                    <p className="text-[18px] md:text-[24px] text-secondary font-semibold">{t("cart")}</p>
                     {
                         currentOrderItems && currentOrderItems.length > 0 ? (
                             <Button
@@ -107,7 +107,7 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                                                     : `${env?.replace(/\/$/, "")}/${x.productVariant.imgUrl.replace(/^\//, "")}`
                                             }
                                             alt={x.productVariant?.name}
-                                            className="max-w-[120px] w-full h-auto aspect-square rounded-[6px]"
+                                            className="max-w-[120px] w-full h-auto aspect-square rounded-[6px] border"
                                         />
 
                                     ) : (
@@ -118,7 +118,7 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                                     <div className="flex flex-col gap-1 w-full">
                                         <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                                             <div className="flex flex-col gap-1">
-                                                <p className="text-gray-700 font-semibold">{product?.name}</p>
+                                                <p className="text-gray-700 font-semibold text-[22px]">{product?.name}</p>
                                                 <Badge variant="outline">{x.productVariant?.name + x.productVariant?.quantity + x.productVariant?.unit}</Badge>
                                                 {(() => {
                                                     const promo = x.productVariant
@@ -176,15 +176,14 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                                                         -
                                                     </Button>
                                                     <Input
+                                                        type="number"
+                                                        min={1}
+                                                        defaultValue={quantity}
                                                         value={quantity}
-                                                        onChange={(e) =>
-                                                            addOrderItem({
-                                                                variant: x.productVariant!, note: "",
-                                                                promotions: promotions!
-                                                            }, parseInt(e.target.value))
-                                                        }
-                                                        className="w-12 text-center text-black"
-                                                        disabled={!x.productVariant}
+                                                        onChange={(e) => {
+                                                            updateOrderItem(x.productVariantId, parseInt(e.target.value) || 1);
+                                                        }}
+                                                        className="w-12 text-center px-0 text-black"
                                                     />
                                                     <Button
                                                         type="button"
@@ -203,7 +202,7 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                             );
                         })
                     ) : (
-                        <p>{t("emptyCart")}</p>
+                        <p>{t("cartEmpty")}</p>
                     )}
                 </div>
             </div>

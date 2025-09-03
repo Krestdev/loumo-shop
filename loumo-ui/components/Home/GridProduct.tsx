@@ -37,7 +37,7 @@ const GridProduct = ({
   products,
   isLoading,
   isSuccess,
-  className = "px-4 py-12 gap-7",
+  className = "px-4 py-5 md:py-12 gap-7",
 }: Props) => {
   const breakpoint = useBreakpoint();
   const t = useTranslations("HomePage.GridProducts")
@@ -53,7 +53,7 @@ const GridProduct = ({
   return (
     <div className={`max-w-[1400px] w-full flex flex-col ${className}`}>
       <h1 className='category-title'>{title}</h1>
-      <div className='grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5'>
+      <div className='grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 gap-y-10'>
         {isLoading && Array.from({ length: visibleCount }).map((_, i) => (
           <Skeleton key={i} className="w-[252px] rounded-none" />
         ))}

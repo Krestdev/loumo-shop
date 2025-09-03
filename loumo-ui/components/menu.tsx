@@ -10,7 +10,7 @@ import {
 import { Button } from "./ui/button";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { ArrowRight, LucideChevronDown, LucideMapPin, LucideSearch } from "lucide-react";
+import { ChevronRight, LucideChevronDown, LucideMapPin, LucideSearch } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { useStore } from "@/providers/datastore";
 import AddressQuery from "@/queries/address";
@@ -135,7 +135,7 @@ export function Menu({ children }: Props) {
             </DrawerTitle>
           )}
 
-          <div className="w-full flex flex-row items-start px-7 pb-4 border-b">
+          <div className="w-full flex flex-row items-start px-7 pb-4 pt-5 border-b">
             {currentOrderItems.length <= 0 ? (
               <Select
                 open={selectOpen}
@@ -238,20 +238,8 @@ export function Menu({ children }: Props) {
                     >
                       {cat.name}
                     </Link>
-                    <ArrowRight className="w-4 h-4" />
+                    <ChevronRight className="w-4 h-4" />
                   </div>
-                  {/* <div className="flex flex-col">
-                    {productsInCat.map((p) => (
-                      <div key={p.id} className="py-4 px-6">
-                        <Link
-                          href={`/catalog/${p.slug}`}
-                          className="text-[16px] text-gray-900"
-                        >
-                          {p.name}
-                        </Link>
-                      </div>
-                    ))}
-                  </div> */}
                 </div>
               );
             })}

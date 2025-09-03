@@ -92,7 +92,7 @@ const HistoryTable = ({ orders, all }: Props) => {
                 <TableBody>
                     {slicedItems.length > 0 ? slicedItems.map((order, i) => (
                         <TableRow key={order.id ?? i} className="bg-white">
-                            <TableCell className="text-center">{order.id}</TableCell>
+                            <TableCell className="text-center">{order.ref}</TableCell>
                             <TableCell className="text-center">{formatDateLongFR(order.createdAt)}</TableCell>
                             <TableCell className="text-center">{`${order.total} FCFA`}</TableCell>
                             <TableCell className="text-center">{order.status}</TableCell>

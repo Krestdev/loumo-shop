@@ -93,7 +93,7 @@ export default function SignInDialog({ setOpen, setPage }: Props) {
     return (
 
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 py-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <p className="text-sm text-center text-gray-700">{t("description")}</p>
 
                 <div className="flex flex-col items-center gap-5">
@@ -144,43 +144,50 @@ export default function SignInDialog({ setOpen, setPage }: Props) {
                             />
                         )}
 
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>{t("password")}</FormLabel>
-                                    <FormControl>
-                                        <Input type="password" placeholder="********" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <Button
-                            type="button"
-                            className="w-full"
-                            disabled={userData.isPending || isPending}
-                            onClick={() => form.handleSubmit(onSubmit)()}
-                        >
-                            {(userData.isPending || isPending) && (
-                                <Loader className="mr-2 animate-spin" size={16} />
-                            )}
-                            {t("login")}
-                        </Button>
-
-
-                        <div className="flex items-center justify-between text-sm">
-                            <Link href="/auth/restore-password" className="text-primary underline">
-                                {t("forgot")}
-                            </Link>
-                            <div className="flex items-center gap-1">
-                                <span>{t("notYet")}</span>
-                                <Button type="button" variant="link" onClick={() => setPage("register")} className="text-primary underline py-0">
-                                    {t("signIn")}
-                                </Button>
+                        <div>
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{t("password")}</FormLabel>
+                                        <FormControl>
+                                            <Input type="password" placeholder="********" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <div className="flex justify-end w-full text-sm">
+                                <Link href="/auth/restore-password" className="text-primary underline">
+                                    {t("forgot")}
+                                </Link>
                             </div>
+                        </div>
+
+                        <div className="flex flex-row gap-3 mx-auto">
+                            <Button
+                                type="button"
+                                disabled={userData.isPending || isPending}
+                                onClick={() => form.handleSubmit(onSubmit)()}
+                            >
+                                {(userData.isPending || isPending) && (
+                                    <Loader className="mr-2 animate-spin" size={16} />
+                                )}
+                                {t("login")}
+                            </Button>
+
+                            <Button
+                                type="button"
+                                disabled={userData.isPending || isPending}
+                                variant={"outline"}
+                                onClick={() => setPage("register")}
+                            >
+                                {(userData.isPending || isPending) && (
+                                    <Loader className="mr-2 animate-spin" size={16} />
+                                )}
+                                {t("register")}
+                            </Button>
                         </div>
                     </div>
                 </div>

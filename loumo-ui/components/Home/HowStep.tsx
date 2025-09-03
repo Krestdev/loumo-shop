@@ -99,14 +99,14 @@ const HowStep = () => {
           >
             {step.map((x, i) => (
               <div key={i} className='flex-shrink-0 w-full px-2'>
-                <div className='flex flex-col gap-5 px-7 py-8 rounded-[20px] border border-input max-w-[340px] mx-auto w-full'>
-                  <img src={x.image} alt={x.title} className='max-w-[284px] aspect-auto rounded-[12px] mx-auto' />
+                <div className='flex flex-col gap-3 px-7 py-5 rounded-[20px] border border-input max-w-[340px] mx-auto w-full'>
+                  <img src={x.image} alt={x.title} className='max-w-[284px] aspect-[5/3] rounded-[12px] mx-auto' />
                   <div className='bg-secondary h-8 px-3 py-2 rounded-[20px] flex items-center justify-center w-fit mx-auto'>
-                    <p className='text-white uppercase'>{x.step + " " + (i + 1)}</p>
+                    <p className='text-white uppercase text-[16px]'>{x.step + " " + (i + 1)}</p>
                   </div>
                   <div className='flex flex-col gap-2 text-center'>
-                    <p className='text-[20px] text-gray-900 font-semibold'>{x.title}</p>
-                    <p className='text-gray-700 text-[16px]'>{x.descrip}</p>
+                    <p className='text-[16px] text-gray-900 font-semibold'>{x.title}</p>
+                    <p className='text-gray-700 text-[14px]'>{x.descrip}</p>
                   </div>
                 </div>
               </div>

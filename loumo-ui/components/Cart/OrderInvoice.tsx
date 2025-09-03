@@ -106,7 +106,7 @@ export const OrderInvoice = ({
         <View style={styles.header}>
           <Image src={"/logo.png"} style={styles.logo} />
           <Text style={styles.title}>{translations.title}</Text>
-          <Text>{`${translations.order} #${order?.id} ${translations.of} ${order?.createdAt ? format(
+          <Text>{`${translations.order} ${order?.ref} ${translations.of} ${order?.createdAt ? format(
             order.createdAt,
             "dd/MM/yyyy - HH:mm"
           ) : "-"}`}</Text>

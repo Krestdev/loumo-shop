@@ -45,15 +45,15 @@ const CategoryComp = ({ slug }: { slug: string }) => {
 
     return (
         <div className='w-full flex justify-center'>
-            <div className='flex flex-col gap-5 px-7 py-32 max-w-[1400px] w-full'>
+            <div className='flex flex-col gap-5 px-4 md:px-7 py-7 md:py-32 max-w-[1400px] w-full'>
                 <div className='flex flex-row items-center gap-2'>
-                    <Link href={"/"}>{t("home")}</Link>
+                    <Link className='text-primary underline' href={"/"}>{t("home")}</Link>
                     <ChevronRight size={12} />
-                    <Link href={"/categories"}>{t("categories")}</Link>
+                    <Link className='text-primary underline' href={"/categories"}>{t("categories")}</Link>
                     <ChevronRight size={12} />
                     <p>{categ?.name}</p>
                 </div>
-                <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-5'>
+                <div className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5'>
                     {
                         categ?.products?.map((x, i) => {
                             return (

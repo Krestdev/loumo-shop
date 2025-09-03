@@ -11,7 +11,7 @@ const CategoryCard = ({ category }: { category: Category }) => {
     return (
         <Link href={`/categories/${category.slug}`}>
             <motion.div
-                className="flex flex-col gap-2 max-w-[200px] w-full h-full"
+                className="flex flex-col gap-2 max-w-[112px] md:max-w-[200px] w-full h-full"
                 whileHover={{ y: -5 }}
                 whileTap={{ scale: 0.95 }}
             >
@@ -41,7 +41,7 @@ const CategoryCard = ({ category }: { category: Category }) => {
                     </motion.div>
                 )}
                 <motion.p
-                    className='text-[16px] text-gray-900 font-medium line-clamp-2'
+                    className='text-[12px] font-medium text-gray-900 line-clamp-2'
                     initial={{ y: 10, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.2 }}

@@ -180,15 +180,17 @@ export default function SignUpDialog({ setOpen, setPage }: Props) {
                                         />
                                     </FormControl>
                                     <div className="text-sm leading-none">
-                                        <FormLabel>{t("accept")}</FormLabel>
+                                        <FormLabel className="text-[12px] font-normal">{t("accept")}</FormLabel>
                                     </div>
                                 </FormItem>
                             )}
                         />
 
+
+                        <div className="flex flex-row gap-2">
                         <Button
                             type="button"
-                            className="w-full"
+                            // className="w-full"
                             disabled={isPending || userRegister.isPending}
                             onClick={() => form.handleSubmit(onSubmit)()}
                         >
@@ -197,13 +199,19 @@ export default function SignUpDialog({ setOpen, setPage }: Props) {
                             )}
                             {t("signUp")}
                         </Button>
+                        <Button
+                            type="button"
+                            // className="w-full"
+                            variant={"outline"}
+                            disabled={isPending || userRegister.isPending}
+                            onClick={() => setPage("login")}
+                        >
+                            {(isPending || userRegister.isPending) && (
+                                <Loader className="animate-spin mr-2" size={16} />
+                            )}
+                            {t("alreaddy")}
+                        </Button>
 
-
-                        <div className="flex items-center gap-1">
-                            <span>{t("alreaddy")}</span>
-                            <Button type="button" variant="link" onClick={() => setPage("login")} className="text-primary underline py-0">
-                                {t("login")}
-                            </Button>
                         </div>
                     </div>
                 </div>

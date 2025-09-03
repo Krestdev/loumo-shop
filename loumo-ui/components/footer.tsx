@@ -7,6 +7,7 @@ import Link from 'next/link'
 import React from 'react'
 import Loading from './setup/loading';
 import SettingQuery from '@/queries/setting';
+import { ChevronRight } from 'lucide-react';
 
 const Footer = () => {
     const t = useTranslations("Footer")
@@ -71,14 +72,14 @@ const Footer = () => {
         <div className='w-full flex justify-center bg-secondary'>
             <div className='flex flex-col max-w-[1400px] w-full'>
                 <div className='flex flex-col gap-10 px-7 py-10'>
-                    <div className='grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-10'>
+                    <div className='grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-10'>
                         {
                             info.map((x, i) => {
                                 return (
-                                    <div key={i} className='flex flex-row items-center px-5 py-4 gap-4'>
-                                        <img src={x.icon} alt={x.title} className='h-12 w-12 md:h-16 md:w-16' />
-                                        <div className='flex flex-col gap-1'>
-                                            <p className='text-[24px] text-gray-50 font-semibold'>{x.title}</p>
+                                    <div key={i} className='flex flex-row items-center px-5 py-2 md:py-4 gap-4'>
+                                        <img src={x.icon} alt={x.title} className='h-[24px] w-[24px] md:h-16 md:w-16' />
+                                        <div className='flex flex-col'>
+                                            <p className='text-[18px] md:text-[24px] text-gray-50 font-semibold leading-[100%] md:leading-[120%]'>{x.title}</p>
                                             <p className='text-[14px] text-gray-200 font-normal'>{x.description}</p>
                                         </div>
                                     </div>
@@ -86,30 +87,31 @@ const Footer = () => {
                             })
                         }
                     </div>
-                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-7 gap-7 md:px-0 md:gap-10'>
+                    <div className='grid grid-cols-2 lg:grid-cols-4 px-7 gap-7 md:px-0 md:gap-10'>
                         <div className='flex flex-col gap-5'>
-                            <p className='text-[16px] text-gray-50 font-semibold'>{t("Help.help")}</p>
+                            <p className='text-[18px] text-gray-50 font-semibold'>{t("Help.help")}</p>
                             <div className='flex flex-col gap-3'>
-                                <Link href={"/faq"} className='text-[14px] font-medium text-gray-50' >{t("Help.faq")}</Link>
-                                <Link href={""} className='text-[14px] font-medium text-gray-50' >{t("Help.fees")}</Link>
-                                <Link href={"/condition"} className='text-[14px] font-medium text-gray-50' >{t("Help.policy")}</Link>
-                                <Link href={"/contact"} className='text-[14px] font-medium text-gray-50' >{t("Help.contact")}</Link>
+                                <Link href={"/faq"} className='text-[14px] font-medium text-gray-50 flex items-center  gap-2' >{t("Help.faq")}<ChevronRight size={14} /></Link>
+                                <Link href={""} className='text-[14px] font-medium text-gray-50 flex items-center  gap-2' >{t("Help.fees")}<ChevronRight size={14} /></Link>
+                                <Link href={"/condition"} className='text-[14px] font-medium text-gray-50 flex items-center  gap-2' >{t("Help.policy")}<ChevronRight size={14} /></Link>
+                                <Link href={"/contact"} className='text-[14px] font-medium text-gray-50 flex items-center  gap-2' >{t("Help.contact")}<ChevronRight size={14} /></Link>
                             </div>
                         </div>
                         <div className='flex flex-col gap-5'>
-                            <p className='text-[16px] text-gray-50 font-semibold'>{t("category")}</p>
+                            <p className='text-[18px] text-gray-50 font-semibold'>{t("category")}</p>
                             <div className='flex flex-col gap-3'>
                                 {
-                                    categoryData.data?.filter(category => category.products?.some(product => product.variants && product.variants.length > 0)).slice(0, 6).map((x, i) => {
+                                    categoryData.data?.filter(category => category.products?.some(product => product.variants && product.variants.length > 0)).slice(0, 2).map((x, i) => {
                                         return (
-                                            <Link key={i} href={`/categories/${x.slug}`} className='text-[14px] font-medium text-gray-50' >{x.name}</Link>
+                                            <Link key={i} href={`/categories/${x.slug}`} className='text-[14px] font-medium text-gray-50 flex items-center gap-2' ><p className='w-fit'>{x.name}</p><ChevronRight size={14} /></Link>
                                         )
                                     })
                                 }
+                                <Link href={`/categories`} className='text-[14px] font-medium text-gray-50 flex items-center  gap-2' >{t("Info.seeAll")}<ChevronRight size={14} /></Link>
                             </div>
                         </div>
-                        <div className='flex flex-col gap-5'>
-                            <p className='text-[16px] text-gray-50 font-semibold'>{t("About.about")}</p>
+                        {settingData?.length && <div className='flex flex-col gap-5'>
+                            <p className='text-[18px] text-gray-50 font-semibold'>{t("About.about")}</p>
                             <div className='flex flex-col gap-3'>
                                 {
                                     settingData?.map((x, i) => {
@@ -119,9 +121,9 @@ const Footer = () => {
                                     })
                                 }
                             </div>
-                        </div>
+                        </div>}
                         <div className='flex flex-col gap-5'>
-                            <p className='text-[16px] text-gray-50 font-semibold'>{t("followUs")}</p>
+                            <p className='text-[18px] text-gray-50 font-semibold'>{t("followUs")}</p>
                             <div className='flex flex-row items-center gap-3'>
                                 {
                                     social.map((x, i) => {

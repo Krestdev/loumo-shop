@@ -8,7 +8,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SignUpDialog from "./RegisterDialog";
 import SignInDialog from "./SignInDialog";
 
@@ -21,6 +21,10 @@ export function AuthDialog({ children }: Props) {
     const [page, setPage] = useState<"login" | "register">("login");
     const [open, setOpen] = useState(false);
 
+    useEffect(() => {
+        setPage("login");
+    }, [open]);
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger className="w-full" asChild>
@@ -28,7 +32,7 @@ export function AuthDialog({ children }: Props) {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{t("noConnect")}</DialogTitle>
+                    <DialogTitle>{page === "login" ? t("noConnect1") : t("noConnect2")}</DialogTitle>
                 </DialogHeader>
                 {
                     page === "login" ?

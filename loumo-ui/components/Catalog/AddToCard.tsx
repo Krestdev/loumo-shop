@@ -53,7 +53,7 @@ export function AddToCard({ children, product, variant, setVariant, initialQuant
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] w-full">
         <DialogHeader>
-          <DialogTitle className="flex gap-2 items-center">
+          <DialogTitle className="flex gap-2 items-center text-[16px]">
             {t("add")}
             {!!((variant?.stock && variant?.stock[0] && variant?.stock[0].quantity <= 0) || (variant?.stock && variant?.stock.length <= 0)) && (
               <div className='bg-red-700 p-2 z-10 w-fit'>
@@ -72,16 +72,16 @@ export function AddToCard({ children, product, variant, setVariant, initialQuant
               }
               alt={variant.name}
               onError={(e) => (e.currentTarget.src = "/fallback.jpg")}
-              className="w-[75px] h-[75px] aspect-square"
+              className="max-w-[150px] w-full h-auto aspect-square border"
             />
           ) : (
-            <div className="flex items-center justify-center w-[75px] h-[75px] aspect-square bg-gray-100 text-white">
+            <div className="flex items-center justify-center max-w-[150px] w-full h-auto aspect-square bg-gray-100 text-white">
               <LucideDatabase size={40} />
             </div>
           )}
 
           <div className="flex flex-col gap-2 flex-1 w-full">
-            <p className="text-[16px] text-gray-900 font-semibold">{product?.name}</p>
+            <p className="text-[18px] text-gray-900 font-semibold">{product?.name}</p>
             <div className="pb-1 w-full">
               <div className="inline-flex flex-wrap gap-2">
                 {product?.variants?.map((va, idx) => (
@@ -109,6 +109,7 @@ export function AddToCard({ children, product, variant, setVariant, initialQuant
               }))}
               variants={product?.variants}
               quantity={quantity}
+              className1="text-[16px] font-bold"
             />
 
             {/* <div className="flex gap-1 items-center">
@@ -134,13 +135,13 @@ export function AddToCard({ children, product, variant, setVariant, initialQuant
         </div>
 
         <DialogFooter className="mt-4">
+          <DialogClose asChild>
+            <Button variant="outline">{t("close")}</Button>
+          </DialogClose>
           <Button disabled={!!((variant?.stock && variant?.stock[0] && variant?.stock[0].quantity <= 0) || (variant?.stock && variant?.stock.length <= 0))} onClick={addToCart}>
             <LucideShoppingCart size={16} className="mr-2" />
             {t("add")}
           </Button>
-          <DialogClose asChild>
-            <Button variant="outline">{t("close")}</Button>
-          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

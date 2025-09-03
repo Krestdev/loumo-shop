@@ -69,6 +69,7 @@ export type NotificationT = {
 };
 
 export type Order = {
+  ref: string;
   id: number;
   userId: number;
   note: string;

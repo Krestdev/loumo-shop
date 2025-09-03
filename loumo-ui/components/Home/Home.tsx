@@ -54,7 +54,7 @@ const Home = () => {
   }, [productData.data, addressId]);
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-full flex flex-col items-center overflow-clip">
       <HeroSection />
       <CategoryMenu />
 
