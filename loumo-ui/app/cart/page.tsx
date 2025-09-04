@@ -30,7 +30,7 @@ const Page = () => {
   const createOrder = useMutation({
     mutationKey: ["createOrder"],
     mutationFn: (
-      newOrder: Omit<Order, "id" | "orderItems" | "createdAt" | "address" | "user"> & {
+      newOrder: Omit<Order, "id" | "orderItems" | "createdAt" | "address" | "user" | "ref"> & {
         orderItems?: Partial<OrderItem>[];
       }
     ) => orderQuery.create(newOrder),
@@ -64,7 +64,7 @@ const Page = () => {
       const total = frais + currentOrderItems.reduce((acc, item) => acc + (item.total || 0), 0);
       const weight = currentOrderItems.reduce((acc, item) => acc + (item.productVariant.weight || 0), 0);
 
-      const payload: Omit<Order, "id" | "createdAt" | "address" | "user"> = {
+      const payload: Omit<Order, "id" | "createdAt" | "address" | "user" | "ref"> = {
         userId: user.id,
         addressId: address.id,
         note: orderNote,
