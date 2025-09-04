@@ -68,7 +68,7 @@ export function CartSheet({ open, setOpen }: Props) {
                         </div>
                     ) : (
                         <>
-                            <div className="flex flex-col gap-2">
+                            <div className="flex flex-col max-h-[600px] overflow-y-auto gap-2">
                                 {currentOrderItems.map((item, i) => {
                                     const quantity = item.quantity;
                                     const product = productData.data?.find(
@@ -91,7 +91,7 @@ export function CartSheet({ open, setOpen }: Props) {
                                                     className="w-[75px] h-[75px] rounded-[8px] object-cover border"
                                                 />
                                             ) : (
-                                                <div className="w-[75px] h-[75px] rounded-[8px] flex items-center bg-gray-200">
+                                                <div className="w-[75px] h-[75px] rounded-[8px] flex items-center justify-center text-white bg-gray-200">
                                                     <LucideDatabase size={36} />
                                                 </div>
                                             )}
@@ -158,29 +158,30 @@ export function CartSheet({ open, setOpen }: Props) {
                                     <span className="font-medium">{t("subtotal")}</span>
                                     <span className="font-bold">{XAF.format(subtotal)}</span>
                                 </div>
-
-                                <Button
-                                    variant="outline"
-                                    className="text-red-500 mb-2 w-full"
-                                    onClick={clearCart}
-                                >
-                                    {t("clearCart")}
-                                </Button>
                             </div>
                         </>
                     )}
                 </div>
 
                 {currentOrderItems.length > 0 && (
-                    <Button
-                        onClick={() => {
-                            setOpen(false);
-                            router.push("/cart");
-                        }}
-                        className="w-full mb-5 px-5 mx-auto max-w-[330px]"
-                    >
-                        {t("checkout")}
-                    </Button>
+                    <div className="w-full flex flex-col items-center">
+                        <Button
+                            variant="outline"
+                            className="text-red-500 mb-2 max-w-[330px] w-full"
+                            onClick={clearCart}
+                        >
+                            {t("clearCart")}
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                setOpen(false);
+                                router.push("/cart");
+                            }}
+                            className="px-5 max-w-[330px] w-full"
+                        >
+                            {t("checkout")}
+                        </Button>
+                    </div>
                 )}
             </SheetContent>
         </Sheet>

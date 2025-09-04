@@ -13,23 +13,18 @@ const Loading = ({ status }: { status?: "failed" | "loading" }) => {
         setMessage("We could not get the data you are looking for");
         break;
       default:
-        setMessage("An unexpected error occured");
+        setMessage("Loading...");
         break;
     }
   }, [status]);
 
   return (
-    <div className="h-screen w-full flex items-center justify-center flex-col gap-4 font-bold rounded-lg px-12 p-4 border-gray-500">
-      <video
-        src="/loading.webm"
-        className="aspect-video object-contain w-full max-w[250px] h-[150px]"
-        loop
-        autoPlay
-        muted
-        playsInline
-      >
-        <source src="/loading.webm" type="video/webm" />
-      </video>
+    <div className="h-screen w-full flex items-center justify-center flex-col gap-4 font-bold rounded-lg px-12 py-4 border border-gray-500">
+      <img
+        src="/loading.gif"
+        alt="Loading..."
+        className="aspect-video object-contain w-full max-w-[250px] h-[150px]"
+      />
       <p>{message}</p>
     </div>
   );

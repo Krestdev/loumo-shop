@@ -1,6 +1,5 @@
 "use client";
 
-import { AddToCard } from "@/components/Catalog/AddToCard";
 import GridProduct from "@/components/Home/GridProduct";
 import { AddAddress } from "@/components/select-address";
 import Loading from "@/components/setup/loading";
@@ -29,7 +28,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
   const shop = new ShopQuery();
   const userQuery = new UserQuery();
 
-  const { user, address } = useStore();
+  const { user, address, addOrderItem } = useStore();
   const addressId = address?.zoneId;
 
   const router = useRouter();
@@ -138,6 +137,15 @@ const ProductDetails = ({ slug }: { slug: string }) => {
     )
   );
 
+  const addToCart = () => {
+    if (productItem) {
+      addOrderItem({
+        variant:productItem, note: "",
+        promotions: promotionData.data!
+      }, quantity);
+    }
+  };
+
   return (
     <div className="w-full flex flex-col items-center overflow-clip">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-24 max-w-[1400px] w-full px-6 py-7">
@@ -185,7 +193,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
 
         <div className="flex flex-col gap-4 md:gap-7">
           <div className="flex flex-col gap-4 pb-5 border-b border-gray-200">
-            <h3 className="text-black text-center text-[28px]">{productData.data?.name}</h3>
+            <h3 className="text-black text-center md:text-start text-[28px]">{productData.data?.name}</h3>
             <div className="flex flex-col gap-2 md:gap-3 items-center md:items-start">
               <p>{t("options")}</p>
               <section className="grid overflow-x-auto pb-1">
@@ -228,29 +236,35 @@ const ProductDetails = ({ slug }: { slug: string }) => {
 
               <div className="w-full grid grid-cols-2 items-center gap-4">
                 {address ? (
-                  <AddToCard
-                    promotions={promotionData.data}
-                    product={productData.data}
-                    variant={productItem}
-                    setVariant={(v) => {
-                      if (typeof v === "function") {
-                        const current = productData.data?.variants?.find((x) => x.id === currentvar);
-                        const result = v(current);
-                        if (result?.id) setCurrentvar(result.id);
-                      } else if (v?.id) {
-                        setCurrentvar(v.id);
-                      }
-                    }}
-                    initialQuantity={quantity}
-                  >
-                    <Button disabled={available} className="h-9 md:h-12 rounded-[24px]">
-                      <LucideShoppingCart />
-                      {t("addToCart")}
-                    </Button>
-                  </AddToCard>
+                  // <AddToCard
+                  //   promotions={promotionData.data}
+                  //   product={productData.data}
+                  //   variant={productItem}
+                  //   setVariant={(v) => {
+                  //     if (typeof v === "function") {
+                  //       const current = productData.data?.variants?.find((x) => x.id === currentvar);
+                  //       const result = v(current);
+                  //       if (result?.id) setCurrentvar(result.id);
+                  //     } else if (v?.id) {
+                  //       setCurrentvar(v.id);
+                  //     }
+                  //   }}
+                  //   initialQuantity={quantity}
+                  // >
+                  //   <Button disabled={available} className="h-9 md:h-12 rounded-[24px]">
+                  //     <LucideShoppingCart />
+                  //     {t("addToCart")}
+                  //   </Button>
+                  // </AddToCard>
+                  <Button
+                    onClick={addToCart}
+                    disabled={available} className="h-9 md:h-12 rounded-[24px]">
+                    <LucideShoppingCart />
+                    {t("addToCart")}
+                  </Button>
                 ) : (
                   <AddAddress>
-                    <Button className="h-9 md:h-12 rounded-[24px]">{t("addToCart")}</Button>
+                    <Button className="h-9 md:h-12 rounded-[24px] ">{t("addToCart")}</Button>
                   </AddAddress>
                 )
                 }
@@ -269,7 +283,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
           </div>
 
           {/* <p className="font-semibold text-secondary text-[20px]">{t("about")}{' '}<span className="shadow px-1 py-1 text-[14px]">{`${productItem?.name + " " + productItem?.quantity + " " + productItem?.unit}`}</span></p> */}
-          <div className="flex flex-col md:gap-5">
+          <div className="flex flex-col">
             <span className="flex items-center gap-1">
               <p className="text-secondary text-[16px] font-semibold">{t("categories")}:</p>
               <p className="text-gray-700 text-[14px] font-normal">{similaire?.name}</p>

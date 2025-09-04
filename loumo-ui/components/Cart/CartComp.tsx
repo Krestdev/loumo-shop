@@ -76,7 +76,7 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
     const totalPrice = getCartTotal() + frais;
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-7 max-w-[1400px] w-full">
-            <div className="flex flex-col gap-5 px-6 py-4 md:py-7 max-w-[515px] w-full border-b">
+            <div className="flex flex-col gap-5 px-6 py-4 md:py-7 max-w-[515px] w-full border-b ie">
                 <div className='flex items-center justify-between'>
                     <p className="text-[18px] md:text-[24px] text-secondary font-semibold">{t("cart")}</p>
                     {
@@ -91,7 +91,7 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                         ) : null
                     }
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 max-h-[600px] overflow-y-auto">
                     {currentOrderItems && currentOrderItems.length > 0 ? (
                         currentOrderItems.map((x, i) => {
                             const quantity = x.quantity || 1;
@@ -107,7 +107,7 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                                                     : `${env?.replace(/\/$/, "")}/${x.productVariant.imgUrl.replace(/^\//, "")}`
                                             }
                                             alt={x.productVariant?.name}
-                                            className="max-w-[120px] w-full h-auto aspect-square rounded-[6px] border"
+                                            className="max-w-[120px] w-full aspect-square rounded-[6px] border object-cover"
                                         />
 
                                     ) : (
@@ -116,9 +116,9 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                                         </div>
                                     )}
                                     <div className="flex flex-col gap-1 w-full">
-                                        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-                                            <div className="flex flex-col gap-1">
-                                                <p className="text-gray-700 font-semibold text-[22px]">{product?.name}</p>
+                                        <div className="flex flex-col justify-between">
+                                            <div className="flex flex-col">
+                                                <p className="text-gray-700 font-semibold text-[20px] lg:text-[22px]">{product?.name}</p>
                                                 <Badge variant="outline">{x.productVariant?.name + x.productVariant?.quantity + x.productVariant?.unit}</Badge>
                                                 {(() => {
                                                     const promo = x.productVariant
@@ -138,39 +138,31 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                                                         <div className="flex flex-col">
                                                             <div className='flex flex-row items-center gap-2 line-through text-black'>
                                                                 <p className='text-black text-nowrap text-[10px]'>{`${x.productVariant.price} * ${quantity} :`}</p>
-                                                                <p className="text-black text-sm">
-                                                                    {(x.productVariant?.price ?? 0) * quantity} FCFA
+                                                                <p className="text-black text-sm text-nowrap">
+                                                                    {`${(x.productVariant?.price ?? 0) * quantity} FCFA`}
                                                                 </p>
                                                             </div>
                                                             <div className='flex flex-row items-center gap-2'>
                                                                 <p className="text-gray-900 font-semibold text-[12px] text-nowrap">{`${unitPrice} * ${quantity} :`}</p>
-                                                                <p className="text-red-600 font-bold text-[20px] text-nowrap">{totalPrice} FCFA</p>
+                                                                <p className="text-red-600 font-bold text-[14px] text-nowrap">{`${totalPrice} FCFA`}</p>
                                                             </div>
                                                         </div>
                                                     ) : (
-                                                        <div className='flex gap-2 items-center'>
+                                                        <div className='flex gap-2 items-center w-full'>
                                                             <p className="text-gray-900 font-semibold text-[12px] text-nowrap">{`${unitPrice} * ${quantity} :`}</p>
-                                                            <p className="text-gray-900 font-bold text-[20px] text-nowrap">{totalPrice} FCFA</p>
+                                                            <p className="text-gray-900 font-bold text-[14px] text-nowrap">{`${totalPrice} FCFA`}</p>
                                                         </div>
                                                     );
                                                 })()}
                                             </div>
 
-                                            <div className='flex flex-col gap-2 h-full justify-end-end'>
-                                                <Button
-                                                    onClick={() => removeOrderItem(x.productVariantId)}
-                                                    variant="ghost"
-                                                    className="text-red-600 bg-red-600/10 w-fit h-[25px] hover:bg-gray-50 hover:text-red-600"
-                                                >
-                                                    <LucideTrash />
-                                                    {t("remove")}
-                                                </Button>
-                                                <div className="flex flex-row items-center gap-2">
+                                            <div className='flex flex-row items-center h-full gap-2 justify-end-end'>
+                                                <div className="flex flex-row items-center gap-[2px]">
                                                     <Button
                                                         type="button"
                                                         onClick={() => decrementOrderItem(x.productVariantId, promotions!)}
                                                         variant="outline"
-                                                        className="w-8 h-8 p-0 text-black hover:text-white"
+                                                        className="w-7 h-7 p-0 text-black hover:text-white"
                                                         disabled={!x.productVariant}
                                                     >
                                                         -
@@ -183,18 +175,26 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                                                         onChange={(e) => {
                                                             updateOrderItem(x.productVariantId, parseInt(e.target.value) || 1);
                                                         }}
-                                                        className="w-12 text-center px-0 text-black"
+                                                        className="w-12 h-7 text-center px-0 text-black"
                                                     />
                                                     <Button
                                                         type="button"
                                                         onClick={() => incrementOrderItem(x.productVariantId, promotions!)}
                                                         variant="outline"
-                                                        className="w-8 h-8 p-0 text-black hover:text-white"
+                                                        className="w-7 h-7 p-0 text-black hover:text-white"
                                                         disabled={!x.productVariant}
                                                     >
                                                         +
                                                     </Button>
                                                 </div>
+                                                <Button
+                                                    onClick={() => removeOrderItem(x.productVariantId)}
+                                                    variant="ghost"
+                                                    className="text-red-600 bg-red-600/10 w-7 lg:w-fit h-7 hover:bg-gray-50 hover:text-red-600"
+                                                >
+                                                    <LucideTrash />
+                                                    <p className='hidden lg:block text-[12px]'>{t("remove")}</p>
+                                                </Button>
                                             </div>
                                         </div>
                                     </div>

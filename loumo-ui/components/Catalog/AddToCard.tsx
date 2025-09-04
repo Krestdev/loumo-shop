@@ -48,7 +48,7 @@ export function AddToCard({ children, product, variant, setVariant, initialQuant
 
   return (
     <Dialog>
-      <DialogTrigger className="w-full" asChild>
+      <DialogTrigger className="w-fit" asChild>
         {children}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] w-full">

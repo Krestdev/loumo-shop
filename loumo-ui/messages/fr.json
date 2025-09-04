@@ -7,9 +7,11 @@
   "Header": {
     "noResult": "Aucun résultat trouvé.",
     "search": "Rechercher",
-    "address": "votre adresse de livraison :",
+    "address": "Votre adresse de livraison :",
     "login": "Se Connecter",
     "register": "Créer un compte",
+    "categories": "Nos categories",
+    "language": "Changer de langue",
     "or": "OU",
     "myAccount": "Mon compte",
     "profile": "Profil",
@@ -69,7 +71,7 @@
     "reviews": "Avis",
     "Hero": {
       "notification": "Livraison gratuite dès votre première commande ! Inscrivez-vous maintenant.",
-      "title": "Votre épicerie locale à un clic.",
+      "title": "Votre magasin locale à un clic.",
       "allButton": "Tous les produits",
       "RegisterButton": "S'inscrire maintenant"
     },
@@ -127,7 +129,7 @@
     "exLieu": "ex: Ecole publique Bonamoussadi",
     "noAddress": "Aucune adresse enregistrée",
     "cart": "Votre panier",
-    "checkout": "Passer commande",
+    "checkout": "Passer la commande",
     "remove": "Supprimer",
     "delivery": "Informations de livraison",
     "to": "Votre quartier",
@@ -186,7 +188,7 @@
       "deliveryFee": "Frais de livraison",
       "conditions": "Les marchandises vendues ne sont ni reprises ni échangées.",
       "status": "Statut",
-      "lieu":"Lieu dit"
+      "lieu": "Lieu dit"
     }
   },
   "Login": {
@@ -249,7 +251,7 @@
     "title": "Foire Aux Questions (FAQ)"
   },
   "Profile": {
-    "overview": "Aperçu",
+    "overview": "Aperçu de votre compte",
     "loyalty": "Points fidélité",
     "orders": "Commandes",
     "lastOrder": "Dernière commande",
@@ -271,11 +273,12 @@
     "noAddress": "Aucune adresse enregistrée",
     "delete": "Supprimer",
     "Orders": {
-      "orders": "Commandes",
+      "orders": "Vos commandes",
       "all": "Toutes",
       "inProgress": "En cours",
       "completed": "Terminées",
       "reference": "Référence",
+      "reference2": "Ref",
       "date": "Date",
       "amount": "Montant",
       "status": "Statut",
@@ -283,6 +286,12 @@
       "actions": "Actions",
       "view": "Voir",
       "emptyTable": "Tableau vide",
+      "echoue": "Échoué",
+      "termine": "Terminé",
+      "encours": "En cours",
+      "rejete": "Rejeté",
+      "accepte": "Accepté",
+      "enattente": "En attente",
       "Detail": {
         "orderDetails": "Détails de la commande",
         "orderDate": "Du",

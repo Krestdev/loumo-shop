@@ -73,7 +73,7 @@ export function AddAddress({ children }: Props) {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild className="w-fit">{children}</DialogTrigger>
+      <DialogTrigger asChild className="w-full">{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px] aspect-auto">
         <DialogHeader>
           <DialogTitle>{t("address")}</DialogTitle>

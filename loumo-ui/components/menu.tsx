@@ -10,7 +10,7 @@ import {
 import { Button } from "./ui/button";
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
-import { ChevronRight, LucideChevronDown, LucideMapPin, LucideSearch } from "lucide-react";
+import { ChevronRight, LucideChevronDown, LucideCircleUser, LucideMapPin, LucideSearch } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { useStore } from "@/providers/datastore";
 import AddressQuery from "@/queries/address";
@@ -28,6 +28,8 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 
 interface Props {
   children: React.JSX.Element;
@@ -39,7 +41,7 @@ export function Menu({ children }: Props) {
   const [selectOpen, setSelectOpen] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const { currentOrderItems, address, setAddress, user } = useStore();
+  const { currentOrderItems, address, setAddress, user, logout } = useStore();
   const t = useTranslations("Header");
   const router = useRouter();
 
@@ -141,117 +143,138 @@ export function Menu({ children }: Props) {
             </DrawerTitle>
           )}
 
-          <div className="w-full flex flex-row items-start px-7 pb-4 pt-5 border-b">
-            {currentOrderItems.length <= 0 ? (
-              <Select
-                open={selectOpen}
-                onOpenChange={(open) => setSelectOpen(open)}
-                onValueChange={(value) => {
-                  const selected = addressData.data?.find(
-                    (a) => a.id === parseInt(value)
-                  );
-                  if (selected) {
-                    setAddress(selected);
-                    setSelectOpen(false);
-                    setAddressSearch("");
-                  }
-                }}
-                value={address?.id?.toString()}
-              >
-                <SelectTrigger className="flex group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer max-w-[200px] w-full border border-input">
-                  <LucideMapPin size={20} className="flex-shrink-0" />
-                  <div className="flex flex-col w-full overflow-hidden text-left">
-                    <SelectValue placeholder={t("select")} />
-                  </div>
-                </SelectTrigger>
-
-                <SelectContent className="overflow-y-auto max-h-[300px]">
-                  <div className="sticky top-0 bg-white z-10 p-2 border-b" tabIndex={-1}>
-                    <div className="relative">
-                      <LucideSearch
-                        size={16}
-                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground pointer-events-none"
-                      />
-                      <Input
-                        ref={inputRef}
-                        type="search"
-                        placeholder={t("search") + "..."}
-                        value={addressSearch}
-                        onChange={(e) => setAddressSearch(e.target.value)}
-                        className="pl-7"
-                        onFocus={() => setSelectOpen(true)}
-                        onKeyDown={(e) => e.stopPropagation()}
-                      />
-                    </div>
-                  </div>
-
-                  {filteredAddresses.length > 0 ? (
-                    filteredAddresses.map((addr) => (
-                      <SelectItem key={addr.id} value={addr.id.toString()}>
-                        <div className="flex flex-col">
-                          {addr.street && (
-                            <span className="text-xs text-muted-foreground">
-                              {addr.street}
-                            </span>
-                          )}
-                        </div>
-                      </SelectItem>
-                    ))
-                  ) : (
-                    <div className="p-4 text-center text-muted-foreground">
-                      {t("noAddress")}
-                    </div>
-                  )}
-                </SelectContent>
-              </Select>
-            ) : (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="flex items-center gap-2 cursor-not-allowed">
-                    <LucideMapPin size={16} className="text-gray-300" />
+          <div className="flex flex-col gap-2 py-5 px-6">
+            {user && <DropdownMenu>
+              <div className="w-full flex flex-col gap-1">
+                <Label className="">{t("myAccount")}</Label>
+                <DropdownMenuTrigger className="flex w-[200px] group text-nowrap gap-2 items-center justify-center border border-input rounded-full px-3 py-1  cursor-pointer hover:bg-gray-50 data-[state=open]:bg-gray-100">
+                  <LucideCircleUser size={18} className="flex-shrink-0 text-gray-400" />
+                  {user?.name}
+                  {/* <LucideChevronDown size={16} className="transition-transform duration-200 group-data-[state=open]:rotate-180" /> */}
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem onClick={() => router.push("/profile")}>{t("profile")}</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => router.push("/profile/history")}>{t("history")}</DropdownMenuItem>
+                  <DropdownMenuItem onClick={logout}>{t("logOut")}</DropdownMenuItem>
+                </DropdownMenuContent>
+              </div>
+            </DropdownMenu>}
+            <div className="w-full flex flex-col gap-1">
+              <Label className="first-letter:uppercase">{t("address")}</Label>
+              {currentOrderItems.length <= 0 ? (
+                <Select
+                  open={selectOpen}
+                  onOpenChange={(open) => setSelectOpen(open)}
+                  onValueChange={(value) => {
+                    const selected = addressData.data?.find(
+                      (a) => a.id === parseInt(value)
+                    );
+                    if (selected) {
+                      setAddress(selected);
+                      setSelectOpen(false);
+                      setAddressSearch("");
+                    }
+                  }}
+                  value={address?.id?.toString()}
+                >
+                  <SelectTrigger className="flex group text-nowrap gap-2 items-center px-3 py-2 rounded-full cursor-pointer w-[200px] border border-input">
+                    <LucideMapPin size={20} className="flex-shrink-0" />
                     <div className="flex flex-col w-full overflow-hidden text-left">
-                      <p className="text-sm text-black">{address?.street}</p>
+                      <SelectValue placeholder={t("select")} />
                     </div>
-                    <LucideChevronDown size={20} className="text-gray-300" />
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent className="flex flex-col gap-2 justify-center">
-                  <p className="w-[150px]">{t("emptyCart")}</p>
-                  <Button
-                    variant="ghost"
-                    className="bg-white text-black hover:bg-gray-50 hover:text-black"
-                  >
-                    {t("goCart")}
-                  </Button>
-                </TooltipContent>
-              </Tooltip>
-            )}
-            <span className="w-[150px]">
+                  </SelectTrigger>
+
+                  <SelectContent className="overflow-y-auto max-h-[300px]">
+                    <div className="sticky top-0 bg-white z-10 p-2 border-b" tabIndex={-1}>
+                      <div className="relative">
+                        <LucideSearch
+                          size={16}
+                          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground pointer-events-none"
+                        />
+                        <Input
+                          ref={inputRef}
+                          type="search"
+                          placeholder={t("search") + "..."}
+                          value={addressSearch}
+                          onChange={(e) => setAddressSearch(e.target.value)}
+                          className="pl-7"
+                          onFocus={() => setSelectOpen(true)}
+                          onKeyDown={(e) => e.stopPropagation()}
+                        />
+                      </div>
+                    </div>
+
+                    {filteredAddresses.length > 0 ? (
+                      filteredAddresses.map((addr) => (
+                        <SelectItem key={addr.id} value={addr.id.toString()}>
+                          <div className="flex flex-col">
+                            {addr.street && (
+                              <span className="text-xs text-muted-foreground">
+                                {addr.street}
+                              </span>
+                            )}
+                          </div>
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <div className="p-4 text-center text-muted-foreground">
+                        {t("noAddress")}
+                      </div>
+                    )}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex items-center gap-2 cursor-not-allowed">
+                      <LucideMapPin size={16} className="text-gray-300" />
+                      <div className="flex flex-col w-full overflow-hidden text-left">
+                        <p className="text-sm text-black">{address?.street}</p>
+                      </div>
+                      <LucideChevronDown size={20} className="text-gray-300" />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="flex flex-col gap-2 justify-center">
+                    <p className="w-[150px]">{t("emptyCart")}</p>
+                    <Button
+                      variant="ghost"
+                      className="bg-white text-black hover:bg-gray-50 hover:text-black"
+                    >
+                      {t("goCart")}
+                    </Button>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+            </div>
+            <div className="w-[200px] flex flex-col gap-1">
+              <Label className="text-[14px] text-nowrap">{t("language")}</Label>
+              <span className="border rounded-full">
               <LocaleSwitcher />
-            </span>
+              </span>
+            </div>
           </div>
 
-          <div className="flex flex-col gap-5 px-6 pt-8">
-            <div className="flex flex-col border-b">
+          <div className="flex flex-col gap-2 pr-6 pt-2">
+            <div className="flex flex-col border bg-primary text-white p-2">
               <div className={`flex  items-center justify-between ${path === "/categories" ? "text-primary" : ""}`}>
                 <Link
                   onClick={() => setOpen(false)}
                   href={`/categories`}
                   className="text-[18px] font-bold flex"
                 >
-                  {"Toutes les categories"}
+                  {t("categories")}
                 </Link>
                 <ChevronRight className="w-4 h-4" />
               </div>
             </div>
             {visibleCategories.map((cat) => {
               return (
-                <div key={cat.id} className="flex flex-col border-b">
+                <div key={cat.id} className="flex flex-col border-b p-2">
                   <div className={`flex  items-center justify-between ${isCurentCaretory(cat.slug) ? "text-primary" : ""}`}>
                     <Link
                       onClick={() => setOpen(false)}
                       href={`/categories/${cat.slug}`}
-                      className="text-[18px] font-bold flex"
+                      className="text-[18px] flex"
                     >
                       {cat.name}
                     </Link>

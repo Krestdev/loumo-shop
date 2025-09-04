@@ -13,7 +13,6 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import Pagination from "./Pagination";
 import { Button } from "@/components/ui/button";
-import { LucideEye } from "lucide-react";
 import { Success } from "@/components/Cart/Dialog/Success";
 
 interface Props {
@@ -33,14 +32,15 @@ const HistoryTable = ({ orders, all }: Props) => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const slicedItems = items.slice(startIndex, startIndex + itemsPerPage);
 
-    function formatDateLongFR(dateInput?: string | number | Date): string {
+    function formatDateShortFR(dateInput?: string | number | Date): string {
         const date = dateInput ? new Date(dateInput) : new Date();
         return date.toLocaleDateString("fr-FR", {
             day: "2-digit",
-            month: "long",
+            month: "2-digit",
             year: "numeric",
         });
     }
+
 
     const handleClick = (stat: "all" | "inProgress" | "completed") => {
         setStatus(stat);
@@ -57,9 +57,18 @@ const HistoryTable = ({ orders, all }: Props) => {
         }
     };
 
+    const statusLabels: Record<string, string> = {
+        FAILED: t("echoue"),
+        COMPLETED: t("termine"),
+        PROCESSING: t("encours"),
+        REJECTED: t("rejete"),
+        ACCEPTED: t("accepte"),
+        PENDING: t("enattente"),
+    };
+
     return (
-        <div className='flex flex-col max-w-[1400px] w-full px-7 py-8 gap-10'>
-            <p className="text-primary/80 text-[36px] font-semibold">{t("orders")}</p>
+        <div className='flex flex-col max-w-[1400px] w-full gap-2 md:gap-5'>
+            <p className="text-primary/80 text-[18px] md:text-[28px] font-semibold leading-[100%]">{t("orders")}</p>
 
             {all &&
                 <div className="flex gap-0 md:gap-3">
@@ -81,34 +90,26 @@ const HistoryTable = ({ orders, all }: Props) => {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="text-center">{t("reference")}</TableHead>
+                        <TableHead className="text-center hidden md:block">{t("reference")}</TableHead>
+                        <TableHead className="text-center md:hidden my-auto">{t("reference2")}</TableHead>
                         <TableHead className="text-center">{t("date")}</TableHead>
                         <TableHead className="text-center">{t("amount")}</TableHead>
                         <TableHead className="text-center">{t("status")}</TableHead>
                         <TableHead className="text-center">{t("items")}</TableHead>
-                        <TableHead className="text-center">{t("actions")}</TableHead>
+                        {/* <TableHead className="text-center">{t("actions")}</TableHead> */}
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {slicedItems.length > 0 ? slicedItems.reverse().map((order, i) => (
-                        <TableRow key={order.id ?? i} className="bg-white">
-                            <TableCell className="text-center">{order.ref}</TableCell>
-                            <TableCell className="text-center">{formatDateLongFR(order.createdAt)}</TableCell>
+                        <TableRow onClick={() => {
+                            setSelectedOrder(order);
+                            setOpen(true);
+                        }} key={order.id ?? i} className="bg-white">
+                            <TableCell className="text-center">{order.ref.length > 4 ? `${order.ref.slice(0, 4)}...` : order.ref}</TableCell>
+                            <TableCell className="text-center">{formatDateShortFR(order.createdAt)}</TableCell>
                             <TableCell className="text-center">{`${order.total} FCFA`}</TableCell>
-                            <TableCell className="text-center">{order.status}</TableCell>
+                            <TableCell className="text-center">{statusLabels[order.status] ?? order.status}</TableCell>
                             <TableCell className="text-center">{order.orderItems?.length ?? 0}</TableCell>
-                            <TableCell className="text-center">
-                                <Button
-                                    variant={"outline"}
-                                    onClick={() => {
-                                        setSelectedOrder(order);
-                                        setOpen(true);
-                                    }}
-                                >
-                                    <LucideEye size={16} />
-                                    {t("view")}
-                                </Button>
-                            </TableCell>
                         </TableRow>
                     )) :
                         <TableRow>

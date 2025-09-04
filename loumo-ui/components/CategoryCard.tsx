@@ -11,7 +11,7 @@ const CategoryCard = ({ category }: { category: Category }) => {
     return (
         <Link href={`/categories/${category.slug}`}>
             <motion.div
-                className="flex flex-col gap-2 max-w-[112px] md:max-w-[200px] w-full h-full"
+                className="flex flex-col gap-2 max-w-[112px] md:max-w-[200px] w-full h-full shadow-xl p-2 bg-gray-50"
                 whileHover={{ y: -5 }}
                 whileTap={{ scale: 0.95 }}
             >
@@ -24,7 +24,7 @@ const CategoryCard = ({ category }: { category: Category }) => {
                                 : `${env?.replace(/\/$/, "")}/${category.imgUrl.replace(/^\//, "")}`
                         }
                         alt={category.name}
-                        className='max-w-[200px] w-full aspect-[4/3] object-cover rounded-[12px]'
+                        className='max-w-[200px] w-full aspect-[4/3] h-auto object-cover rounded-[12px]'
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5 }}

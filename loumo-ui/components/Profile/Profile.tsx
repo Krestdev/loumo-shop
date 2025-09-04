@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl'
 import React from 'react'
 import { Button } from '../ui/button'
-import { LucidePencil, LucideTrash } from 'lucide-react'
+import { LucidePencil } from 'lucide-react'
 import { Order, User } from '@/types/types'
 import { EditUser } from './EditUser'
 import { ChangePassword } from './ChangePassword'
@@ -22,36 +22,51 @@ const Profile = ({ users, orders }: { users: User, orders: Order[] }) => {
 
     return (
         <div className='flex flex-col gap-10 px-7 py-8 max-w-[1400px] w-full'>
-            <div className='grid grid-cols-1 md:grid-cols-3 gap-10'>
-                <div className='flex flex-col gap-6 max-w-[460px] w-full  rounded-[12px] border border-input pb-8'>
-                    <div className='bg-primary/80 px-6 py-4 w-full rounded-t-[12px]'>
-                        <p className='text-[28px] text-white font-semibold'>{t("overview")}</p>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-10'>
+                <div className='flex flex-col gap-6 w-full  rounded-[12px] border border-input pb-8'>
+                    <div className='bg-primary/80 px-6 py-2 md:py-4 w-full rounded-t-[12px]'>
+                        <p className='text-[18px] md:text-[28px] text-white font-semibold'>{t("overview")}</p>
                     </div>
-                    <div className='flex flex-col gap-5 px-6'>
-                        <div className='flex flex-col gap-1'>
-                            <p className='text-[14px] text-gray-500'>{t("loyalty")}</p>
-                            <p className='font-semibold text-[18px] text-gray-700'>{users.fidelity}</p>
-                        </div>
-                        <div className='flex flex-col gap-1'>
-                            <p className='text-[14px] text-gray-500'>{t("orders")}</p>
-                            <p className='font-semibold text-[18px] text-gray-700'>{users.orders?.length}</p>
-                        </div>
-                        <div className='flex flex-col gap-1'>
-                            <p className='text-[14px] text-gray-500'>{t("lastOrder")}</p>
-                            <p className='font-semibold text-[18px] text-gray-700'>{date ? formatDateToDDMMYYYY(date) : "-"}</p>
+                    <div className='flex flex-col md: gap-5 px-6 w-full'>
+                        <div className='grid grid-cols-2 md:grid-cols-3 gap-2'>
+                            <div className='flex flex-col'>
+                                <p className='text-[14px] text-gray-500'>{t("loyalty")}</p>
+                                <p className='font-semibold text-[18px] text-gray-700'>{users.fidelity}</p>
+                            </div>
+                            <div className='flex flex-col'>
+                                <p className='text-[14px] text-gray-500'>{t("orders")}</p>
+                                <p className='font-semibold text-[18px] text-gray-700'>{users.orders?.length}</p>
+                            </div>
+                            <div className='flex flex-col'>
+                                <p className='text-[14px] text-gray-500'>{t("lastOrder")}</p>
+                                <p className='font-semibold text-[18px] text-gray-700'>{date ? formatDateToDDMMYYYY(date) : "-"}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div className='flex flex-col gap-6 max-w-[460px] w-full  rounded-[12px] border border-input pb-8'>
-                    <div className='bg-primary/80 px-6 py-4 w-full rounded-t-[12px]'>
-                        <p className='text-[28px] text-white font-semibold'>{t("information")}</p>
+                <div className='flex flex-col gap-6 w-full  rounded-[12px] border border-input pb-8'>
+                    <div className='bg-primary/80 px-6 py-2 md:py-4 w-full rounded-t-[12px]'>
+                        <p className='text-[18px] md:text-[28px] text-white font-semibold'>{t("information")}</p>
                     </div>
-                    <div className='flex flex-col gap-5 px-6'>
+                    <div className='flex flex-col gap-1 px-6'>
                         <div className='flex items-center justify-between'>
-                            <div className='flex flex-col gap-1'>
-                                <p className='text-[14px] text-gray-500'>{t("name")}</p>
+                            <div className='flex flex-row items-center gap-1'>
+                                <p className='text-[14px] text-gray-500'>{t("name")} :</p>
                                 <p className='font-semibold text-[18px] text-gray-700'>{users?.name}</p>
                             </div>
+                        </div>
+                        <div className='flex flex-row items-center gap-1'>
+                            <p className='text-[14px] text-gray-500'>{t("email")} :</p>
+                            <p className='font-semibold text-[18px] text-gray-700'>{users?.email}</p>
+                        </div>
+                        <div className='flex flex-row items-center gap-1'>
+                            <p className='text-[14px] text-gray-500'>{t("phone")} :</p>
+                            <p className='font-semibold text-[18px] text-gray-700'>{users?.tel}</p>
+                        </div>
+                        <div className='flex flex-row items-center justify-center gap-2 md:mx-auto'>
+                            <ChangePassword user={users}>
+                                <Button className='bg-black hover:bg-black/80 h-9 w-fit'>{t("updatePassword")}</Button>
+                            </ChangePassword>
                             <EditUser user={users}>
                                 <Button variant={'outline'} className='h-9'>
                                     <LucidePencil size={16} />
@@ -59,22 +74,11 @@ const Profile = ({ users, orders }: { users: User, orders: Order[] }) => {
                                 </Button>
                             </EditUser>
                         </div>
-                        <div className='flex flex-col gap-1'>
-                            <p className='text-[14px] text-gray-500'>{t("email")}</p>
-                            <p className='font-semibold text-[18px] text-gray-700'>{users?.email}</p>
-                        </div>
-                        <div className='flex flex-col gap-1'>
-                            <p className='text-[14px] text-gray-500'>{t("phone")}</p>
-                            <p className='font-semibold text-[18px] text-gray-700'>{users?.tel}</p>
-                        </div>
-                        <ChangePassword user={users}>
-                            <Button className='bg-black hover:bg-black/80 h-9 w-fit'>{t("updatePassword")}</Button>
-                        </ChangePassword>
                     </div>
                 </div>
-                <div className='flex flex-col gap-6 max-w-[460px] w-full  rounded-[12px] border border-input pb-8'>
-                    <div className='bg-primary/80 px-6 py-4 w-full rounded-t-[12px]'>
-                        <p className='text-[28px] text-white font-semibold'>{t("deliveryAddress")}</p>
+                {/* <div className='flex flex-col gap-6 w-full  rounded-[12px] border border-input pb-8'>
+                    <div className='bg-primary/80 px-6 py-2 md:py-4 w-full rounded-t-[12px]'>
+                        <p className='text-[18px] md:text-[28px] text-white font-semibold'>{t("deliveryAddress")}</p>
                     </div>
                     <div className='flex flex-col gap-5 px-6 w-full'>
                         {
@@ -98,7 +102,7 @@ const Profile = ({ users, orders }: { users: User, orders: Order[] }) => {
                         }
                         <Button className='bg-black hover:bg-black/80 h-9 w-fit'>{t("addAddress")}</Button>
                     </div>
-                </div>
+                </div> */}
             </div>
             {orders && <History all={false} orders={orders.filter(x => x.userId === users.id).slice(0, 5)} />}
         </div>
