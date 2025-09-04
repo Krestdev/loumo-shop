@@ -132,14 +132,14 @@ const ProductComp = ({ product, promotions }: Props) => {
                         <div className='absolute bottom-[-15%] right-[-40%] md:bottom-[-10] md:right-[-40%] w-full px-1 z-10 flex items-center justify-center'>
                             {address ? (
                                 <AddToCard product={product} variant={variant} setVariant={setVariant} promotions={promotions}>
-                                    <Button disabled={((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0)} variant={"default"} className='text-[10px] w-[50px] md:w-[80px] h-5 md:h-8 rounded-none gap-1 bg-primary/70 md:text-[14px]'>
+                                    <Button disabled={((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0)} variant={"default"} className='text-[10px] w-[50px] md:w-[80px] h-5 md:h-8 rounded-none gap-1 bg-primary md:text-[14px]'>
                                         <LucideShoppingCart className='text-[10px] md:text-[14px]' />
                                         {t("addToCart")}
                                     </Button>
                                 </AddToCard>
                             ) : (
                                 <AddAddress>
-                                    <Button disabled={((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0)} className='text-[10px] w-[50px] md:w-[80px] h-5 md:h-8 rounded-none gap-1 bg-primary/70 md:text-[14px]'>
+                                    <Button disabled={((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0)} className='text-[10px] w-[50px] md:w-[80px] h-5 md:h-8 rounded-none gap-1 bg-primary md:text-[14px]'>
                                         <LucideShoppingCart className='text-[10px] md:text-[14px]' />
                                         t{("addToCart")}
                                     </Button>
