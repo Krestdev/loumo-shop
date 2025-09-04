@@ -29,7 +29,8 @@ const font_mono_bold = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "LoumoShop — La Plateforme d’E-commerce Multi-Vendeurs la Plus Fiable",
+  title:
+    "LoumoShop — La Plateforme d’E-commerce la Plus Fiable et la Plus rapide",
   description:
     "Découvrez LoumoShop, votre plateforme e-commerce moderne qui vous offre une expérience de shopping rapide, simple et agréable en toute simplicité. Explorez des milliers de produits, profitez de livraisons rapides et d’une sécurité optimale. Rejoignez-nous dès aujourd’hui et vivez une nouvelle expérience d'achat en ligne !",
   keywords:
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
       "Shoppez malin avec LoumoShop ! Découvrez des milliers de produits, et profitez d’une expérience d’achat rapide, simple et sécurisée. Essayez dès maintenant !",
     images: [
       {
-        url: "https://loumoshop.com/images/hero.png",
+        url: "https://home.loumoshop.com/Images/hero.png",
         width: 1200,
         height: 630,
         alt: "LoumoShop - Marketplace multi-vendeurs",
@@ -56,7 +57,7 @@ export const metadata: Metadata = {
       "LoumoShop — La Plateforme d’E-commerce Multi-Vendeurs la Plus Fiable",
     description:
       "LoumoShop simplifie vos achats ! Explorez des milliers de produits, profitez de prix attractifs et de livraisons rapides. Commencez vos achats dès maintenant !",
-    images: ["https://loumoshop.com/images/hero.png"],
+    images: ["https://home.loumoshop.com/Images/hero.png"],
   },
 };
 
