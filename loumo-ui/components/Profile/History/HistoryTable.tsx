@@ -90,7 +90,7 @@ const HistoryTable = ({ orders, all }: Props) => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {slicedItems.length > 0 ? slicedItems.map((order, i) => (
+                    {slicedItems.length > 0 ? slicedItems.reverse().map((order, i) => (
                         <TableRow key={order.id ?? i} className="bg-white">
                             <TableCell className="text-center">{order.ref}</TableCell>
                             <TableCell className="text-center">{formatDateLongFR(order.createdAt)}</TableCell>

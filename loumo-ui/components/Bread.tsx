@@ -22,7 +22,7 @@ export function Bread() {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                    <BreadcrumbPage>{t("categories")}</BreadcrumbPage>
+                    <BreadcrumbPage>{t("products")}</BreadcrumbPage>
                 </BreadcrumbItem>
             </BreadcrumbList>
         </Breadcrumb>

@@ -45,7 +45,7 @@ const CategoryComp = ({ slug }: { slug: string }) => {
 
     return (
         <div className='w-full flex justify-center'>
-            <div className='flex flex-col gap-5 px-4 md:px-7 py-7 md:py-32 max-w-[1400px] w-full'>
+            <div className='flex flex-col gap-5 px-4 md:px-7 py-5 md:py-8 max-w-[1400px] w-full'>
                 <div className='flex flex-row items-center gap-2'>
                     <Link className='text-primary underline' href={"/"}>{t("home")}</Link>
                     <ChevronRight size={12} />

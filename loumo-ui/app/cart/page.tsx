@@ -62,7 +62,7 @@ const Page = () => {
     console.log("order Note", orderNote)
     if (user && address?.id && currentOrderItems.length > 0) {
       const total = frais + currentOrderItems.reduce((acc, item) => acc + (item.total || 0), 0);
-      const weight = currentOrderItems.reduce((acc, item) => acc + (item.productVariant.weight || 0), 0);
+      const weight = currentOrderItems.reduce((acc, item) => acc + (item.productVariant.weight * item.quantity), 0);
 
       const payload: Omit<Order, "id" | "createdAt" | "address" | "user" | "ref"> = {
         userId: user.id,

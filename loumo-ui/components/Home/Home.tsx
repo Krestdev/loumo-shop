@@ -12,6 +12,7 @@ import HowStep from './HowStep';
 import { CategoryMenu } from '../CategoryMenu';
 import { useStore } from '@/providers/datastore';
 import Redaction from '../redaction';
+import { LucidePowerOff } from 'lucide-react';
 
 const Home = () => {
   const t = useTranslations("HomePage.GridProducts");
@@ -66,7 +67,7 @@ const Home = () => {
           isSuccess={productData.isSuccess}
           promotions={promotionData.data}
         />
-        : <Redaction show={false} message={t1("emptyProduct")} className={"text-primary text-[40px] font-bold text-center"} />
+        : <Redaction show={false} message={t1("emptyProduct")} className={"text-primary text-[24px] font-bold text-center"} icon={<LucidePowerOff size={40} className={"text-primary text-[22px] font-bold text-center"} />} />
       }
 
       {filteredProducts.filter(x => x.variants.some(x => x.stock.some(x => x.promotionId))).length > 0

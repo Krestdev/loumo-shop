@@ -75,9 +75,11 @@ const ProductComp = ({ product, promotions }: Props) => {
         product && variant &&
         <div className='flex flex-col gap-4 h-full justify-between shadow-xl bg-gray-50 p-2'>
             <div className='relative flex gap-3 w-full h-auto'>
-                {isNewProduct(product) && <div className='absolute top-0 left-0 flex items-center justify-center p-2 rounded-sm bg-[#FFFEF8] text-primary'>
-                    {t("new")}
-                </div>}
+                {isNewProduct(product) &&
+                    <div className='absolute top-0 left-0 flex items-center justify-center p-1 ms:p-2 rounded-sm bg-[#FFFEF8] text-primary text-[10px] md:text-[12px] lg:text-[14px] z-10'>
+                        {t("new")}
+                    </div>
+                }
                 <div className='absolute z-10 top-[-10px] right-[-10px] flex items-center justify-between'>
                     {user ? (
                         address ? (
@@ -127,18 +129,18 @@ const ProductComp = ({ product, promotions }: Props) => {
                                 </div>
                             )}
                         </Link>
-                        <div className='absolute bottom-[-10%] right-[-60%] w-full px-1 z-10'>
+                        <div className='absolute bottom-[-15%] right-[-40%] md:bottom-[-10] md:right-[-40%] w-full px-1 z-10'>
                             {address ? (
                                 <AddToCard product={product} variant={variant} setVariant={setVariant} promotions={promotions}>
-                                    <Button disabled={((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0)} variant={"default"} className='text-[10px] w-[50px] md:w-fit h-5 rounded-none gap-1 bg-primary/70'>
-                                        <LucideShoppingCart className='text-[10px]' />
+                                    <Button disabled={((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0)} variant={"default"} className='text-[10px] w-[50px] md:w-[80px] h-5 md:h-8 rounded-none gap-1 bg-primary/70 md:text-[14px]'>
+                                        <LucideShoppingCart className='text-[10px] md:text-[14px]' />
                                         {t("addToCart")}
                                     </Button>
                                 </AddToCard>
                             ) : (
                                 <AddAddress>
-                                    <Button disabled={((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0)} className='text-[10px] w-[50px] md:w-fit h-5 rounded-none gap-1 bg-primary/70'>
-                                        <LucideShoppingCart className='text-[10px]' />
+                                    <Button disabled={((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0)} className='text-[10px] w-[50px] md:w-[80px] h-5 md:h-8 rounded-none gap-1 bg-primary/70 md:text-[14px]'>
+                                        <LucideShoppingCart className='text-[10px] md:text-[14px]' />
                                         t{("addToCart")}
                                     </Button>
                                 </AddAddress>
@@ -161,18 +163,18 @@ const ProductComp = ({ product, promotions }: Props) => {
                                     <LucideDatabase size={80} />
                                 </div>
                             )}
-                            <div className='absolute bottom-[-15%] right-[-60%] w-full px-1 z-10'>
+                            <div className='absolute bottom-[-15%] right-[-40%] md:bottom-[-10] md:right-[-40%] w-full px-1 z-10'>
                                 {address ? (
                                     <AddToCard product={product} variant={variant} setVariant={setVariant} promotions={promotions}>
-                                        <Button disabled={((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0)} variant={"default"} className='text-[10px] w-[50px] md:w-fit h-5 rounded-none gap-1 bg-primary/70'>
-                                            <LucideShoppingCart className='text-[10px]' />
+                                        <Button disabled={((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0)} variant={"default"} className='text-[10px] w-[50px] md:w-[80px] h-5 md:h-8 rounded-none gap-1 bg-primary/70 md:text-[14px]'>
+                                            <LucideShoppingCart className='text-[10px] md:text-[14px]' />
                                             {t("addToCart")}
                                         </Button>
                                     </AddToCard>
                                 ) : (
                                     <AddAddress>
-                                        <Button disabled={((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0)} className='text-[10px] h-5 rounded-none gap-1 w-[50px] md:w-fit bg-primary/70'>
-                                            <LucideShoppingCart className='text-[10px]' />
+                                        <Button disabled={((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0)} className='text-[10px] h-5 md:h-8 rounded-none gap-1 w-[50px] md:w-[80px] bg-primary/70 md:text-[14px]'>
+                                            <LucideShoppingCart className='text-[10px] md:text-[14px]' />
                                             {t("addToCart")}
                                         </Button>
                                     </AddAddress>
@@ -183,7 +185,7 @@ const ProductComp = ({ product, promotions }: Props) => {
                 }
 
                 {((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0) && (
-                    <div className='absolute bottom-2 right-0 left-0 bg-red-700 p-2 z-10'>
+                    <div className='absolute bottom-2 right-0 left-0 bg-red-700 w-fit p-2 z-10'>
                         <p className='text-white text-sm font-semibold'>{t("outOfStock")}</p>
                     </div>
                 )}
@@ -194,15 +196,7 @@ const ProductComp = ({ product, promotions }: Props) => {
                     <p className='text-[14px] text-gray-700 leading-[100%]'>{product.name}</p>
                     <div className='flex flex-wrap md:flex-row md:items-center gap-1 pb-2'>
                         {product?.variants?.slice(0, 2).map((va, idx) => (
-                            // <Button
-                            //     key={va.id ?? idx}
-                            //     onClick={() => setVariant(va)}
-                            //     className="px-2 py-1 h-[26px] truncate flex justify-start text-[12px]"
-                            //     variant={variant?.id === va.id ? "default" : "ghost"}
-                            // >
-                            //     {va.name + " " + va.quantity + " " + va.unit}
-                            // </Button>
-                            <div key={va.id ?? idx} onClick={() => setVariant(va)} className={`text-[12px] shadow rounded-full px-2 ${variant?.id === va.id ? "bg-orange-400/70 text-white" : ""}`}>{va.name + " " + va.quantity + " " + va.unit}</div>
+                            <div key={va.id ?? idx} onClick={() => setVariant(va)} className={`text-[12px] shadow rounded-full px-2 cursor-pointer ${variant?.id === va.id ? "bg-orange-400/70 text-white" : ""}`}>{va.name + " " + va.quantity + " " + va.unit}</div>
                         ))}
                         {address ?
                             (product?.variants?.length ?? 0) > 2 && (

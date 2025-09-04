@@ -2,15 +2,15 @@ import { useTranslations } from 'next-intl'
 import React from 'react'
 import { Button } from '../ui/button'
 import { LucidePencil, LucideTrash } from 'lucide-react'
-import { User } from '@/types/types'
+import { Order, User } from '@/types/types'
 import { EditUser } from './EditUser'
 import { ChangePassword } from './ChangePassword'
 import History from './History/HistoryTable'
 
-const Profile = ({ user }: { user: User }) => {
-    const t = useTranslations("Profile");
+const Profile = ({ users, orders }: { users: User, orders: Order[] }) => {
 
-    const date = (user.orders && user.orders[user.orders.length - 1].createdAt)
+    const t = useTranslations("Profile");
+    const date = (orders.length > 0 ? orders[orders.length - 1].createdAt : null);
 
     function formatDateToDDMMYYYY(isoString: string | number | Date) {
         const date = new Date(isoString);
@@ -30,15 +30,15 @@ const Profile = ({ user }: { user: User }) => {
                     <div className='flex flex-col gap-5 px-6'>
                         <div className='flex flex-col gap-1'>
                             <p className='text-[14px] text-gray-500'>{t("loyalty")}</p>
-                            <p className='font-semibold text-[18px] text-gray-700'>{user.fidelity}</p>
+                            <p className='font-semibold text-[18px] text-gray-700'>{users.fidelity}</p>
                         </div>
                         <div className='flex flex-col gap-1'>
                             <p className='text-[14px] text-gray-500'>{t("orders")}</p>
-                            <p className='font-semibold text-[18px] text-gray-700'>{user.orders?.length}</p>
+                            <p className='font-semibold text-[18px] text-gray-700'>{users.orders?.length}</p>
                         </div>
                         <div className='flex flex-col gap-1'>
                             <p className='text-[14px] text-gray-500'>{t("lastOrder")}</p>
-                            <p className='font-semibold text-[18px] text-gray-700'>{date && formatDateToDDMMYYYY(date)}</p>
+                            <p className='font-semibold text-[18px] text-gray-700'>{date ? formatDateToDDMMYYYY(date) : "-"}</p>
                         </div>
                     </div>
                 </div>
@@ -50,9 +50,9 @@ const Profile = ({ user }: { user: User }) => {
                         <div className='flex items-center justify-between'>
                             <div className='flex flex-col gap-1'>
                                 <p className='text-[14px] text-gray-500'>{t("name")}</p>
-                                <p className='font-semibold text-[18px] text-gray-700'>{user?.name}</p>
+                                <p className='font-semibold text-[18px] text-gray-700'>{users?.name}</p>
                             </div>
-                            <EditUser user={user}>
+                            <EditUser user={users}>
                                 <Button variant={'outline'} className='h-9'>
                                     <LucidePencil size={16} />
                                     {t("edit")}
@@ -61,13 +61,13 @@ const Profile = ({ user }: { user: User }) => {
                         </div>
                         <div className='flex flex-col gap-1'>
                             <p className='text-[14px] text-gray-500'>{t("email")}</p>
-                            <p className='font-semibold text-[18px] text-gray-700'>{user?.email}</p>
+                            <p className='font-semibold text-[18px] text-gray-700'>{users?.email}</p>
                         </div>
                         <div className='flex flex-col gap-1'>
                             <p className='text-[14px] text-gray-500'>{t("phone")}</p>
-                            <p className='font-semibold text-[18px] text-gray-700'>{user?.tel}</p>
+                            <p className='font-semibold text-[18px] text-gray-700'>{users?.tel}</p>
                         </div>
-                        <ChangePassword user={user}>
+                        <ChangePassword user={users}>
                             <Button className='bg-black hover:bg-black/80 h-9 w-fit'>{t("updatePassword")}</Button>
                         </ChangePassword>
                     </div>
@@ -79,7 +79,7 @@ const Profile = ({ user }: { user: User }) => {
                     <div className='flex flex-col gap-5 px-6 w-full'>
                         {
                             // user.addresses && user.addresses?.length > 0 ?
-                            user.addresses?.map((x, i) => {
+                            users.addresses?.map((x, i) => {
                                 return (
                                     <div key={i} className='flex gap-2 w-full'>
                                         <div className='flex flex-col gap-1 w-full'>
@@ -100,7 +100,7 @@ const Profile = ({ user }: { user: User }) => {
                     </div>
                 </div>
             </div>
-            {user.orders && <History all={false} orders={user.orders.slice(user.orders.length - 6,user.orders.length)} />}
+            {orders && <History all={false} orders={orders.filter(x => x.userId === users.id).slice(0, 5)} />}
         </div>
     )
 }

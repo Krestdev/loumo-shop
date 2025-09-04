@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "./ui/button";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChevronRight, LucideChevronDown, LucideMapPin, LucideSearch } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { useStore } from "@/providers/datastore";
@@ -101,6 +101,12 @@ export function Menu({ children }: Props) {
       normalizeText(addr.zone?.name || "").includes(term)
     );
   }, [addressData.data, addressSearch]);
+
+  const path = usePathname()
+
+  const isCurentCaretory = (slug: string) => {
+    return slug === path.split("/")[2]
+  }
 
   return (
     <Drawer direction="left" open={open} onOpenChange={setOpen}>
@@ -226,15 +232,26 @@ export function Menu({ children }: Props) {
           </div>
 
           <div className="flex flex-col gap-5 px-6 pt-8">
+            <div className="flex flex-col border-b">
+              <div className={`flex  items-center justify-between ${path === "/categories" ? "text-primary" : ""}`}>
+                <Link
+                  onClick={() => setOpen(false)}
+                  href={`/categories`}
+                  className="text-[18px] font-bold flex"
+                >
+                  {"Toutes les categories"}
+                </Link>
+                <ChevronRight className="w-4 h-4" />
+              </div>
+            </div>
             {visibleCategories.map((cat) => {
-
               return (
                 <div key={cat.id} className="flex flex-col border-b">
-                  <div className="flex  items-center justify-between">
+                  <div className={`flex  items-center justify-between ${isCurentCaretory(cat.slug) ? "text-primary" : ""}`}>
                     <Link
                       onClick={() => setOpen(false)}
                       href={`/categories/${cat.slug}`}
-                      className="text-[18px] font-bold text-gray-900 flex"
+                      className="text-[18px] font-bold flex"
                     >
                       {cat.name}
                     </Link>
