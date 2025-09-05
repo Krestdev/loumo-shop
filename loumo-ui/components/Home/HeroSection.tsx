@@ -22,7 +22,7 @@ const HeroSection = () => {
                         {!user && <Button variant={"secondary"} className='bg-black hover:bg-black/80'>{t("RegisterButton")}</Button>}
                     </div>
                 </div>
-                <img src="/Images/hero.png" alt="Hero" className='absolute max-w-[320px] mx-auto sm:max-w-[200px] md:max-w-[250px] lg:max-w-[450px] xl:max-w-[530px] w-full h-auto top-[10%] left-0 sm:top-[40%] md:top-[30%] lg:top-5 xl:top-0 xl:h-full right-[20px] z-0 sm:right-[10px] md:right-[5px] xl:right-[79px]' />
+                <img src="/Images/hero.png" alt="Hero" className='absolute max-w-[320px] mx-auto sm:max-w-[200px] md:max-w-[250px] lg:max-w-[450px] xl:max-w-[530px] w-full h-auto top-0 left-0 sm:top-[40%] md:top-[30%] lg:top-5 xl:top-0 xl:h-full right-[20px] z-0 sm:right-[10px] md:right-[5px] xl:right-[79px]' />
             </div>
         </div>
     )
