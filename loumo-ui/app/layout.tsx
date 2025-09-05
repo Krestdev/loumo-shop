@@ -9,10 +9,11 @@ import { getLocale } from "next-intl/server";
 import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
 import NotificationProvider from "@/providers/notifications";
-import Notification from "@/components/ui/notification";
+// import Notification from "@/components/ui/notification";
+// import CartController from "@/components/Cart/CartController";
 import Header from "@/components/header";
-import CartController from "@/components/Cart/CartController";
 import Footer from "@/components/footer";
+import Cartt from "@/components/Cart/Cartt";
 
 const font_sans = DM_Sans({
   variable: "--font-sans",
@@ -85,10 +86,11 @@ export default async function RootLayout({
         <NextIntlClientProvider locale={locale}>
           <QueryProvider>
             <NotificationProvider>
-              <Notification />
+              {/* <Notification /> */}
               <Header />
-              <CartController />
+              {/* <CartController /> */}
               {children}
+              <Cartt />
               <Footer />
             </NotificationProvider>
             {/* <Maintenance /> */}

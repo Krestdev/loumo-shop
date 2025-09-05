@@ -110,7 +110,7 @@ const Footer = () => {
                                 <Link href={`/categories`} className='text-[14px] font-medium text-gray-50 flex items-center  gap-2' >{t("Info.seeAll")}<ChevronRight size={14} /></Link>
                             </div>
                         </div>
-                        {settingData?.length && <div className='flex flex-col gap-5'>
+                        {settingData?.length !== undefined && settingData?.length > 0 && <div className='flex flex-col gap-5'>
                             <p className='text-[18px] text-gray-50 font-semibold'>{t("About.about")}</p>
                             <div className='flex flex-col gap-3'>
                                 {

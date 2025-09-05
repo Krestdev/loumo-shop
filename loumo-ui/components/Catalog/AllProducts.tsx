@@ -26,7 +26,7 @@ const AllProducts = (
 
     return (
         <div className={`max-w-[1400px] w-full flex flex-col ${className}`}>
-            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 3xl:grid-cols-5 gap-x-5 gap-y-10'>
+            <div className='grid grid-cols-3 md:grid-cols-4 3xl:grid-cols-5 gap-x-5 gap-y-10'>
                 {isLoading && Array.from({ length: products && products.length ? products.length : 0 }).map((_, i) => (
                     <Skeleton key={i} className="w-[252px] rounded-none" />
                 ))}

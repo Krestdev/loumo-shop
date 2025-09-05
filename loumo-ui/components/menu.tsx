@@ -155,6 +155,7 @@ export function Menu({ children }: Props) {
                 <DropdownMenuContent>
                   <DropdownMenuItem onClick={() => router.push("/profile")}>{t("profile")}</DropdownMenuItem>
                   <DropdownMenuItem onClick={() => router.push("/profile/history")}>{t("history")}</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => router.push("/favorite")}>{t("favorites")}</DropdownMenuItem>
                   <DropdownMenuItem onClick={logout}>{t("logOut")}</DropdownMenuItem>
                 </DropdownMenuContent>
               </div>
@@ -249,7 +250,7 @@ export function Menu({ children }: Props) {
             <div className="w-[200px] flex flex-col gap-1">
               <Label className="text-[14px] text-nowrap">{t("language")}</Label>
               <span className="border rounded-full">
-              <LocaleSwitcher />
+                <LocaleSwitcher />
               </span>
             </div>
           </div>

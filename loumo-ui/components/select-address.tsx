@@ -60,7 +60,7 @@ export function AddAddress({ children }: Props) {
     .sort((a, b) => {
       if (!a.street) return 1;
       if (!b.street) return -1;
-      return a.street.localeCompare(b.street); // Tri alphabétique
+      return a.street.localeCompare(b.street);
     });
 
 
@@ -73,7 +73,7 @@ export function AddAddress({ children }: Props) {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild className="w-full">{children}</DialogTrigger>
+      <DialogTrigger asChild className="w-fit">{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px] aspect-auto">
         <DialogHeader>
           <DialogTitle>{t("address")}</DialogTitle>

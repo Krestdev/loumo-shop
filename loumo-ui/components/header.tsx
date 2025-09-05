@@ -48,14 +48,14 @@ const Header = () => {
 
   return (
     <div className="w-full flex flex-col items-center sticky top-0 z-50 bg-background border-b">
-      <div className="flex flex-row items-center gap-4 md:gap-10 px-4 md:px-7 max-w-[1400px] w-full h-[60px]">
+      <div className="flex flex-row items-center justify-between gap-4 md:gap-10 px-4 md:px-7 max-w-[1400px] w-full h-[60px]">
         <Menu>
           <Button variant={"ghost"}>
             <LucideMenu size={20} />
           </Button>
         </Menu>
 
-        <div className="flex items-center gap-4 w-full">
+        <div className="flex items-center gap-4">
           <img
             onClick={() => router.push("/")}
             src="/Images/Logo.png"
@@ -114,7 +114,7 @@ const Header = () => {
             </Tooltip>
           )}
 
-            <LocalSwitcher />
+          <LocalSwitcher />
 
           {user ?
             <DropdownMenu>
@@ -125,6 +125,7 @@ const Header = () => {
               <DropdownMenuContent>
                 <DropdownMenuItem onClick={() => router.push("/profile")}>{t("profile")}</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => router.push("/profile/history")}>{t("history")}</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push("/favorite")}>{t("favorites")}</DropdownMenuItem>
                 <DropdownMenuItem onClick={logout}>{t("logOut")}</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu> :
@@ -159,6 +160,7 @@ const Header = () => {
               <DropdownMenuContent>
                 <DropdownMenuItem onClick={() => router.push("/profile")}>{t("profile")}</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => router.push("/profile/history")}>{t("history")}</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push("/favorite")}>{t("favorites")}</DropdownMenuItem>
                 <DropdownMenuItem onClick={logout}>{t("logOut")}</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

@@ -11,7 +11,6 @@ import UserQuery from "@/queries/user";
 import ZoneQuery from "@/queries/zone";
 import { Order, OrderItem } from "@/types/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Page = () => {
@@ -56,8 +55,6 @@ const Page = () => {
 
   const frais = zoneData.data?.find(x => x.id === address?.zoneId)?.price ?? 0
 
-  const router = useRouter();
-
   const handleSubmitOrder = () => {
     console.log("order Note", orderNote)
     if (user && address?.id && currentOrderItems.length > 0) {
@@ -71,7 +68,7 @@ const Page = () => {
         total,
         status: "PENDING",
         weight,
-        deliveryFee: 0,
+        deliveryFee: frais,
         orderItems: currentOrderItems.map((item) => ({
           productVariantId: item.productVariantId,
           quantity: item.quantity,
@@ -90,7 +87,6 @@ const Page = () => {
           resetOrderDraft();
           setSuccessMobileOpen(true);
           setOrderNote("");
-          router.push("/");
         },
         onError: (error) => {
           console.log("order Note", orderNote)

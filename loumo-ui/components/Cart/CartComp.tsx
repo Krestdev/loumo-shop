@@ -202,7 +202,14 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                             );
                         })
                     ) : (
-                        <p>{t("cartEmpty")}</p>
+                        <div className="h-[250px] w-full flex items-center justify-center flex-col gap-4 font-bold rounded-lg px-12 py-4">
+                            <img
+                                src="/cart.gif"
+                                alt="Loading..."
+                                className="aspect-video object-contain w-full max-w-[250px] h-[150px]"
+                            />
+                            <p>{t("cartEmpty")}</p>
+                        </div>
                     )}
                 </div>
             </div>

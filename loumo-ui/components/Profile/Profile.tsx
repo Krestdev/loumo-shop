@@ -27,8 +27,8 @@ const Profile = ({ users, orders }: { users: User, orders: Order[] }) => {
                     <div className='bg-primary/80 px-6 py-2 md:py-4 w-full rounded-t-[12px]'>
                         <p className='text-[18px] md:text-[28px] text-white font-semibold'>{t("overview")}</p>
                     </div>
-                    <div className='flex flex-col md: gap-5 px-6 w-full'>
-                        <div className='grid grid-cols-2 md:grid-cols-3 gap-2'>
+                    <div className='flex flex-col gap-5 px-6 w-full'>
+                        <div className='grid grid-cols-2 md:grid-cols-4 gap-2'>
                             <div className='flex flex-col'>
                                 <p className='text-[14px] text-gray-500'>{t("loyalty")}</p>
                                 <p className='font-semibold text-[18px] text-gray-700'>{users.fidelity}</p>
@@ -36,6 +36,10 @@ const Profile = ({ users, orders }: { users: User, orders: Order[] }) => {
                             <div className='flex flex-col'>
                                 <p className='text-[14px] text-gray-500'>{t("orders")}</p>
                                 <p className='font-semibold text-[18px] text-gray-700'>{users.orders?.length}</p>
+                            </div>
+                            <div className='flex flex-col'>
+                                <p className='text-[14px] text-gray-500'>{t("favorites")}</p>
+                                <p className='font-semibold text-[18px] text-gray-700'>{users.favorite?.length}</p>
                             </div>
                             <div className='flex flex-col'>
                                 <p className='text-[14px] text-gray-500'>{t("lastOrder")}</p>

@@ -1,7 +1,7 @@
 "use client";
 
 import { Product, ProductVariant, Promotion } from '@/types/types'
-import { LucideDatabase, LucideHeart, LucideShoppingCart } from 'lucide-react'
+import { LucideDatabase, LucideHeart } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import React, { useEffect, useState } from 'react'
 import { Button } from './button'
@@ -43,8 +43,10 @@ const ProductComp = ({ product, promotions }: Props) => {
     const userQuery = new UserQuery();
     const userData = useMutation({
         mutationKey: ["favorite"],
-        mutationFn: (productIds: number[]) =>
-            userQuery.addProductsToFavorite(user!.id, productIds),
+        mutationFn: (productIds: number[]) => userQuery.addProductsToFavorite(user!.id, productIds),
+        onSuccess: () => {
+            router.refresh()
+        },
         onError: (error) => {
             console.error("Échec de l'ajout aux favoris :", error);
         },
@@ -55,11 +57,23 @@ const ProductComp = ({ product, promotions }: Props) => {
         queryFn: () => userQuery.getOne(user!.id),
     });
 
-    const isFavorite = !!usersData.data?.favorite?.some((fav) => fav.id === product?.id)
+    const [localFavorite, setLocalFavorite] = useState(false);
+
+    useEffect(() => {
+        if (usersData.data) {
+            setLocalFavorite(!!usersData.data?.favorite?.some((fav) => fav.id === product?.id));
+        }
+    }, [usersData.data, product?.id]);
 
     const toggleFavorite = (id: number) => {
-        userData.mutate([id]);
+        setLocalFavorite(!localFavorite); 
+        userData.mutate([id], {
+            onError: () => {
+                setLocalFavorite((prev) => !prev);
+            }
+        });
     };
+
 
     function isNewProduct(product: Product): boolean {
         const sevenDaysAgo = new Date();
@@ -86,25 +100,29 @@ const ProductComp = ({ product, promotions }: Props) => {
                             <Button
                                 onClick={() => toggleFavorite(product.id)}
                                 variant={"ghost"}
-                                className={`h-9 w-9 ${isFavorite ? "bg-red-500 hover:bg-red-500/80 hover:text-white text-white" : "bg-white/50 text-gray-600"}`}
+                                className={`h-5 w-5 md:h-9 md:w-9 ${localFavorite
+                                        ? "bg-red-500 hover:bg-red-500/80 hover:text-white text-white"
+                                        : "bg-white/50 text-gray-600"
+                                    }`}
                             >
-                                <LucideHeart size={20} />
+                                <LucideHeart size={10} />
                             </Button>
+
                         ) : (
                             <AddAddress>
                                 <Button
-                                    className={`h-9 w-9 ${isFavorite ? "bg-red-500 hover:bg-red-500/80 hover:text-white text-white" : "bg-white/50 text-gray-600"}`}
+                                    className={`h-5 w-5 md:h-9 md:w-9 ${localFavorite ? "bg-red-500 hover:bg-red-500/80 hover:text-white text-white" : "bg-white/50 text-gray-600"}`}
                                 >
-                                    <LucideHeart size={20} />
+                                    <LucideHeart size={10} />
                                 </Button>
                             </AddAddress>
                         )
                     ) : (
                         <Button
                             onClick={() => router.push("/auth/login")}
-                            className={`h-9 w-9 ${isFavorite ? "bg-red-500 hover:bg-red-500/80 hover:text-white text-white" : "bg-white/50 text-gray-600"}`}
+                            className={`h-5 w-5 md:h-9 md:w-9 ${localFavorite ? "bg-red-500 hover:bg-red-500/80 hover:text-white text-white" : "bg-white/50 text-gray-600"}`}
                         >
-                            <LucideHeart size={20} />
+                            <LucideHeart size={10} />
                         </Button>
                     )}
                 </div>
@@ -129,7 +147,7 @@ const ProductComp = ({ product, promotions }: Props) => {
                                 </div>
                             )}
                         </Link>
-                        <div className='absolute bottom-[-15%] right-[-40%] md:bottom-[-10] md:right-[-40%] w-full px-1 z-10 flex items-center justify-center'>
+                        {/* <div className='absolute bottom-[-15%] right-[-40%] md:bottom-[-10] md:right-[-40%] w-full px-1 z-10 flex items-center justify-center'>
                             {address ? (
                                 <AddToCard product={product} variant={variant} setVariant={setVariant} promotions={promotions}>
                                     <Button disabled={((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0)} variant={"default"} className='text-[10px] w-[50px] md:w-[80px] h-5 md:h-8 rounded-none gap-1 bg-primary md:text-[14px]'>
@@ -145,7 +163,7 @@ const ProductComp = ({ product, promotions }: Props) => {
                                     </Button>
                                 </AddAddress>
                             )}
-                        </div>
+                        </div> */}
                     </div>
                     :
                     <AddAddress>
@@ -163,7 +181,7 @@ const ProductComp = ({ product, promotions }: Props) => {
                                     <LucideDatabase size={80} />
                                 </div>
                             )}
-                            <div className='absolute bottom-[-15%] right-[-40%] md:bottom-[-10] md:right-[-40%] w-full px-1 z-10'>
+                            {/* <div className='absolute bottom-[-15%] right-[-40%] md:bottom-[-10] md:right-[-40%] w-full px-1 z-10'>
                                 {address ? (
                                     <AddToCard product={product} variant={variant} setVariant={setVariant} promotions={promotions}>
                                         <Button disabled={((variant.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant.stock.length <= 0)} variant={"default"} className='text-[10px] w-[50px] md:w-[80px] h-5 md:h-8 rounded-none gap-1 bg-primary/70 md:text-[14px]'>
@@ -179,7 +197,7 @@ const ProductComp = ({ product, promotions }: Props) => {
                                         </Button>
                                     </AddAddress>
                                 )}
-                            </div>
+                            </div> */}
                         </Button>
                     </AddAddress>
                 }
@@ -196,7 +214,18 @@ const ProductComp = ({ product, promotions }: Props) => {
                     <p className='text-[14px] text-gray-700 leading-[100%]'>{product.name}</p>
                     <div className='flex flex-wrap md:flex-row md:items-center gap-1 pb-2'>
                         {product?.variants?.slice(0, 2).map((va, idx) => (
-                            <div key={va.id ?? idx} onClick={() => setVariant(va)} className={`text-[12px] shadow rounded-full px-2 cursor-pointer ${variant?.id === va.id ? "bg-orange-400/70 text-white" : ""}`}>{va.name + " " + va.quantity + " " + va.unit}</div>
+                            address ?
+                                <AddToCard key={va.id ?? idx} product={product} variant={variant} setVariant={setVariant} promotions={promotions}>
+                                    <div key={va.id ?? idx} onClick={() => setVariant(va)} className={`text-[12px] shadow rounded-full px-2 cursor-pointer ${variant?.id === va.id ? "bg-orange-400/70 text-white" : ""}`}>
+                                        {va.name + " " + va.quantity + " " + va.unit}
+                                    </div>
+                                </AddToCard>
+                                :
+                                <AddAddress key={va.id ?? idx}>
+                                    <div key={va.id ?? idx} onClick={() => setVariant(va)} className={`text-[12px] shadow rounded-full px-2 cursor-pointer ${variant?.id === va.id ? "bg-orange-400/70 text-white" : ""}`}>
+                                        {va.name + " " + va.quantity + " " + va.unit}
+                                    </div>
+                                </AddAddress>
                         ))}
                         {address ?
                             (product?.variants?.length ?? 0) > 2 && (

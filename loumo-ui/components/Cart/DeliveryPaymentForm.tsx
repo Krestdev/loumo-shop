@@ -31,7 +31,7 @@ import ZoneQuery from "@/queries/zone"
 import { AuthDialog } from "../Auth/Dialog"
 
 const formSchema = z.object({
-    tel: z.string().min(8, { message: "Numéro trop court" }).max(15, { message: "Numéro trop long" }),
+    tel: z.string().min(9, { message: "Numéro trop court" }).max(9, { message: "Numéro trop long" }),
     paymentMethod: z.enum(["cash", "orange", "mtn"], { required_error: "Mode de paiement requis" }),
     paymentNumber: z.string().optional(),
 }).superRefine((data, ctx) => {
@@ -55,7 +55,7 @@ type FormValues = z.infer<typeof formSchema>
 const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | null; onValidate: () => void; totalPrice: number }) => {
     const t = useTranslations("Cart")
     const [level, setLevel] = useState<"summary" | "paiement">("summary")
-    const { address, setOrderNote} = useStore();
+    const { address, setOrderNote } = useStore();
 
     const zoneQuery = new ZoneQuery();
     const zoneData = useQuery({
@@ -137,7 +137,12 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                             <FormItem className="flex flex-row md:flex-col gap-2">
                                 <FormLabel className="font-medium text-[14px] text-gray-900 text-nowrap">{t("contact")} :</FormLabel>
                                 <FormControl>
-                                    <Input type="tel" {...field} placeholder={t("exContact")} />
+                                    <div className="relative w-full">
+                                        <div className="absolute h-full top-0 left-0 rounded-l-full px-2 flex items-center pointer-events-none bg-white border">
+                                            <p>{"+237"}</p>
+                                        </div>
+                                        <Input className="pl-15" type="tel" {...field} placeholder={t("exContact")} />
+                                    </div>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -180,13 +185,13 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                                 type="button"
                                 className="h-12 rounded-[24px]"
                                 onClick={async (e) => {
-                                        e.preventDefault();
-                                        const isValid = await form2.trigger();
-                                        if (isValid) {
-                                            setOrderNote(form2.getValues("lieu"));
-                                            setLevel("paiement");
-                                        }
-                                    }}
+                                    e.preventDefault();
+                                    const isValid = await form2.trigger();
+                                    if (isValid) {
+                                        setOrderNote(form2.getValues("lieu"));
+                                        setLevel("paiement");
+                                    }
+                                }}
                             >
                                 {t("continue")}
                             </Button>
@@ -204,7 +209,10 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                 ) : (
                     // ÉTAPE PAIEMENT
                     <div className="flex flex-col gap-5 px-6 py-7 rounded-[12px]">
-                        <p className="text-[24px] text-secondary font-semibold pb-5 border-b">{t("payment")}</p>
+                        <div className="flex flex-row items-center pb-5 border-b gap-3">
+                            <p className="text-[24px] text-secondary font-semibold">{t("payment")} :</p>
+                            <p className="text-secondary font-bold text-[25px] text-end">{`${totalPrice + frais} FCFA`}</p>
+                        </div>
 
                         <div className="flex flex-col gap-3 w-full">
                             <FormField
@@ -241,7 +249,9 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                                     name="paymentNumber"
                                     render={({ field }) => (
                                         <FormItem className="flex flex-col gap-2">
-                                            <FormLabel className="font-medium text-[14px] text-gray-900">{t("number")}</FormLabel>
+                                            <FormLabel className="font-medium text-[14px] text-gray-900">
+                                                {t("number")}
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input type="tel" {...field} />
                                             </FormControl>

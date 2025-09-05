@@ -103,8 +103,22 @@ const ProductDetails = ({ slug }: { slug: string }) => {
     // }
   }, [stockData.data, shopData.data, currentvar, addressId, router, available]);
 
+  const [localFavorite, setLocalFavorite] = useState(false);
 
+  useEffect(() => {
+    if (usersData.data) {
+      setLocalFavorite(!!usersData.data?.favorite?.some((fav) => fav.id === productData.data?.id));
+    }
+  }, [usersData.data, productData.data?.id]);
 
+  const toggleFavorite = (id: number) => {
+    setLocalFavorite(!localFavorite);
+    userData.mutate([id], {
+      onError: () => {
+        setLocalFavorite((prev) => !prev);
+      }
+    });
+  };
 
   useEffect(() => {
     if (productData.data?.variants?.length) {
@@ -115,9 +129,6 @@ const ProductDetails = ({ slug }: { slug: string }) => {
 
   if (productData.isLoading) return <Loading status="loading" />;
   if (productData.isError) return <Loading status="failed" />;
-
-  const toggleFavorite = (id: number) => userData.mutate([id]);
-  const isFavorite = !!usersData.data?.favorite?.some((fav) => fav.id === productData.data?.id);
 
   const increment = () => setQuantity((q) => q + 1);
   const decrement = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
@@ -140,7 +151,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
   const addToCart = () => {
     if (productItem) {
       addOrderItem({
-        variant:productItem, note: "",
+        variant: productItem, note: "",
         promotions: promotionData.data!
       }, quantity);
     }
@@ -271,7 +282,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
 
                 <Button
                   variant="outline"
-                  className={`h-9 md:h-12 rounded-[24px] ${isFavorite ? "bg-red-500 hover:bg-red-500/80 text-white" : "bg-white/50 text-gray-600"
+                  className={`h-9 md:h-12 rounded-[24px] ${localFavorite ? "bg-red-500 hover:bg-red-500/80 text-white" : "bg-white/50 text-gray-600"
                     }`}
                   onClick={() => toggleFavorite(productData.data!.id)}
                 >

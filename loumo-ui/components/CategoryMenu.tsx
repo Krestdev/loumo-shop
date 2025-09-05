@@ -7,10 +7,14 @@ import { useQuery } from "@tanstack/react-query";
 import CategoryCard from "./CategoryCard";
 import { EmblaCarouselType } from "embla-carousel";
 import { useStore } from "@/providers/datastore";
+import { Button } from "./ui/button";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export function CategoryMenu() {
   const { address } = useStore();
   const addressZoneId = address?.zoneId;
+  const t = useTranslations("HomePage");
 
   const [emblaRef, setEmblaRef] = React.useState<EmblaCarouselType | undefined>();
 
@@ -60,7 +64,7 @@ export function CategoryMenu() {
   }, [emblaRef]);
 
   return (
-    <div className="max-w-[1400px] w-full px-7 py-8 overflow-hidden">
+    <div className="max-w-[1400px] w-full px-7 py-8 gap-2 overflow-hidden flex flex-col items-center">
       <Carousel
         opts={{
           align: "center",
@@ -82,6 +86,9 @@ export function CategoryMenu() {
           ))}
         </CarouselContent>
       </Carousel>
-    </div>
+      <Link href="/categories">
+        <Button>{t("seeAll")}</Button>
+      </Link>
+    </div >
   );
 }
