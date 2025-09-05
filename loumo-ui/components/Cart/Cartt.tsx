@@ -12,9 +12,13 @@ const Cartt = () => {
     const { currentOrderItems } = useStore();
     const router = useRouter();
     const pathname = usePathname();
+    const cartItemCount = currentOrderItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
     return (
-        currentOrderItems.length > 0 && pathname !== "/cart" &&
+        cartItemCount > 0 && pathname !== "/cart" &&
         <motion.div
             className='max-w-[1400px] w-fit bottom-5 right-[-20] md:right-0 fixed flex z-10'
             initial={{ scale: 0.9, opacity: 0 }}
@@ -32,7 +36,7 @@ const Cartt = () => {
                     <div className='relative text-white text-[18px] py-6 px-6 bg-orange-400 rounded-full'>
                         <LucideShoppingCart size={20} />
                         <p className='absolute top-3 right-4 text-[16px] z-10 text-white'>
-                            {currentOrderItems.length}
+                            {cartItemCount}
                         </p>
                     </div>
                     <p className='text-white text-[16px] font-bold'>

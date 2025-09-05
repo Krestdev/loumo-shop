@@ -210,8 +210,8 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                     // ÉTAPE PAIEMENT
                     <div className="flex flex-col gap-5 px-6 py-7 rounded-[12px]">
                         <div className="flex flex-row items-center pb-5 border-b gap-3">
-                            <p className="text-[24px] text-secondary font-semibold">{t("payment")} :</p>
-                            <p className="text-secondary font-bold text-[25px] text-end">{`${totalPrice + frais} FCFA`}</p>
+                            <p className="text-[18px] text-secondary font-semibold">{t("total")} :</p>
+                            <p className="text-secondary font-bold text-[18px] text-end">{`${totalPrice + frais} FCFA`}</p>
                         </div>
 
                         <div className="flex flex-col gap-3 w-full">

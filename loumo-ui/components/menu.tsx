@@ -15,7 +15,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { useStore } from "@/providers/datastore";
 import AddressQuery from "@/queries/address";
 import { useQuery } from "@tanstack/react-query";
-import LocaleSwitcher from "./localSwitcher";
 import CategoryQuery from "@/queries/category";
 import ProductQuery from "@/queries/product";
 import { ProductVariant } from "@/types/types";
@@ -115,14 +114,14 @@ export function Menu({ children }: Props) {
       <DrawerTrigger asChild className="flex md:hidden">
         {children}
       </DrawerTrigger>
-      <DrawerContent className="md:hidden h-screen overflow-y-auto overscroll-contain">
+      <DrawerContent className="md:hidden max-w-[260px] w-full h-screen overflow-y-auto overscroll-contain">
         <div className="mx-auto w-full max-w-sm min-h-screen flex flex-col overflow-y-auto pb-20">
           {!user && (
-            <DrawerTitle className="sticky top-0 bg-white z-10">
+            <DrawerTitle className="sticky top-0 bg-primary h-fit text-white z-10">
               <div className="w-full flex flex-col items-center px-6 py-3">
                 <Button
                   onClick={() => router.push("/auth/login")}
-                  className="w-full"
+                  className="w-full bg-white text-black"
                 >
                   {t("login")}
                 </Button>
@@ -143,11 +142,11 @@ export function Menu({ children }: Props) {
             </DrawerTitle>
           )}
 
-          <div className="flex flex-col gap-2 py-5 px-6">
+          <div className="flex flex-col bg-primary gap-2 py-5 px-4">
             {user && <DropdownMenu>
               <div className="w-full flex flex-col gap-1">
-                <Label className="">{t("myAccount")}</Label>
-                <DropdownMenuTrigger className="flex w-[200px] group text-nowrap gap-2 items-center justify-center border border-input rounded-full px-3 py-1  cursor-pointer hover:bg-gray-50 data-[state=open]:bg-gray-100">
+                <Label className="text-white">{t("myAccount")}</Label>
+                <DropdownMenuTrigger className="flex group text-nowrap gap-2 items-center justify-center border border-input rounded-full px-3 py-1  cursor-pointer bg-white data-[state=open]:bg-gray-100">
                   <LucideCircleUser size={18} className="flex-shrink-0 text-gray-400" />
                   {user?.name}
                   {/* <LucideChevronDown size={16} className="transition-transform duration-200 group-data-[state=open]:rotate-180" /> */}
@@ -160,103 +159,108 @@ export function Menu({ children }: Props) {
                 </DropdownMenuContent>
               </div>
             </DropdownMenu>}
-            <div className="w-full flex flex-col gap-1">
-              <Label className="first-letter:uppercase">{t("address")}</Label>
-              {currentOrderItems.length <= 0 ? (
-                <Select
-                  open={selectOpen}
-                  onOpenChange={(open) => setSelectOpen(open)}
-                  onValueChange={(value) => {
-                    const selected = addressData.data?.find(
-                      (a) => a.id === parseInt(value)
-                    );
-                    if (selected) {
-                      setAddress(selected);
-                      setSelectOpen(false);
-                      setAddressSearch("");
-                    }
-                  }}
-                  value={address?.id?.toString()}
-                >
-                  <SelectTrigger className="flex group text-nowrap gap-2 items-center px-3 py-2 rounded-full cursor-pointer w-[200px] border border-input">
-                    <LucideMapPin size={20} className="flex-shrink-0" />
-                    <div className="flex flex-col w-full overflow-hidden text-left">
-                      <SelectValue placeholder={t("select")} />
-                    </div>
-                  </SelectTrigger>
-
-                  <SelectContent className="overflow-y-auto max-h-[300px]">
-                    <div className="sticky top-0 bg-white z-10 p-2 border-b" tabIndex={-1}>
-                      <div className="relative">
-                        <LucideSearch
-                          size={16}
-                          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground pointer-events-none"
-                        />
-                        <Input
-                          ref={inputRef}
-                          type="search"
-                          placeholder={t("search") + "..."}
-                          value={addressSearch}
-                          onChange={(e) => setAddressSearch(e.target.value)}
-                          className="pl-7"
-                          onFocus={() => setSelectOpen(true)}
-                          onKeyDown={(e) => e.stopPropagation()}
-                        />
-                      </div>
-                    </div>
-
-                    {filteredAddresses.length > 0 ? (
-                      filteredAddresses.map((addr) => (
-                        <SelectItem key={addr.id} value={addr.id.toString()}>
-                          <div className="flex flex-col">
-                            {addr.street && (
-                              <span className="text-xs text-muted-foreground">
-                                {addr.street}
-                              </span>
-                            )}
-                          </div>
-                        </SelectItem>
-                      ))
-                    ) : (
-                      <div className="p-4 text-center text-muted-foreground">
-                        {t("noAddress")}
-                      </div>
-                    )}
-                  </SelectContent>
-                </Select>
-              ) : (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="flex items-center gap-2 cursor-not-allowed">
-                      <LucideMapPin size={16} className="text-gray-300" />
-                      <div className="flex flex-col w-full overflow-hidden text-left">
-                        <p className="text-sm text-black">{address?.street}</p>
-                      </div>
-                      <LucideChevronDown size={20} className="text-gray-300" />
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent className="flex flex-col gap-2 justify-center">
-                    <p className="w-[150px]">{t("emptyCart")}</p>
-                    <Button
-                      variant="ghost"
-                      className="bg-white text-black hover:bg-gray-50 hover:text-black"
-                    >
-                      {t("goCart")}
-                    </Button>
-                  </TooltipContent>
-                </Tooltip>
-              )}
-            </div>
-            <div className="w-[200px] flex flex-col gap-1">
-              <Label className="text-[14px] text-nowrap">{t("language")}</Label>
-              <span className="border rounded-full">
-                <LocaleSwitcher />
-              </span>
-            </div>
           </div>
 
-          <div className="flex flex-col gap-2 pr-6 pt-2">
-            <div className="flex flex-col border bg-primary text-white p-2">
+          <div className="w-full flex flex-col gap-1">
+
+            {currentOrderItems.length <= 0 ? (
+              <Select
+                open={selectOpen}
+                onOpenChange={(open) => setSelectOpen(open)}
+                onValueChange={(value) => {
+                  const selected = addressData.data?.find(
+                    (a) => a.id === parseInt(value)
+                  );
+                  if (selected) {
+                    setAddress(selected);
+                    setSelectOpen(false);
+                    setAddressSearch("");
+                  }
+                }}
+                value={address?.id?.toString()}
+              >
+                <div className="w-full px-6 py-3 flex flex-col gap-[6px]">
+                  <SelectTrigger className="flex group text-nowrap gap-2 items-center px-3 py-2 rounded-full cursor-pointer w-full border-none shadow-none">
+                    <LucideMapPin size={24} className="flex-shrink-0 text-black" />
+                    <div className="flex flex-col w-full overflow-hidden text-left">
+                      <Label className="first-letter:uppercase text-[#A1A1AA] text-[12px] font-medium">{t("address")}</Label>
+                      <SelectValue placeholder={t("select")} className="text-[14px] text-black" />
+                    </div>
+                  </SelectTrigger>
+                </div>
+
+                <SelectContent className="overflow-y-auto max-h-[300px]">
+                  <div className="sticky top-0 bg-white z-10 p-2 border-b" tabIndex={-1}>
+                    <div className="relative">
+                      <LucideSearch
+                        size={16}
+                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground pointer-events-none"
+                      />
+                      <Input
+                        ref={inputRef}
+                        type="search"
+                        placeholder={t("search") + "..."}
+                        value={addressSearch}
+                        onChange={(e) => setAddressSearch(e.target.value)}
+                        className="pl-7"
+                        onFocus={() => setSelectOpen(true)}
+                        onKeyDown={(e) => e.stopPropagation()}
+                      />
+                    </div>
+                  </div>
+
+                  {filteredAddresses.length > 0 ? (
+                    filteredAddresses.map((addr) => (
+                      <SelectItem key={addr.id} value={addr.id.toString()}>
+                        <div className="flex flex-col">
+                          {addr.street && (
+                            <span className="text-[14px] text-black">
+                              {addr.street}
+                            </span>
+                          )}
+                        </div>
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <div className="p-4 text-center text-muted-foreground">
+                      {t("noAddress")}
+                    </div>
+                  )}
+                </SelectContent>
+              </Select>
+            ) : (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="w-full px-6 py-3 flex items-center gap-[6px] cursor-not-allowed">
+                    <LucideMapPin size={24} className="flex-shrink-0 text-black" />
+                    <div className="flex flex-col w-full overflow-hidden text-left">
+                      <Label className="first-letter:uppercase text-[#A1A1AA] text-[12px] font-medium">{t("address")}</Label>
+                      <p className="text-sm text-black">{address?.street}</p>
+                    </div>
+                    <LucideChevronDown size={20} className="text-gray-300" />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent className="flex flex-col gap-2 justify-center">
+                  <p className="w-[150px]">{t("emptyCart")}</p>
+                  <Button
+                    variant="ghost"
+                    className="bg-white text-black hover:bg-gray-50 hover:text-black"
+                  >
+                    {t("goCart")}
+                  </Button>
+                </TooltipContent>
+              </Tooltip>
+            )}
+          </div>
+          {/* <div className="flex gap-1 px-2 py-3">
+            <Label className="text-[14px] text-nowrap">{t("language")}</Label>
+            <span className="border rounded-full w-fit">
+              <LocaleSwitcher />
+            </span>
+          </div> */}
+
+          <div className="flex flex-col gap-2 pt-2">
+            {/* <div className="flex flex-col border bg-primary text-white p-2">
               <div className={`flex  items-center justify-between ${path === "/categories" ? "text-primary" : ""}`}>
                 <Link
                   onClick={() => setOpen(false)}
@@ -267,15 +271,15 @@ export function Menu({ children }: Props) {
                 </Link>
                 <ChevronRight className="w-4 h-4" />
               </div>
-            </div>
+            </div> */}
             {visibleCategories.map((cat) => {
               return (
-                <div key={cat.id} className="flex flex-col border-b p-2">
-                  <div className={`flex  items-center justify-between ${isCurentCaretory(cat.slug) ? "text-primary" : ""}`}>
+                <div key={cat.id} className={`flex flex-col p-2 ${isCurentCaretory(cat.slug) ? "bg-[#F4F4F5]" : ""}`}>
+                  <div className={`flex  items-center justify-between`}>
                     <Link
                       onClick={() => setOpen(false)}
                       href={`/categories/${cat.slug}`}
-                      className="text-[18px] flex"
+                    className="text-[16px] flex text-nowrap"
                     >
                       {cat.name}
                     </Link>

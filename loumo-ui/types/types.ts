@@ -75,7 +75,7 @@ export type Order = {
   note: string;
   address: Address;
   addressId: number;
-  orderItems?: Partial<OrderItem>[];
+  orderItems?: Partial<OrderItem>&{shopId?: number}[];
   payment?: Payment;
   delivery?: Delivery[];
   createdAt: Date;
