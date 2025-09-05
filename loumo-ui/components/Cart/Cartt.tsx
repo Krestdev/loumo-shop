@@ -23,7 +23,7 @@ const Cartt = () => {
         >
             <motion.div
                 animate={{ scale: [1, 1.1, 1] }} 
-                transition={{ duration: 0.6, repeat: Infinity, repeatDelay: 0.1 }}
+                transition={{ duration: 0.6, repeat: Infinity, repeatDelay: 0.5 }}
             >
                 <Button
                     onClick={() => router.push("/cart")}
