@@ -30,7 +30,7 @@ const Page = () => {
     mutationKey: ["createOrder"],
     mutationFn: (
       newOrder: Omit<Order, "id" | "orderItems" | "createdAt" | "address" | "user" | "ref"> & {
-        orderItems?: Partial<OrderItem>&{shopId?: number}[];
+        orderItems?:(Partial<OrderItem>&{shopId?: number})[];
       }
     ) => orderQuery.create(newOrder),
   });

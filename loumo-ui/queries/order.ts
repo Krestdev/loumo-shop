@@ -5,7 +5,7 @@ export default class OrderQuery {
   route = "/orders";
   create = async (
     data: Omit<Order, "id" | "orderItems" | "createdAt" | "address" | "user" | "ref"> & {
-      orderItems?: Partial<OrderItem>&{shopId?: number}[];
+      orderItems?: (Partial<OrderItem>&{shopId?: number})[];
     }
   ): Promise<Order> => {
     return api.post(`${this.route}/`, data).then((response) => response.data);
