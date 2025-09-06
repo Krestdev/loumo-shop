@@ -45,7 +45,10 @@ export default class UserQuery {
       addressList?: number[];
     }
   ): Promise<User> => {
-    return api.post(`${this.route}`, data).then((response) => response.data);
+    return api.post(`${this.route}`, data).then((response) => {
+      toast.success(`Welcome ${response.data.user.name}`);
+      return response.data
+    });
   };
 
   update = async (

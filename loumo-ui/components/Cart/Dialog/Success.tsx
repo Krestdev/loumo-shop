@@ -23,7 +23,7 @@ import ZoneQuery from "@/queries/zone";
 
 interface Props {
     open: boolean;
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setOpen:(v: boolean) => void;
     order?: Order;
 }
 

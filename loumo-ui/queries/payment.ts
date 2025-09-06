@@ -4,7 +4,7 @@ import { Payment } from "@/types/types";
 export default class PaymentQuery {
   route = "/payments";
   create = async (
-    data: Omit<Payment, "id"> & { orderId: number }
+    data: Omit<Payment, "id" | "ref"> & { orderId: number }
   ): Promise<Payment> => {
     return api.post(`${this.route}`, data).then((response) => response.data);
   };

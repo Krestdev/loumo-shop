@@ -26,6 +26,12 @@ type Store = {
   setIsHydrated: (v: boolean) => void;
   isHydrated: boolean;
 
+  successMobileOpen: boolean;
+  failedPaiement: boolean;
+  pendingPaiement: boolean;
+  setSuccessMobileOpen: (v: boolean) => void;
+  setFailedPaiement: (v: boolean) => void;
+  setPendingPaiement: (v: boolean) => void;
 
   currentOrderItems: OrderItem[];
 
@@ -57,6 +63,7 @@ export const useStore = create<Store>()(
   persist(
     (set, get) => ({
       isHydrated: false,
+
       setIsHydrated: (v) => set(() => ({ isHydrated: v })),
       user: null,
       setUser: (user) => set(() => ({ user })),
@@ -129,7 +136,7 @@ export const useStore = create<Store>()(
         set((state) => {
           const updatedItems = state.currentOrderItems.map((x) => {
             if (x.productVariantId === variantId) {
-              const unitPrice = x.total / x.quantity; 
+              const unitPrice = x.total / x.quantity;
               return {
                 ...x,
                 quantity,
@@ -202,7 +209,17 @@ export const useStore = create<Store>()(
           orderNote: "",
           orderAddressId: null,
         }),
+
+
+      // Modals for paiement status
+      failedPaiement: false,
+      pendingPaiement: false,
+      successMobileOpen: false,
+      setFailedPaiement: (v) => set({ failedPaiement: v }),
+      setPendingPaiement: (v) => set({ pendingPaiement: v }),
+      setSuccessMobileOpen: (v) => set({ successMobileOpen: v }),
     }),
+
     {
       name: "ecommerce-store",
       storage: createJSONStorage(() => localStorage),

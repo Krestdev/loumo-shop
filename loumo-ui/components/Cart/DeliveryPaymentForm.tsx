@@ -36,11 +36,11 @@ const formSchema = z.object({
     paymentNumber: z.string().optional(),
 }).superRefine((data, ctx) => {
     if (["orange", "mtn"].includes(data.paymentMethod)) {
-        if (!data.paymentNumber || data.paymentNumber.length < 8) {
+        if (!data.paymentNumber || data.paymentNumber.length < 9 || data.paymentNumber.length > 9) {
             ctx.addIssue({
                 code: "custom",
                 path: ["paymentNumber"],
-                message: "Numéro requis pour ce mode de paiement",
+                message: "Numéro de paiement invalide",
             });
         }
     }
@@ -52,7 +52,7 @@ const formSchema2 = z.object({
 
 type FormValues = z.infer<typeof formSchema>
 
-const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | null; onValidate: () => void; totalPrice: number }) => {
+const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | null; onValidate: (values: FormValues) => void; totalPrice: number }) => {
     const t = useTranslations("Cart")
     const [level, setLevel] = useState<"summary" | "paiement">("summary")
     const { address, setOrderNote } = useStore();
@@ -83,8 +83,8 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
 
     const paymentMethod = form.watch("paymentMethod")
 
-    const onSubmit = () => {
-        onValidate()
+    const onSubmit = (values: FormValues) => {
+        onValidate(values);
     }
 
     return (

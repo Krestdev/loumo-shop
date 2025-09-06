@@ -12,7 +12,7 @@ import { useTranslations } from "next-intl";
 
 interface Props {
     open: boolean,
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+    setOpen: (v: boolean) => void
 }
 export default function Pending({ open, setOpen }: Props) {
     const t = useTranslations("Cart.Awaiting")

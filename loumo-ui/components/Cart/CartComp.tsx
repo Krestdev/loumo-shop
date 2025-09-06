@@ -11,8 +11,14 @@ import { useQuery } from '@tanstack/react-query';
 import { ProductVariant, Promotion } from '@/types/types';
 import PromotionQuery from '@/queries/promotion';
 
+interface Values {
+    tel: string;
+    paymentMethod: "cash" | "orange" | "mtn";
+    paymentNumber?: string | undefined;
+}
+
 interface CartCompProps {
-    onValidate?: () => void;
+    onValidate?: (values: Values) => void;
     promotions: Promotion[] | undefined
 }
 

@@ -14,6 +14,7 @@ import NotificationProvider from "@/providers/notifications";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Cartt from "@/components/Cart/Cartt";
+import PaiementProvider from "@/components/Paiement/PaiementProvider";
 
 const font_sans = DM_Sans({
   variable: "--font-sans",
@@ -91,6 +92,7 @@ export default async function RootLayout({
               {/* <CartController /> */}
               {children}
               <Cartt />
+              <PaiementProvider />
               <Footer />
             </NotificationProvider>
             {/* <Maintenance /> */}

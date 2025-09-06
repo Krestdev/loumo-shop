@@ -13,10 +13,10 @@ import { XCircle } from "lucide-react";
 
 interface Props {
   open: boolean;
-  setOpen: (v: boolean) => void;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function Failed({ open, setOpen }: Props) {
+export function OrderFailed({ open, setOpen }: Props) {
   const t = useTranslations("Cart.Failed");
 
   return (
@@ -25,10 +25,10 @@ export function Failed({ open, setOpen }: Props) {
         <DialogHeader className="flex flex-col items-center space-y-2">
           <XCircle className="w-30 h-30 text-destructive" />
           <DialogTitle className="text-destructive text-xl">
-            {t("title")}
+            {t("title1")}
           </DialogTitle>
           <DialogDescription className="text-sm text-center text-muted-foreground">
-            {t("description")}
+            {t("description1")}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="mt-4">

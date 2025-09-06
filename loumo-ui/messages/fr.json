@@ -1,4 +1,8 @@
 {
+  "Loading": {
+    "loading": "Chargement...",
+    "error": "Erreur de connection, verifiez votre connexion et recharger la page."
+  },
   "Maintenance": {
     "redaction": "En cours de rédaction",
     "maintenance": "L'application est actuellement en maintenance",
@@ -152,6 +156,7 @@
     "addAddress": "Ajouter une adresse",
     "clearCart": "Vider le panier",
     "Awaiting": {
+      "title1": "Creation de la commande en cours",
       "title": "Paiement en attente",
       "description": "Veuillez patienter pendant que nous envoyons la demande de débit au numéro fourni.",
       "action": "⚠️ Action requise maintenant",
@@ -168,7 +173,9 @@
     },
     "Failed": {
       "title": "Paiement non confirmé",
+      "title1": "Commande echouée",
       "description": "Paiement non confirmé ! Veuillez contacter le service client.",
+      "description1": "Votre commande a echoué. Veuillez ressayer.",
       "close": "Fermer"
     },
     "Invoice": {

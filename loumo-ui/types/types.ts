@@ -107,6 +107,8 @@ export type Payment = {
   order?: Order[];
   total: number;
   ref: string;
+  tel: string;
+  method: string;
 };
 
 export type Permission = {
