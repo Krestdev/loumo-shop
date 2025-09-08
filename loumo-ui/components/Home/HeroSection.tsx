@@ -13,7 +13,7 @@ const HeroSection = () => {
         <div className='flex flex-col gap-7 px-7 md:pt-7 w-full items-center'>
             <div className='relative bg-gradient-to-b from-[#4CA697] to-[#BEE3A7] flex flex-row sm:rounded-[20px] px-12 pt-3 pb-30 max-w-[1344px] w-screen sm:w-full '>
                 <div className='absolute flex rounded-[20px] top-0 left-0 z-10 bg-gradient-to-b from-[#4CA697]/80 to-[#BEE3A7] w-full h-full' />
-                <div className='flex flex-col items-center gap-5 h-[100px] md:h-full z-20'>
+                <div className='flex flex-col items-center mx-auto gap-5 h-[100px] md:h-full z-20'>
                     <h1 className='hero-text text-center max-w-[800px] text-[40px] md:text-[60px] lg:text-[80px]'>
                         {t("title")}
                     </h1>
