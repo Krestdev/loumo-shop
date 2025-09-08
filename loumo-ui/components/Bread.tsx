@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { useTranslations } from "next-intl"
 
-export function Bread() {
+export function Bread({title}: {title: string}) {
     const t = useTranslations("HomePage")
     return (
         <Breadcrumb>
@@ -22,7 +22,7 @@ export function Bread() {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                    <BreadcrumbPage>{t("products")}</BreadcrumbPage>
+                    <BreadcrumbPage>{title}</BreadcrumbPage>
                 </BreadcrumbItem>
             </BreadcrumbList>
         </Breadcrumb>

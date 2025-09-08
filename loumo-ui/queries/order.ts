@@ -21,6 +21,10 @@ export default class OrderQuery {
     return api.get(`${this.route}/${id}`).then((response) => response.data);
   };
 
+  getCancel = async (id: number): Promise<Order> => {
+    return api.get(`${this.route}/cancel/${id}`).then((response) => response.data);
+  };
+
   update = async (
     id: number,
     data: Partial<Omit<Order, "id">> & { addressId?: number }

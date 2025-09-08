@@ -28,7 +28,7 @@ const Page = () => {
   const zoneQuery = new ZoneQuery();
 
 
-  const { currentOrderItems, user, setUser, resetOrderDraft, address, orderNote, setOrderNote, successMobileOpen, setFailedPaiement, setPendingPaiement, setSuccessMobileOpen } = useStore();
+  const { currentOrderItems, user, setUser, address, orderNote, setOrderNote, successMobileOpen, setFailedPaiement, setPendingPaiement, setSuccessMobileOpen } = useStore();
   const [failedOpen, setFailedOpen] = useState(false);
   const [pendingOpen, setPendingOpen] = useState(false);
   const [orders, setOrders] = useState<Order | undefined>();
@@ -97,10 +97,11 @@ const Page = () => {
 
         createOrder.mutate(payload, {
           onSuccess: (order) => {
+            console.log(order);
+            
             console.log("✅ Order received from server:", order);
             setOrders(order);
             setPendingOpen(false);
-            resetOrderDraft();
             setSuccessMobileOpen(true);
             setOrderNote("");
           },
@@ -165,7 +166,7 @@ const Page = () => {
                 const interval = setInterval(() => {
 
                   console.log("Nouvel appel de paiement");
-                  
+
                   paiementQuery.getOne(payment.id).then(res => {
                     if (res) {
                       if (res.status === "COMPLETED") {
@@ -189,7 +190,6 @@ const Page = () => {
               }
             })
             setOrders(order);
-            resetOrderDraft();
             setOrderNote("");
           },
           onError: (error) => {

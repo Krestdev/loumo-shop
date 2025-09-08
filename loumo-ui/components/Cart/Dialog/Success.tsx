@@ -64,6 +64,8 @@ export function Success({ open, setOpen, order }: Props) {
         "dd/MM/yyyy - HH:mm"
     ) : "-"}`
 
+    console.log(order);
+    
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>

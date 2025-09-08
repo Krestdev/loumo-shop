@@ -52,7 +52,7 @@ const Home = () => {
         )
       )
     );
-  }, [productData.data, addressId]);
+  }, [productData.data, addressId]) ;
 
   return (
     <div className="w-full flex flex-col items-center overflow-clip">
@@ -62,7 +62,7 @@ const Home = () => {
       {filteredProducts.length > 0
         ? <GridProduct
           title={t("star")}
-          products={filteredProducts}
+          products={filteredProducts.filter(x => x.status === true)}
           isLoading={productData.isLoading}
           isSuccess={productData.isSuccess}
           promotions={promotionData.data}
@@ -73,7 +73,7 @@ const Home = () => {
       {filteredProducts.filter(x => x.variants.some(x => x.stock.some(x => x.promotionId))).length > 0
         && <GridProduct
           title={t("promotions")}
-          products={filteredProducts.filter(x => x.variants.some(x => x.stock.some(x => x.promotionId)))}
+          products={filteredProducts.filter(x => x.status === true).filter(x => x.variants.some(x => x.stock.some(x => x.promotionId)))}
           isLoading={productData.isLoading}
           isSuccess={productData.isSuccess}
           promotions={promotionData.data}

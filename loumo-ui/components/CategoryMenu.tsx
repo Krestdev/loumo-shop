@@ -38,6 +38,7 @@ export function CategoryMenu() {
       .filter((category) =>
         // category.display === true &&
         category.products?.some((product) =>
+           product.status === true &&
           product.variants?.some((variant) =>
             variant.stock?.some((stock) =>
               stock.shop?.address?.zoneId === addressZoneId

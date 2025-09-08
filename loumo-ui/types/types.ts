@@ -80,7 +80,7 @@ export type Order = {
   delivery?: Delivery[];
   createdAt: Date;
   total: number;
-  status: "FAILED" | "COMPLETED" | "PROCESSING" | "REJECTED" | "ACCEPTED" | "PENDING";
+  status: "FAILED" | "COMPLETED" | "PROCESSING" | "REJECTED" | "ACCEPTED" | "PENDING" | "CANCELED";
   weight: number;
   deliveryFee: number;
   user: User;

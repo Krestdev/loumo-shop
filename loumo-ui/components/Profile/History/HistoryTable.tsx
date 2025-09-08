@@ -14,6 +14,7 @@ import { useState } from "react";
 import Pagination from "./Pagination";
 import { Button } from "@/components/ui/button";
 import { Success } from "@/components/Cart/Dialog/Success";
+import CancelOrder from "@/components/Cart/Dialog/CancelOrder";
 
 interface Props {
     all: boolean;
@@ -22,15 +23,38 @@ interface Props {
 
 const HistoryTable = ({ orders, all }: Props) => {
     const t = useTranslations("Profile.Orders");
+    const base = process.env.NEXT_PUBLIC_API_BASE_URL;
+
     const [currentPage, setCurrentPage] = useState(1);
     const [status, setStatus] = useState<"all" | "inProgress" | "completed">("all");
     const [open, setOpen] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
+    // 🔥 Nouveau pour gérer l'annulation
+    const [cancelOrderOpen, setCancelOrderOpen] = useState(false);
+    const [orderToCancel, setOrderToCancel] = useState<Order | null>(null);
+
     const [items, setItems] = useState(orders);
     const itemsPerPage = 10;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const slicedItems = items.slice(startIndex, startIndex + itemsPerPage);
+
+    const onCancelOrder = async (ord: Order) => {
+        try {
+            const res = await fetch(`${base}orders/cancel/${ord.id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!res.ok) {
+                throw new Error("Erreur lors de l'annulation");
+            }
+        } catch (error) {
+            console.error("Erreur annulation :", error);
+        }
+    };
 
     function formatDateShortFR(dateInput?: string | number | Date): string {
         const date = dateInput ? new Date(dateInput) : new Date();
@@ -40,7 +64,6 @@ const HistoryTable = ({ orders, all }: Props) => {
             year: "numeric",
         });
     }
-
 
     const handleClick = (stat: "all" | "inProgress" | "completed") => {
         setStatus(stat);
@@ -64,6 +87,7 @@ const HistoryTable = ({ orders, all }: Props) => {
         REJECTED: t("rejete"),
         ACCEPTED: t("accepte"),
         PENDING: t("enattente"),
+        CANCELED: t("annule"),
     };
 
     return (
@@ -96,22 +120,58 @@ const HistoryTable = ({ orders, all }: Props) => {
                         <TableHead className="text-center">{t("amount")}</TableHead>
                         <TableHead className="text-center">{t("status")}</TableHead>
                         <TableHead className="text-center">{t("items")}</TableHead>
-                        {/* <TableHead className="text-center">{t("actions")}</TableHead> */}
+                        <TableHead className="text-center">{t("actions")}</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {slicedItems.length > 0 ? slicedItems.reverse().map((order, i) => (
-                        <TableRow onClick={() => {
-                            setSelectedOrder(order);
-                            setOpen(true);
-                        }} key={order.id ?? i} className="bg-white">
-                            <TableCell className="text-center">{order.ref.length > 4 ? `${order.ref.slice(0, 4)}...` : order.ref}</TableCell>
-                            <TableCell className="text-center">{formatDateShortFR(order.createdAt)}</TableCell>
-                            <TableCell className="text-center">{`${order.total} FCFA`}</TableCell>
-                            <TableCell className="text-center">{statusLabels[order.status] ?? order.status}</TableCell>
-                            <TableCell className="text-center">{order.orderItems?.length ?? 0}</TableCell>
-                        </TableRow>
-                    )) :
+                    {slicedItems.length > 0 ? slicedItems.reverse().map((order, i) => {
+                        return (
+                            <TableRow key={order.id ?? i} className="bg-white">
+                                <TableCell className="text-center">{order.ref.length > 4 ? `${order.ref.slice(0, 4)}...` : order.ref}</TableCell>
+                                <TableCell className="text-center">{formatDateShortFR(order.createdAt)}</TableCell>
+                                <TableCell className="text-center">{`${order.total} FCFA`}</TableCell>
+                                <TableCell className="text-center">{statusLabels[order.status] ?? order.status}</TableCell>
+                                <TableCell className="text-center">{order.orderItems?.length ?? 0}</TableCell>
+                                <TableCell className="text-center">
+                                    {/* Détails */}
+                                    <Button
+                                        disabled={order.status !== "PENDING" || order.payment?.method === "CASH"}
+                                        onClick={() => {
+                                            setSelectedOrder(order);
+                                            setOpen(true);
+                                        }} variant={"default"} className={`z-10 mr-2 ${order.status !== "PENDING" || order.payment?.method === "CASH" ? "opacity-50 cursor-not-allowed" : ""}`}>
+                                        {t("view")}
+                                    </Button>
+
+                                    {/* Annuler */}
+                                    <CancelOrder 
+                                        cancelOrder={cancelOrderOpen} 
+                                        setCancelOrder={setCancelOrderOpen} 
+                                        action={() => { 
+                                            if (orderToCancel) {
+                                                onCancelOrder(orderToCancel); 
+                                            }
+                                            setCancelOrderOpen(false); 
+                                            setOrderToCancel(null);
+                                        }} 
+                                        order={orderToCancel}
+                                    >
+                                        <Button
+                                            disabled={order.status !== "PENDING" || order.payment?.method === "CASH"}
+                                            onClick={() => {
+                                                setOrderToCancel(order);
+                                                setCancelOrderOpen(true);
+                                            }}
+                                            variant={"outline"}
+                                            className={`z-10 ${order.status !== "PENDING" || order.payment?.method === "CASH" ? "opacity-50 cursor-not-allowed" : ""}`}
+                                        >
+                                            {t("annuleButton")}
+                                        </Button>
+                                    </CancelOrder>
+                                </TableCell>
+                            </TableRow>
+                        )
+                    }) :
                         <TableRow>
                             <TableCell colSpan={6} className="text-center py-8">
                                 {t("emptyTable")}

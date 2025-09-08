@@ -178,6 +178,12 @@
       "description1": "Votre commande a echoué. Veuillez ressayer.",
       "close": "Fermer"
     },
+    "CancelOrder": {
+      "title": "Annuler la commande",
+      "description": "Êtes-vous sûr de vouloir annuler cette commande ? Cette action est irréversible.",
+      "close": "Fermer",
+      "confirm": "Confirmer"
+    },
     "Invoice": {
       "title": "Facture",
       "order": "Commande",
@@ -302,6 +308,8 @@
       "rejete": "Rejeté",
       "accepte": "Accepté",
       "enattente": "En attente",
+      "annule": "Annulé",
+      "annuleButton": "Annuler",
       "Detail": {
         "orderDetails": "Détails de la commande",
         "orderDate": "Du",

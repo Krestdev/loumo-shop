@@ -21,6 +21,7 @@ import { Category } from "@/types/types";
 
 const Page = () => {
   const t = useTranslations("Catalog.Filters");
+  const t1 = useTranslations("HomePage")
   const { address } = useStore();
 
   // Initialisation des queries
@@ -164,7 +165,7 @@ const Page = () => {
   return (
     <div className="flex justify-center w-full">
       <div className="flex flex-col gap-5 px-7 py-8 max-w-[1400px] w-full">
-        <Bread />
+        <Bread title={t1("products")} />
         <p className="text-secondary text-[36px] w-full text-center">
           {t("allProducts")}
         </p>
@@ -200,7 +201,7 @@ const Page = () => {
 
           {/* Liste des produits */}
           <AllProducts
-            products={filteredProducts}
+            products={filteredProducts.filter(x => x.status === true)}
             isLoading={categoriesLoading || productsLoading}
             isSuccess={!!categories && !!allProducts}
             className="px-0 py-0"

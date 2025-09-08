@@ -14,7 +14,6 @@ const Page = () => {
     queryFn: () => orders.getAll(),
   });
 
-
   return (
     <HydrationGuard>
       <div className="w-full flex justify-center">

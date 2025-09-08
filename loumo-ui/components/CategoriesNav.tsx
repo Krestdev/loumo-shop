@@ -49,7 +49,7 @@ const CategoriesNav = () => {
                 <div className="inline-flex gap-3">
                     {categoryData.isLoading && Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="w-20 h-10 rounded-none" />)}
                     {categoryData.isSuccess &&
-                        categoryData.data.filter(category => category.display === true && category.products?.some(product => product.variants && product.variants.length > 0)).map((x, i) => {
+                        categoryData.data.filter(category => category.display === true && category.products?.some(product => product.status === true && product.variants && product.variants.length > 0)).map((x, i) => {
                                 return (
                                     <Link className={cn("font-mono h-10 w-fit shrink-0 px-3 flex items-center", isActive(x.id) ? "bg-primary text-primary-foreground" : "bg-[#FAFAFA]")} key={i} href={`/categories/${x.slug}`}>
                                         <span className="font-medium text-[14px] uppercase">{x.name}</span>

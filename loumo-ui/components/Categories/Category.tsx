@@ -55,7 +55,7 @@ const CategoryComp = ({ slug }: { slug: string }) => {
                 </div>
                 <div className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5'>
                     {
-                        categ?.products?.map((x, i) => {
+                        categ?.products?.filter(x => x.status === true).map((x, i) => {
                             return (
                                 <ProductComp key={i} product={x} promotions={promotionData.data} />
                             )

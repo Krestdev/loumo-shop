@@ -16,8 +16,8 @@ import { useStore } from "@/providers/datastore";
 import AddressQuery from "@/queries/address";
 import { useQuery } from "@tanstack/react-query";
 import CategoryQuery from "@/queries/category";
-import ProductQuery from "@/queries/product";
-import { ProductVariant } from "@/types/types";
+// import ProductQuery from "@/queries/product";
+// import { ProductVariant } from "@/types/types";
 import Link from "next/link";
 import {
   Select,
@@ -46,7 +46,7 @@ export function Menu({ children }: Props) {
 
   const addressQuery = new AddressQuery();
   const categoryQuery = new CategoryQuery();
-  const productQuery = new ProductQuery();
+  // const productQuery = new ProductQuery();
 
   const addressData = useQuery({
     queryKey: ["addressFetchAll"],
@@ -58,36 +58,31 @@ export function Menu({ children }: Props) {
     queryFn: () => categoryQuery.getAll(),
   });
 
-  const productData = useQuery({
-    queryKey: ["productsFetchAll"],
-    queryFn: () => productQuery.getAll(),
-  });
+  // const productData = useQuery({
+  //   queryKey: ["productsFetchAll"],
+  //   queryFn: () => productQuery.getAll(),
+  // });
 
-  const isVariantVisible = (
-    variant: ProductVariant,
-    selectedZoneId: number | undefined
-  ) => {
-    if (!selectedZoneId) return true;
-    return variant.stock?.some(
-      (s) => s.shop?.address?.zoneId === selectedZoneId
-    );
-  };
+  // const isVariantVisible = (
+  //   variant: ProductVariant,
+  //   selectedZoneId: number | undefined
+  // ) => {
+  //   if (!selectedZoneId) return true;
+  //   return variant.stock?.some(
+  //     (s) => s.shop?.address?.zoneId === selectedZoneId
+  //   );
+  // };
 
-  const visibleProducts = React.useMemo(() => {
-    if (!productData.data) return [];
-    return productData.data.filter((product) =>
-      product.variants?.some((v) =>
-        isVariantVisible(v, address?.zoneId ?? undefined)
-      )
-    );
-  }, [productData.data, address]);
+  // const visibleProducts = React.useMemo(() => {
+  //   if (!productData.data) return [];
+  //   return productData.data.filter((product) =>
+  //     product.variants?.some((v) =>
+  //       isVariantVisible(v, address?.zoneId ?? undefined)
+  //     )
+  //   );
+  // }, [productData.data, address]);
 
-  const visibleCategories = React.useMemo(() => {
-    if (!categoryData.data) return [];
-    return categoryData.data.filter((cat) =>
-      visibleProducts.some((prod) => prod.categoryId === cat.id)
-    );
-  }, [categoryData.data, visibleProducts]);
+  const visibleCategories = categoryData.data?.filter(category => category.display === true && category.products?.some(product => product.status === true && product.variants && product.variants.length > 0))
 
   const normalizeText = (text: string) => text.toLowerCase().trim();
 
@@ -272,7 +267,7 @@ export function Menu({ children }: Props) {
                 <ChevronRight className="w-4 h-4" />
               </div>
             </div> */}
-            {visibleCategories.map((cat) => {
+            {visibleCategories?.map((cat) => {
               return (
                 <div key={cat.id} className={`flex flex-col p-2 ${isCurentCaretory(cat.slug) ? "bg-[#F4F4F5]" : ""}`}>
                   <div className={`flex  items-center justify-between`}>

@@ -25,7 +25,7 @@ const Loading = ({ status }: { status?: "failed" | "loading" }) => {
       <img
         src={status === "loading" ? "/loading.gif" : "/error.gif"}
         alt={t("loading")}
-        className="aspect-video object-contain w-full max-w-[250px] h-[150px]"
+        className={`object-contain ${status === "loading" ? " max-w-[150px]" : "max-w-[70px]"} h-auto aspect-square`}
       />
       <p className="text-center max-w-[350px]">{message}</p>
     </div>
