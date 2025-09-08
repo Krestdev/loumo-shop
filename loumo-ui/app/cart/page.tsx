@@ -40,6 +40,12 @@ const Page = () => {
         orderItems?: (Partial<OrderItem> & { shopId?: number })[];
       }
     ) => orderQuery.create(newOrder),
+    onSuccess: (data) => {
+      setOrders(data);
+      setSuccessMobileOpen(true);
+      setPendingOpen(false);
+      setOrderNote("");
+    }
   });
 
   const createPaiement = useMutation({
@@ -67,7 +73,27 @@ const Page = () => {
     queryFn: () => zoneQuery.getAll()
   })
 
-  const frais = zoneData.data?.find(x => x.id === address?.zoneId)?.price ?? 0
+  const frais = zoneData.data?.find(x => x.id === address?.zoneId)?.price ?? 0;
+  const base = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  const onCancelOrder = async (ord: Order) => {
+
+    console.log("Annulation de la commande", ord);
+
+    try {
+      const res = await fetch(`${base}orders/cancel/${ord.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Erreur lors de l'annulation");
+      }
+    } catch (error) {
+      console.error("Erreur annulation :", error);
+    }
+  };
 
   const handleSubmitOrder = (value: Values) => {
     if (value.paymentMethod === "cash") {
@@ -98,12 +124,12 @@ const Page = () => {
         createOrder.mutate(payload, {
           onSuccess: (order) => {
             console.log(order);
-            
+
             console.log("✅ Order received from server:", order);
-            setOrders(order);
-            setPendingOpen(false);
-            setSuccessMobileOpen(true);
-            setOrderNote("");
+            // setOrders(order);
+            // setSuccessMobileOpen(true);
+            // setPendingOpen(false);
+            // setOrderNote("");
           },
           onError: (error) => {
             console.log("order Note", orderNote)
@@ -118,7 +144,7 @@ const Page = () => {
         });
       }
     } else {
-      console.log(`Paiement par ${value.paymentMethod}`);
+
       if (user && address?.id && currentOrderItems.length > 0) {
         const total = frais + currentOrderItems.reduce((acc, item) => acc + (item.total || 0), 0);
         const weight = currentOrderItems.reduce((acc, item) => acc + (item.productVariant.weight * item.quantity), 0);
@@ -174,9 +200,11 @@ const Page = () => {
                         setSuccessMobileOpen(true);
                         clearInterval(interval);
                       } else if (res.status === "FAILED") {
-                        setFailedOpen(true);
                         setFailedPaiement(true);
+                        setPendingPaiement(false);
                         clearInterval(interval);
+                        // Et la je vais annuler la commande
+                        onCancelOrder(order);
                       } else {
                         setFailedOpen(false);
                         setPendingPaiement(true);
@@ -187,9 +215,10 @@ const Page = () => {
               },
               onError: () => {
                 setFailedOpen(true);
+                setPendingPaiement(false);
               }
             })
-            setOrders(order);
+            // setOrders(order);
             setOrderNote("");
           },
           onError: (error) => {

@@ -29,6 +29,8 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 interface Props {
   children: React.JSX.Element;
@@ -40,7 +42,7 @@ export function Menu({ children }: Props) {
   const [selectOpen, setSelectOpen] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const { currentOrderItems, address, setAddress, user, logout } = useStore();
+  const { currentOrderItems, address, setAddress, user, logout, clearCart } = useStore();
   const t = useTranslations("Header");
   const router = useRouter();
 
@@ -184,7 +186,7 @@ export function Menu({ children }: Props) {
                   </SelectTrigger>
                 </div>
 
-                <SelectContent className="overflow-y-auto max-h-[300px]">
+                <SelectContent className="overflow-y-auto max-h-[600px] md:max-h-[300px]">
                   <div className="sticky top-0 bg-white z-10 p-2 border-b" tabIndex={-1}>
                     <div className="relative">
                       <LucideSearch
@@ -224,27 +226,38 @@ export function Menu({ children }: Props) {
                 </SelectContent>
               </Select>
             ) : (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="w-full px-6 py-3 flex items-center gap-[6px] cursor-not-allowed">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <div className="flex group text-nowrap gap-2 items-center px-3 py-2 rounded-full cursor-pointer w-full border-none shadow-none">
                     <LucideMapPin size={24} className="flex-shrink-0 text-black" />
                     <div className="flex flex-col w-full overflow-hidden text-left">
                       <Label className="first-letter:uppercase text-[#A1A1AA] text-[12px] font-medium">{t("address")}</Label>
-                      <p className="text-sm text-black">{address?.street}</p>
+                      {/* <SelectValue placeholder= className="text-[14px] text-black" /> */}
+                      <p>{t("select")}</p>
                     </div>
-                    <LucideChevronDown size={20} className="text-gray-300" />
                   </div>
-                </TooltipTrigger>
-                <TooltipContent className="flex flex-col gap-2 justify-center">
-                  <p className="w-[150px]">{t("emptyCart")}</p>
-                  <Button
-                    variant="ghost"
-                    className="bg-white text-black hover:bg-gray-50 hover:text-black"
-                  >
-                    {t("goCart")}
-                  </Button>
-                </TooltipContent>
-              </Tooltip>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>{t("title")}</DialogTitle>
+                    <DialogDescription>
+                      {t("description")}
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter className="flex flex-row items-center justify-center gap-1">
+                    <DialogClose>
+                      <Button variant="outline">
+                        {t("cancel")}
+                      </Button>
+                    </DialogClose>
+                    <DialogClose>
+                      <Button variant="default" onClick={clearCart}>
+                        {t("clearCart")}
+                      </Button>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             )}
           </div>
           {/* <div className="flex gap-1 px-2 py-3">
@@ -274,7 +287,7 @@ export function Menu({ children }: Props) {
                     <Link
                       onClick={() => setOpen(false)}
                       href={`/categories/${cat.slug}`}
-                    className="text-[16px] flex text-nowrap"
+                      className="text-[16px] flex text-nowrap"
                     >
                       {cat.name}
                     </Link>

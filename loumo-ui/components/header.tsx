@@ -98,14 +98,16 @@ const Header = () => {
           ) : (
             <Tooltip>
               <TooltipTrigger asChild className="border px-4 rounded-[20px]">
-                <div className="hidden md:flex items-center gap-2 cursor-not-allowed">
-                  <LucideMapPin size={16} className="flex-shrink-0 text-gray-300" />
+                <Button 
+                variant={"outline"} 
+                className="hidden md:flex group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer max-w-[250px] border border-input">
+                  <LucideMapPin size={20} className="flex-shrink-0 text-gray-300" />
                   <div className="flex flex-col w-full overflow-hidden text-left">
                     {/* <p className="text-xs text-muted-foreground text-nowrap">{t("address")}</p> */}
                     <p className="text-sm text-black">{address?.street}</p>
                   </div>
                   <LucideChevronDown size={20} className="text-gray-300" />
-                </div>
+                </Button>
               </TooltipTrigger>
               <TooltipContent className="flex flex-col gap-2 justify-center">
                 <p className="w-[150px]">{t("emptyCart")}</p>
@@ -134,7 +136,6 @@ const Header = () => {
               {t("login")}
             </Button>
           }
-
           <Button
             variant="ghost"
             size="icon"

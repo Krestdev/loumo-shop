@@ -99,10 +99,7 @@ export const OrderInvoice = ({
   const zoneName = zones?.name || "-";
   const frais = zones?.price ?? 0
   const subtotal = (order?.total ?? 0) - frais
-
-  console.log("order", order);
   
-
   return (
     <Document>
       <Page size="A5" style={styles.page}>

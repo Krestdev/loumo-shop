@@ -13,7 +13,7 @@ export default function useAuthGuard({ requireAuth = true }: { requireAuth?: boo
     if (!isHydrated) return; 
     
     if (requireAuth && !user) {
-      router.push('/login');
+      router.push('/auth/login');
     } else if (!requireAuth && user) {
       router.push('/dashboard');
     }

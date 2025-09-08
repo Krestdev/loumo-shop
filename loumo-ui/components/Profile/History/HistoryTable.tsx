@@ -135,11 +135,11 @@ const HistoryTable = ({ orders, all }: Props) => {
                                 <TableCell className="text-center">
                                     {/* Détails */}
                                     <Button
-                                        disabled={order.status !== "PENDING" || order.payment?.method === "CASH"}
+                                        // disabled={order.status === "CANCELED"}
                                         onClick={() => {
                                             setSelectedOrder(order);
                                             setOpen(true);
-                                        }} variant={"default"} className={`z-10 mr-2 ${order.status !== "PENDING" || order.payment?.method === "CASH" ? "opacity-50 cursor-not-allowed" : ""}`}>
+                                        }} variant={"default"} className={`z-10 mr-2 ${order.status === "CANCELED" ? "opacity-50 cursor-not-allowed" : ""}`}>
                                         {t("view")}
                                     </Button>
 
@@ -157,13 +157,13 @@ const HistoryTable = ({ orders, all }: Props) => {
                                         order={orderToCancel}
                                     >
                                         <Button
-                                            disabled={order.status !== "PENDING" || order.payment?.method === "CASH"}
+                                            disabled={order.status === "CANCELED" || order.status === "COMPLETED" || order.status === "FAILED" || order.status === "REJECTED"}
                                             onClick={() => {
                                                 setOrderToCancel(order);
                                                 setCancelOrderOpen(true);
                                             }}
                                             variant={"outline"}
-                                            className={`z-10 ${order.status !== "PENDING" || order.payment?.method === "CASH" ? "opacity-50 cursor-not-allowed" : ""}`}
+                                            className={`z-10 ${order.status === "CANCELED" ? "opacity-50 cursor-not-allowed" : ""}`}
                                         >
                                             {t("annuleButton")}
                                         </Button>

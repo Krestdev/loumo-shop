@@ -38,7 +38,7 @@ export function CategoryMenu() {
       .filter((category) =>
         // category.display === true &&
         category.products?.some((product) =>
-           product.status === true &&
+          product.status === true &&
           product.variants?.some((variant) =>
             variant.stock?.some((stock) =>
               stock.shop?.address?.zoneId === addressZoneId
@@ -77,7 +77,7 @@ export function CategoryMenu() {
         className="w-full relative"
       >
         <CarouselContent className="flex">
-          {filteredCategories.map((category, index) => (
+          {filteredCategories.filter(category => category.products?.some(product => product.status === true && product.variants && product.variants.length > 0)).map((category, index) => (
             <CarouselItem
               key={index}
               className="basis-[33.33%] sm:basis-[30%] lg:basis-[16.7%] flex-shrink-0"

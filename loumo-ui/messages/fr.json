@@ -26,7 +26,11 @@
     "noAddress": "Aucune adresse enregistrée",
     "addAddress": "Ajouter une adresse",
     "emptyCart": "Pour changer d'adresse vous devez vider le panier.",
-    "goCart": "Aller au panier"
+    "goCart": "Aller au panier",
+    "title": "Vider le panier?",
+    "description": "Pour changer d'adresse vous devez vider votre panier actuel. Voulez-vous continuer?",
+    "cancel": "Annuler",
+    "clearCart": "Vider le panier"
   },
   "Address": {
     "address": "veuillez sélectionner votre adresse de livraison",

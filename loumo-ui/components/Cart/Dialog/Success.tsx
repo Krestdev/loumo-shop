@@ -23,7 +23,7 @@ import ZoneQuery from "@/queries/zone";
 
 interface Props {
     open: boolean;
-    setOpen:(v: boolean) => void;
+    setOpen: (v: boolean) => void;
     order?: Order;
 }
 
@@ -62,12 +62,10 @@ export function Success({ open, setOpen, order }: Props) {
     const fileName = `${t1("order")}_#${order?.id}_${order?.createdAt ? format(
         order.createdAt,
         "dd/MM/yyyy - HH:mm"
-    ) : "-"}`
-
-    console.log(order);
-    
+    ) : "-"}`;
 
     return (
+        order &&
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="max-w-4xl w-full h-[700px] flex flex-col gap-4">
                 <DialogHeader>
