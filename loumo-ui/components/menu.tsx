@@ -10,8 +10,7 @@ import {
 import { Button } from "./ui/button";
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
-import { ChevronRight, LucideChevronDown, LucideCircleUser, LucideMapPin, LucideSearch } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { ChevronRight, LucideCircleUser, LucideMapPin, LucideSearch } from "lucide-react";
 import { useStore } from "@/providers/datastore";
 import AddressQuery from "@/queries/address";
 import { useQuery } from "@tanstack/react-query";

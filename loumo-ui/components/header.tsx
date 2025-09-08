@@ -33,7 +33,7 @@ import { AddAddress } from "./select-address";
 
 const Header = () => {
   const t = useTranslations("Header");
-  const { user, currentOrderItems, logout, address } = useStore();
+  const { user, currentOrderItems, logout, address, clearCart } = useStore();
   const router = useRouter();
   const [isClient, setIsClient] = React.useState(true);
 
@@ -98,9 +98,9 @@ const Header = () => {
           ) : (
             <Tooltip>
               <TooltipTrigger asChild className="border px-4 rounded-[20px]">
-                <Button 
-                variant={"outline"} 
-                className="hidden md:flex group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer max-w-[250px] border border-input">
+                <Button
+                  variant={"outline"}
+                  className="hidden md:flex group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer max-w-[250px] border border-input">
                   <LucideMapPin size={20} className="flex-shrink-0 text-gray-300" />
                   <div className="flex flex-col w-full overflow-hidden text-left">
                     {/* <p className="text-xs text-muted-foreground text-nowrap">{t("address")}</p> */}
@@ -112,6 +112,9 @@ const Header = () => {
               <TooltipContent className="flex flex-col gap-2 justify-center">
                 <p className="w-[150px]">{t("emptyCart")}</p>
                 <Button onClick={() => router.push("/cart")} variant={"ghost"} className="bg-white text-black hover:bg-gray-50 hover:text-black">{t("goCart")}</Button>
+                <Button variant="default" onClick={clearCart}>
+                  {t("clearCart")}
+                </Button>
               </TooltipContent>
             </Tooltip>
           )}
