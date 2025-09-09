@@ -29,13 +29,21 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import { AddAddress } from "./select-address";
+import { useMediaQuery } from "usehooks-ts"
 
 const Header = () => {
   const t = useTranslations("Header");
   const { user, currentOrderItems, logout, address, clearCart } = useStore();
   const router = useRouter();
   const [isClient, setIsClient] = React.useState(true);
+  const [tooltipOpen, setTooltipOpen] = React.useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)")
 
   React.useEffect(() => {
     setIsClient(true);
@@ -96,27 +104,58 @@ const Header = () => {
               </Button>
             </AddAddress>
           ) : (
-            <Tooltip>
-              <TooltipTrigger asChild className="border px-4 rounded-[20px]">
-                <Button
-                  variant={"outline"}
-                  className="hidden md:flex group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer max-w-[250px] border border-input">
-                  <LucideMapPin size={20} className="flex-shrink-0 text-gray-300" />
-                  <div className="flex flex-col w-full overflow-hidden text-left">
-                    {/* <p className="text-xs text-muted-foreground text-nowrap">{t("address")}</p> */}
-                    <p className="text-sm text-black">{address?.street}</p>
-                  </div>
-                  <LucideChevronDown size={20} className="text-gray-300" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent className="flex flex-col gap-2 justify-center">
-                <p className="w-[150px]">{t("emptyCart")}</p>
-                <Button onClick={() => router.push("/cart")} variant={"ghost"} className="bg-white text-black hover:bg-gray-50 hover:text-primary">{t("goCart")}</Button>
-                <Button variant="destructive" onClick={clearCart}>
-                  {t("clearCart")}
-                </Button>
-              </TooltipContent>
-            </Tooltip>
+            isDesktop ?
+              <Tooltip>
+                <TooltipTrigger asChild className="border px-4 rounded-[20px]">
+                  <Button
+                    onClick={() => setTooltipOpen(true)}
+                    variant={"outline"}
+                    className="hidden md:flex group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer max-w-[250px] border border-input">
+                    <LucideMapPin size={20} className="flex-shrink-0 text-gray-300" />
+                    <div className="flex flex-col w-full overflow-hidden text-left">
+                      {/* <p className="text-xs text-muted-foreground text-nowrap">{t("address")}</p> */}
+                      <p className="text-sm text-black">{address?.street}</p>
+                    </div>
+                    <LucideChevronDown size={20} className="text-gray-300" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="flex flex-col gap-2 justify-center">
+                  <p className="w-[150px]">{t("emptyCart")}</p>
+                  <Button onClick={() => router.push("/cart")} variant={"ghost"} className="bg-white text-black hover:bg-gray-50 hover:text-primary">{t("goCart")}</Button>
+                  <Button variant="destructive" onClick={clearCart}>
+                    {t("clearCart")}
+                  </Button>
+                </TooltipContent>
+              </Tooltip> :
+              <Popover open={tooltipOpen} onOpenChange={setTooltipOpen}>
+                <PopoverTrigger asChild className="border px-4 rounded-[20px]">
+                  <Button
+                    onClick={() => setTooltipOpen(!tooltipOpen)}
+                    variant="outline"
+                    className="group text-nowrap gap-2 items-center px-3 py-2 rounded-[20px] cursor-pointer max-w-[250px] border border-input"
+                  >
+                    <LucideMapPin size={20} className="flex-shrink-0 text-gray-300" />
+                    <div className="flex flex-col w-full overflow-hidden text-left">
+                      <p className="text-sm text-black">{address?.street}</p>
+                    </div>
+                    <LucideChevronDown size={20} className="text-gray-300" />
+                  </Button>
+                </PopoverTrigger>
+
+                <PopoverContent className="flex flex-col gap-2 justify-center">
+                  <p className="w-[150px]">{t("emptyCart")}</p>
+                  <Button
+                    onClick={() => router.push("/cart")}
+                    variant="ghost"
+                    className="bg-white text-black hover:bg-gray-50 hover:text-primary"
+                  >
+                    {t("goCart")}
+                  </Button>
+                  <Button variant="destructive" onClick={clearCart}>
+                    {t("clearCart")}
+                  </Button>
+                </PopoverContent>
+              </Popover>
           )}
 
           <LocalSwitcher />
