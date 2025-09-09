@@ -111,8 +111,8 @@ const Header = () => {
               </TooltipTrigger>
               <TooltipContent className="flex flex-col gap-2 justify-center">
                 <p className="w-[150px]">{t("emptyCart")}</p>
-                <Button onClick={() => router.push("/cart")} variant={"ghost"} className="bg-white text-black hover:bg-gray-50 hover:text-black">{t("goCart")}</Button>
-                <Button variant="default" onClick={clearCart}>
+                <Button onClick={() => router.push("/cart")} variant={"ghost"} className="bg-white text-black hover:bg-gray-50 hover:text-primary">{t("goCart")}</Button>
+                <Button variant="outline" onClick={clearCart} className="text-black border-primary hover:bg-white hover:text-primary">
                   {t("clearCart")}
                 </Button>
               </TooltipContent>

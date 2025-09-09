@@ -68,6 +68,7 @@ export function AddAddress({ children }: Props) {
     const selectedAddr = addresses.find((addr) => addr.id === addrId);
     if (selectedAddr) {
       setAddress(selectedAddr);
+      setIsOpen(false);
     }
   };
 
