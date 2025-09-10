@@ -22,7 +22,7 @@ const HeroSection = () => {
                         {!user && <Button onClick={() => router.push("/auth/register")} variant={"secondary"} className='bg-black hover:bg-black/80'>{t("RegisterButton")}</Button>}
                     </div>
                 </div>
-                <img src="/Images/hero.png" alt="Hero" className='absolute max-w-[320px] mx-auto md:mx-0 sm:max-w-[200px] md:max-w-[350px] lg:max-w-[450px] xl:max-w-[530px] w-full h-auto top-0 left-0 md:left-[50%] sm:top-[40%] md:top-[20%] lg:top-5 xl:top-0 xl:h-full right-[20px] z-0 sm:right-[10px] xl:right-[79px] md:z-10' />
+                <img src="/Images/hero.png" alt="Hero" className='absolute max-w-[320px] mx-auto md:mx-0 sm:max-w-[200px] md:max-w-[320px] lg:max-w-[450px] xl:max-w-[530px] w-full h-auto top-0 left-0 md:left-[56%] sm:top-[40%] md:top-[32%] lg:top-5 xl:top-0 xl:h-full right-[20px] z-0 sm:right-[10px] xl:right-[79px] md:z-10' />
             </div>
         </div>
     )

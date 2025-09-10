@@ -42,9 +42,11 @@ const Page = () => {
     ) => orderQuery.create(newOrder),
     onSuccess: (data) => {
       setOrders(data);
-      setSuccessMobileOpen(true);
-      setPendingOpen(false);
-      setOrderNote("");
+      if (data.payment?.method === "cash") {
+        setSuccessMobileOpen(true);
+        setPendingOpen(false);
+        setOrderNote("");
+      }
     }
   });
 
@@ -122,15 +124,6 @@ const Page = () => {
         setPendingOpen(true);
 
         createOrder.mutate(payload, {
-          onSuccess: (order) => {
-            console.log(order);
-
-            console.log("✅ Order received from server:", order);
-            // setOrders(order);
-            // setSuccessMobileOpen(true);
-            // setPendingOpen(false);
-            // setOrderNote("");
-          },
           onError: (error) => {
             console.log("order Note", orderNote)
             setPendingOpen(false);
@@ -183,8 +176,12 @@ const Page = () => {
               onSuccess: (payment) => {
                 if (payment.status === "COMPLETED") {
                   setSuccessMobileOpen(true);
+                  setPendingOpen(false);
                 } else if (payment.status === "FAILED") {
                   setFailedPaiement(true);
+                  setPendingPaiement(false);
+                  // Et la je vais annuler la commande
+                  onCancelOrder(order);
                 } else {
                   setPendingPaiement(true);
                 }

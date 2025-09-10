@@ -31,7 +31,7 @@ const Profile = ({ users, orders }: { users: User, orders: Order[] }) => {
                         <div className='grid grid-cols-2 md:grid-cols-4 gap-2'>
                             <div className='flex flex-col'>
                                 <p className='text-[14px] text-gray-500'>{t("loyalty")}</p>
-                                <p className='font-semibold text-[18px] text-gray-700'>{users.fidelity}</p>
+                                <p className='font-semibold text-[18px] text-gray-700'>{users.fidelity ?? 0}</p>
                             </div>
                             <div className='flex flex-col'>
                                 <p className='text-[14px] text-gray-500'>{t("orders")}</p>

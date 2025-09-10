@@ -139,7 +139,7 @@ const HistoryTable = ({ orders, all }: Props) => {
                                         onClick={() => {
                                             setSelectedOrder(order);
                                             setOpen(true);
-                                        }} variant={"default"} className={`z-10 mr-2 ${order.status === "CANCELED" ? "opacity-50 cursor-not-allowed" : ""}`}>
+                                        }} variant={"default"} className={`z-10 mr-2`}>
                                         {t("view")}
                                     </Button>
 
