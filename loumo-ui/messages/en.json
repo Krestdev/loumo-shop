@@ -160,6 +160,7 @@
     "total": "Total",
     "addAddress": "Add an Address",
     "clearCart": "Empty Cart",
+    "outOfStock": "Out of Stock",
     "Awaiting": {
       "title1": "Creating your order",
       "title": "Payment Pending",
@@ -209,6 +210,11 @@
       "conditions": "Goods sold are neither taken back nor exchanged.",
       "status": "Status",
       "lieu": "Landmark"
+    },
+    "OutOfStock": {
+      "title": "Product Out of Stock",
+      "description": "Unfortunately, one or more items in your cart are out of stock. Please remove them to continue.",
+      "goBack": "Back to Cart"
     }
   },
   "Login": {

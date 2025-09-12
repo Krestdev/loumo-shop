@@ -10,6 +10,7 @@ import ProductQuery from '@/queries/product';
 import { useQuery } from '@tanstack/react-query';
 import { ProductVariant, Promotion } from '@/types/types';
 import PromotionQuery from '@/queries/promotion';
+import ProductVariantQuery from '@/queries/productVariant';
 
 interface Values {
     tel: string;
@@ -48,6 +49,12 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
         queryFn: () => promotion.getAll(),
     });
 
+    const variants = new ProductVariantQuery();
+    const variantData = useQuery({
+        queryKey: ["variantFetchAll"],
+        queryFn: () => variants.getAll(),
+    });
+
     const getValidPromotionByStock = (
         variant: ProductVariant,
         allPromotions: Promotion[] | undefined
@@ -80,6 +87,13 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
     };
     const frais = address?.zone?.price || 0;
     const totalPrice = getCartTotal() + frais;
+
+    const variantCart = variantData.data?.filter((variant) => currentOrderItems.some((item) => item.productVariant?.id === variant.id));
+
+    const someOutOfStock = variantCart?.some((item) => {
+        return item.stock?.some((stock) => stock.quantity <= 0);
+    });
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-7 max-w-[1400px] w-full">
             <div className="flex flex-col gap-5 px-6 py-4 md:py-7 max-w-[515px] w-full border-b ie">
@@ -102,23 +116,39 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
                         currentOrderItems.map((x, i) => {
                             const quantity = x.quantity || 1;
                             const product = productData.data?.find(p => p.id === x.productVariant?.productId);
+                            // Ontrouve le variant correspondant au item du ProductVariantQuery
+                            const variant = variantData.data?.find(v => v.id === x.productVariant?.id);
 
                             return (
                                 <div key={i} className="flex gap-4 p-4 rounded-[12px] text-gray-50">
                                     {x.productVariant?.imgUrl ? (
-                                        <img
-                                            src={
-                                                x.productVariant.imgUrl.includes("http")
-                                                    ? x.productVariant.imgUrl
-                                                    : `${env?.replace(/\/$/, "")}/${x.productVariant.imgUrl.replace(/^\//, "")}`
-                                            }
-                                            alt={x.productVariant?.name}
-                                            className="max-w-[120px] w-full aspect-square rounded-[6px] border object-cover"
-                                        />
+                                        <div className='relative max-w-[120px] w-full aspect-square'>
+                                            <img
+                                                src={
+                                                    x.productVariant.imgUrl.includes("http")
+                                                        ? x.productVariant.imgUrl
+                                                        : `${env?.replace(/\/$/, "")}/${x.productVariant.imgUrl.replace(/^\//, "")}`
+                                                }
+                                                alt={x.productVariant?.name}
+                                                className="max-w-[120px] w-full aspect-square rounded-[6px] border object-cover"
+                                            />
+                                            {((variant?.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant?.stock && variant?.stock.length <= 0) && (
+                                                <div className='absolute top-0 right-0 bg-red-700 w-fit p-2 z-10'>
+                                                    <p className='text-white text-[12px] font-semibold'>{t("outOfStock")}</p>
+                                                </div>
+                                            )}
+                                        </div>
 
                                     ) : (
-                                        <div className="flex items-center justify-center max-w-[120px] w-full h-auto aspect-square bg-gray-100 text-white rounded-[6px]">
-                                            <LucideDatabase size={40} />
+                                        <div className='relative max-w-[120px] w-full h-auto aspect-square '>
+                                            <div className="flex items-center justify-center max-w-[120px] w-full h-auto aspect-square bg-gray-100 text-white rounded-[6px]">
+                                                <LucideDatabase size={40} />
+                                            </div>
+                                            {((variant?.stock && variant.stock[0] && variant.stock[0].quantity <= 0) || variant?.stock && variant?.stock.length <= 0) && (
+                                                <div className='absolute top-0 right-0 bg-red-700 w-fit p-2 z-10'>
+                                                    <p className='text-white text-[12px] font-semibold'>{t("outOfStock")}</p>
+                                                </div>
+                                            )}
                                         </div>
                                     )}
                                     <div className="flex flex-col gap-1 w-full">
@@ -222,7 +252,7 @@ const CartComp = ({ onValidate, promotions }: CartCompProps) => {
 
             {/* ✅ Passe onValidate ici */}
             {currentOrderItems.length > 0 && (
-                <DeliveryPaymentForm user={user} onValidate={onValidate ?? (() => { })} totalPrice={totalPrice} />
+                <DeliveryPaymentForm someOutOfStock={someOutOfStock} user={user} onValidate={onValidate ?? (() => { })} totalPrice={totalPrice} />
             )}
         </div>
     );

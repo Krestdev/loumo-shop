@@ -29,6 +29,7 @@ import { useStore } from "@/providers/datastore"
 import { useQuery } from "@tanstack/react-query"
 import ZoneQuery from "@/queries/zone"
 import { AuthDialog } from "../Auth/Dialog"
+import OutOfStock from "./Dialog/OutOfStock"
 
 const formSchema = z.object({
     tel: z.string().min(9, { message: "Numéro trop court" }).max(9, { message: "Numéro trop long" }),
@@ -52,7 +53,7 @@ const formSchema2 = z.object({
 
 type FormValues = z.infer<typeof formSchema>
 
-const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | null; onValidate: (values: FormValues) => void; totalPrice: number }) => {
+const DeliveryPaymentForm = ({ user, onValidate, totalPrice, someOutOfStock }: { user: User | null; onValidate: (values: FormValues) => void; totalPrice: number; someOutOfStock: boolean | undefined }) => {
     const t = useTranslations("Cart")
     const [level, setLevel] = useState<"summary" | "paiement">("summary")
     const { address, setOrderNote } = useStore();
@@ -180,31 +181,38 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                             <p className="text-secondary font-bold text-[18px] text-end">{`${totalPrice + frais} FCFA`}</p>
                         </div>
 
-                        {user ? (
-                            <Button
-                                type="button"
-                                className="h-12 rounded-[24px]"
-                                onClick={async (e) => {
-                                    e.preventDefault();
-                                    const isValid = await form2.trigger();
-                                    if (isValid) {
-                                        setOrderNote(form2.getValues("lieu"));
-                                        setLevel("paiement");
-                                    }
-                                }}
-                            >
-                                {t("continue")}
-                            </Button>
-                        ) : (
-                            <AuthDialog>
+                        {someOutOfStock ?
+                            <OutOfStock>
+                                <Button type="button" className="w-full h-12 rounded-[24px]">
+                                    {t("continue")}
+                                </Button>
+                            </OutOfStock>
+                            :
+                            user ? (
                                 <Button
                                     type="button"
                                     className="h-12 rounded-[24px]"
+                                    onClick={async (e) => {
+                                        e.preventDefault();
+                                        const isValid = await form2.trigger();
+                                        if (isValid) {
+                                            setOrderNote(form2.getValues("lieu"));
+                                            setLevel("paiement");
+                                        }
+                                    }}
                                 >
                                     {t("continue")}
                                 </Button>
-                            </AuthDialog>
-                        )}
+                            ) : (
+                                <AuthDialog>
+                                    <Button
+                                        type="button"
+                                        className="h-12 rounded-[24px]"
+                                    >
+                                        {t("continue")}
+                                    </Button>
+                                </AuthDialog>
+                            )}
                     </div>
                 ) : (
                     // ÉTAPE PAIEMENT
@@ -266,17 +274,25 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                                 />
                             )}
 
-                            {user ? (
-                                <Button type="submit" className="h-12 rounded-[24px]">
-                                    {t("continue")}
-                                </Button>
-                            ) : (
-                                <AuthDialog>
-                                    <Button className="h-12 rounded-[24px]">
+                            {someOutOfStock ?
+                                <OutOfStock>
+                                    <Button type="button" className="w-full h-12 rounded-[24px]">
                                         {t("continue")}
                                     </Button>
-                                </AuthDialog>
-                            )}
+                                </OutOfStock>
+                                :
+                                user ? (
+                                    <Button type="submit" className="h-12 rounded-[24px]">
+                                        {t("continue")}
+                                    </Button>
+                                ) : (
+                                    <AuthDialog>
+                                        <Button className="h-12 rounded-[24px]">
+                                            {t("continue")}
+                                        </Button>
+                                    </AuthDialog>
+                                )
+                            }
                         </div>
                     </div>
                 )}

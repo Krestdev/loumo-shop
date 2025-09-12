@@ -160,6 +160,7 @@
     "total": "Total",
     "addAddress": "Ajouter une adresse",
     "clearCart": "Vider le panier",
+    "outOfStock":"En rupture",
     "Awaiting": {
       "title1": "Creation de la commande en cours",
       "title": "Paiement en attente",
@@ -209,6 +210,11 @@
       "conditions": "Les marchandises vendues ne sont ni reprises ni échangées.",
       "status": "Statut",
       "lieu": "Lieu dit"
+    },
+    "OutOfStock": {
+      "title": "Produit en rupture de stock",
+      "description": "Malheureusement, un ou plusieurs articles de votre panier sont en rupture de stock. Veuillez les supprimer pour continuer.",
+      "goBack": "Retour au panier"
     }
   },
   "Login": {
