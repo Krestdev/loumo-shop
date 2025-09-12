@@ -144,6 +144,7 @@
     "delivery": "Delivery Information",
     "to": "Your neighborhood",
     "exContact": "Number for the delivery driver to contact",
+    "exPaiement": "Payment number (Orange or MTN)",
     "contact": "Contact",
     "payment": "Payment Method",
     "number": "Payment Number",

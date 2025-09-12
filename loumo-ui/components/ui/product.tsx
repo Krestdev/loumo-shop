@@ -85,6 +85,12 @@ const ProductComp = ({ product, promotions }: Props) => {
         }) ?? false;
     }
 
+    const isLowStock = (variant: ProductVariant | undefined): boolean => {
+        if (!variant || !variant.stock) return false;
+        const totalStock = variant.stock.reduce((sum, stock) => sum + (stock.quantity || 0), 0);
+        return totalStock <= 5; // Seuil de stock faible
+    }
+
     return (
         product && variant &&
         <div className='flex flex-col gap-4 h-full justify-between shadow-xl bg-gray-50 p-2'>
@@ -216,7 +222,7 @@ const ProductComp = ({ product, promotions }: Props) => {
                         {product?.variants?.slice(0, 2).map((va, idx) => (
                             address ?
                                 <AddToCard key={va.id ?? idx} product={product} variant={variant} setVariant={setVariant} promotions={promotions}>
-                                    <div key={va.id ?? idx} onClick={() => setVariant(va)} className={`text-[12px] shadow rounded-full px-2 cursor-pointer ${variant?.id === va.id ? "bg-orange-400/70 text-white" : ""}`}>
+                                    <div key={va.id ?? idx} onClick={() => isLowStock(va) ? null : setVariant(va)} className={`${isLowStock(va) ? "cursor-not-allowed" : ""} text-[12px] shadow rounded-full px-2 cursor-pointer ${variant?.id === va.id ? "bg-orange-400/70 text-white" : ""}`}>
                                         {va.name + " " + va.quantity + " " + va.unit}
                                     </div>
                                 </AddToCard>

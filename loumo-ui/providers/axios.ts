@@ -1,6 +1,7 @@
 // lib/axios.ts
 import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
+import { useStore } from "./datastore";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -37,63 +38,29 @@ api.interceptors.response.use(
     );
 
     if (isMutation && url) {
-      // ✅ Extract the entity = first word after '/api/'
       const match = url.match(/\/api\/([^\/\?]+)/);
       let entity = match?.[1] || "Entity";
 
       // Capitalize and singularize
       entity =
         entity.charAt(0).toUpperCase() + entity.slice(1).replace(/s$/, "");
-
-      // const actionMap: Record<string, string> = {
-      //   POST: "created",
-      //   PUT: "updated",
-      //   PATCH: "updated",
-      //   DELETE: "deleted",
-      // };
-      // const action = actionMap[method?.toUpperCase() || ""] || "processed";
-
-      // const finalMessage =
-      //   successMessageFromBackend || `${entity} ${action} successfully.`;
-
-      // toast.success(finalMessage);
     }
-
     return response;
   },
-  // (error: AxiosError) => {
-  //   const res = error.response;
-  //   const message =
-  //     (res?.data as any)?.message || "An unexpected error occurred.";
-
-  //   if (res) {
-  //     switch (res.status) {
-  //       case 400:
-  //         toast.warning(message); // e.g., "Missing required fields"
-  //         break;
-  //       case 401:
-  //         toast.error(message || "Unauthorized. Please log in again.");
-  //         break;
-  //       case 403:
-  //         toast.error(message || "Access denied.");
-  //         break;
-  //       case 404:
-  //         toast.info(message || "Resource not found.");
-  //         break;
-  //       case 500:
-  //         toast.error(message || "Internal server error.");
-  //         break;
-  //       default:
-  //         toast.error(message);
-  //     }
-  //   } else if (error.request) {
-  //     // toast.error("No response from server. Check your internet connection.");
-  //   } else {
-  //     toast.error(`Error: ${error.message}`);
-  //   }
-
-  //   return Promise.reject(error);
-  // }
+  (error) => {
+    try{
+      const { logout } = useStore();
+      const { response } = error;
+      if (response.status === 401) {
+        console.log("Unauthorized - Logging out");
+        toast.error("Session expired. Please log in again.");
+        logout();
+      }
+    }catch(err){
+      console.error("Error handling response:", err);
+    }
+    throw error;
+  }
 );
 
 export default api;

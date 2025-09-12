@@ -42,12 +42,22 @@ const Page = () => {
     ) => orderQuery.create(newOrder),
     onSuccess: (data) => {
       setOrders(data);
-      if (data.payment?.method === "cash") {
-        setSuccessMobileOpen(true);
-        setPendingOpen(false);
-        setOrderNote("");
+      setSuccessMobileOpen(true);
+      setPendingOpen(false);
+      setOrderNote("");
+    },
+  });
+
+  const createOrderP = useMutation({
+    mutationKey: ["createOrder"],
+    mutationFn: (
+      newOrder: Omit<Order, "id" | "orderItems" | "createdAt" | "address" | "user" | "ref"> & {
+        orderItems?: (Partial<OrderItem> & { shopId?: number })[];
       }
-    }
+    ) => orderQuery.create(newOrder),
+    onSuccess: (data) => {
+      setOrders(data);
+    },
   });
 
   const createPaiement = useMutation({
@@ -99,7 +109,6 @@ const Page = () => {
 
   const handleSubmitOrder = (value: Values) => {
     if (value.paymentMethod === "cash") {
-      console.log("Paiement en espèces");
       if (user && address?.id && currentOrderItems.length > 0) {
         const total = frais + currentOrderItems.reduce((acc, item) => acc + (item.total || 0), 0);
         const weight = currentOrderItems.reduce((acc, item) => acc + (item.productVariant.weight * item.quantity), 0);
@@ -162,9 +171,8 @@ const Page = () => {
         // setPendingOpen(true);
         setPendingPaiement(true);
 
-        createOrder.mutate(payload, {
+        createOrderP.mutate(payload, {
           onSuccess: (order) => {
-            console.log("✅ Order received from server:", order);
             createPaiement.mutate({
               name: `Paiement ${order.ref}`,
               status: "PROCESSING",
@@ -213,6 +221,8 @@ const Page = () => {
               onError: () => {
                 setFailedOpen(true);
                 setPendingPaiement(false);
+                // Et la je vais annuler la commande
+                onCancelOrder(order);
               }
             })
             // setOrders(order);

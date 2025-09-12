@@ -253,7 +253,12 @@ const DeliveryPaymentForm = ({ user, onValidate, totalPrice }: { user: User | nu
                                                 {t("number")}
                                             </FormLabel>
                                             <FormControl>
-                                                <Input type="tel" {...field} />
+                                                <div className="relative w-full">
+                                                    <div className="absolute h-full top-0 left-0 rounded-l-full px-2 flex items-center pointer-events-none bg-white border">
+                                                        <p>{"+237"}</p>
+                                                    </div>
+                                                    <Input className="pl-15" type="tel" {...field} placeholder={t("exPaiement")} />
+                                                </div>
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
