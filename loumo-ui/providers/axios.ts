@@ -47,20 +47,6 @@ api.interceptors.response.use(
     }
     return response;
   },
-  (error) => {
-    try{
-      const { logout } = useStore();
-      const { response } = error;
-      if (response.status === 401) {
-        console.log("Unauthorized - Logging out");
-        toast.error("Session expired. Please log in again.");
-        logout();
-      }
-    }catch(err){
-      console.error("Error handling response:", err);
-    }
-    throw error;
-  }
 );
 
 export default api;

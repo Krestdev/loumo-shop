@@ -203,6 +203,7 @@ export type User = {
   lastLogin: Date | null;
   createdAt: Date;
   updatedAt: Date;
+  token: string | null;
 };
 
 export type RegisterPayload = {

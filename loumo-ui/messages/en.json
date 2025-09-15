@@ -135,6 +135,7 @@
     }
   },
   "Cart": {
+    "sessionExpired": "Session expired. Please log in again.",
     "lieu": "Landmark",
     "exLieu": "e.g., Bonamoussadi Public School",
     "noAddress": "No saved addresses",

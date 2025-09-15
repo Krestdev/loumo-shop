@@ -12,7 +12,11 @@ import UserQuery from "@/queries/user";
 import ZoneQuery from "@/queries/zone";
 import { Order, OrderItem, Payment } from "@/types/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface Values {
   tel: string;
@@ -28,10 +32,13 @@ const Page = () => {
   const zoneQuery = new ZoneQuery();
 
 
-  const { currentOrderItems, user, setUser, address, orderNote, setOrderNote, successMobileOpen, setFailedPaiement, setPendingPaiement, setSuccessMobileOpen } = useStore();
+  const { logout, currentOrderItems, user, setUser, address, orderNote, setOrderNote, successMobileOpen, setFailedPaiement, setPendingPaiement, setSuccessMobileOpen } = useStore();
   const [failedOpen, setFailedOpen] = useState(false);
   const [pendingOpen, setPendingOpen] = useState(false);
   const [orders, setOrders] = useState<Order | undefined>();
+  const router = useRouter();
+  const t = useTranslations("Cart");
+
 
   const createOrder = useMutation({
     mutationKey: ["createOrder"],
@@ -134,11 +141,18 @@ const Page = () => {
 
         createOrder.mutate(payload, {
           onError: (error) => {
-            console.log("order Note", orderNote)
             setPendingOpen(false);
-            console.error("❌ Error creating order:", error);
-            setFailedOpen(true);
-          },
+            try {
+              if ((error as AxiosError)?.response?.status === 401) {
+                toast.error(t("sessionExpired"));
+                logout(); 
+                router.push("/auth/login");
+              }
+            } catch (err) {
+              console.error("Error handling response:", err);
+            }
+          }
+
         });
 
         userData.refetch().then(res => {
@@ -229,13 +243,21 @@ const Page = () => {
             setOrderNote("");
           },
           onError: (error) => {
-            console.log("order Note", orderNote)
-            console.error("❌ Error creating order:", error);
-          },
+            setPendingOpen(false);
+            try {
+              if ((error as AxiosError)?.response?.status === 401) {
+                toast.error(t("sessionExpired"));
+                logout(); 
+                router.push("/auth/login");
+              }
+            } catch (err) {
+              console.error("Error handling response:", err);
+            }
+          }
+
         });
       }
     }
-
   };
 
   return (

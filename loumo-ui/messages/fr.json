@@ -135,6 +135,7 @@
     }
   },
   "Cart": {
+    "sessionExpired": "Session expirée. Veuillez vous reconnecter.",
     "lieu": "Lieu dit",
     "exLieu": "ex: Ecole publique Bonamoussadi",
     "noAddress": "Aucune adresse enregistrée",

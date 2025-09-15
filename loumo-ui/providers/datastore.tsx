@@ -14,8 +14,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 type Store = {
   user: User | null;
-  setUser: (user: User) => void;
   address: Address | null;
+  setUser: (user: User) => void;
   setAddress: (address: Address) => void;
   logout: () => void;
   categories: Category[];
@@ -69,7 +69,10 @@ export const useStore = create<Store>()(
       setUser: (user) => set(() => ({ user })),
       address: null,
       setAddress: (address) => set(() => ({ address })),
-      logout: () => set({ user: null }),
+      logout: () => {
+        set({ user: null })
+        console.log("logout");
+      },
       categories: [],
       setCategories: (categories) => set(() => ({ categories })),
       orders: [],
