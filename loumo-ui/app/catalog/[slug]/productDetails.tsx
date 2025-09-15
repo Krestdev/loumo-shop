@@ -95,9 +95,6 @@ const ProductDetails = ({ slug }: { slug: string }) => {
 
     setAvailable(!isAvailableInZone);
 
-    console.log(available);
-
-
     // if (!isAvailableInZone) {
     //   router.push("/");
     // }

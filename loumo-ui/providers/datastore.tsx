@@ -71,7 +71,6 @@ export const useStore = create<Store>()(
       setAddress: (address) => set(() => ({ address })),
       logout: () => {
         set({ user: null })
-        console.log("logout");
       },
       categories: [],
       setCategories: (categories) => set(() => ({ categories })),
@@ -81,7 +80,6 @@ export const useStore = create<Store>()(
         set(() => ({
           user: null,
         })),
-
       currentOrderItems: [],
       orderNote: "",
       orderAddressId: null,
@@ -158,8 +156,6 @@ export const useStore = create<Store>()(
           currentOrderItems: state.currentOrderItems.map((x) => {
             if (x.productVariantId === variantId) {
               const price = getBestPromotionPrice(x.productVariant!, promotions);
-              console.log(price);
-
               return {
                 ...x,
                 quantity: x.quantity + 1,

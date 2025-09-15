@@ -56,8 +56,6 @@ export function EditUser({ children, user }: Props) {
     });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
-
         if (values.tel) {
             userData.mutate({
                 name: values.name,

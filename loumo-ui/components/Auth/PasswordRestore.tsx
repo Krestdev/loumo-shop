@@ -56,7 +56,6 @@ export default function PasswordRestore() {
         setEmail(values.email);
 
         startTransition(() => {
-            console.log(emailLower);
             passwordRestore.mutate({ email: emailLower });
             setPage("conf");
         });

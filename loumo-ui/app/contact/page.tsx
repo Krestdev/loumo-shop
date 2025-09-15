@@ -7,7 +7,7 @@ import React from "react";
 
 const Page = () => {
 
-  const { data, isLoading, isError, isSuccess } = useQuery({
+  const { isLoading, isError, isSuccess } = useQuery({
     queryKey: ["topicData"],
     queryFn: () => new SettingQuery().getAll(),
   });
@@ -16,9 +16,6 @@ const Page = () => {
   if (isError) return <Loading status="failed" />;
   if (!isSuccess) return null;
 
-  console.log(data);
-  
-  
   return (
     <div>
       <ContactForm />

@@ -20,10 +20,6 @@ export const getBestPromotionPrice = (variant: ProductVariant, promotions: Promo
         new Date(promo.expireAt) > now &&
         variant.stock?.some((stock) => stock.promotionId === promo.id)
     );
-
-    console.log(applicablePromotions);
-    
-
   const best = applicablePromotions.reduce<Promotion | null>((acc, curr) => {
     return !acc || curr.percentage > acc.percentage ? curr : acc;
   }, null);

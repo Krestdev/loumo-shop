@@ -54,9 +54,6 @@ export default function ChangePassword({ slug }: { slug: string }) {
   const otp = slug
   const email = searchParams.get("email")
 
-  console.log(otp, email);
-
-
   const verifyOTP = useMutation({
     mutationKey: ["verify"],
     mutationFn: (data: { email: string, otp: string }) => user.verifyReset(data),

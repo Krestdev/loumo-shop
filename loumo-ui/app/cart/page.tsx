@@ -32,7 +32,7 @@ const Page = () => {
   const zoneQuery = new ZoneQuery();
 
 
-  const { logout, currentOrderItems, user, setUser, address, orderNote, setOrderNote, successMobileOpen, setFailedPaiement, setPendingPaiement, setSuccessMobileOpen } = useStore();
+  const { currentOrderItems, user, setUser, address, orderNote, setOrderNote, successMobileOpen, setFailedPaiement, setPendingPaiement, setSuccessMobileOpen } = useStore();
   const [failedOpen, setFailedOpen] = useState(false);
   const [pendingOpen, setPendingOpen] = useState(false);
   const [orders, setOrders] = useState<Order | undefined>();
@@ -96,9 +96,6 @@ const Page = () => {
   const base = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const onCancelOrder = async (ord: Order) => {
-
-    console.log("Annulation de la commande", ord);
-
     try {
       const res = await fetch(`${base}orders/cancel/${ord.id}`, {
         method: "GET",
@@ -142,14 +139,12 @@ const Page = () => {
         createOrder.mutate(payload, {
           onError: (error) => {
             setPendingOpen(false);
-            try {
-              if ((error as AxiosError)?.response?.status === 401) {
-                toast.error(t("sessionExpired"));
-                logout(); 
-                router.push("/auth/login");
-              }
-            } catch (err) {
-              console.error("Error handling response:", err);
+            if ((error as AxiosError)?.response?.status === 401) {
+              toast.error(t("sessionExpired"));
+
+              useStore.setState({ user: null })
+              // Redirection après un tick pour laisser le composant se réévaluer
+              Promise.resolve().then(() => router.push("/auth/login"));
             }
           }
 
@@ -210,8 +205,6 @@ const Page = () => {
                 // Je vais verifier si le paiement a réussi ou non sur un interval de 5 secondes
                 const interval = setInterval(() => {
 
-                  console.log("Nouvel appel de paiement");
-
                   paiementQuery.getOne(payment.id).then(res => {
                     if (res) {
                       if (res.status === "COMPLETED") {
@@ -244,14 +237,13 @@ const Page = () => {
           },
           onError: (error) => {
             setPendingOpen(false);
-            try {
-              if ((error as AxiosError)?.response?.status === 401) {
-                toast.error(t("sessionExpired"));
-                logout(); 
-                router.push("/auth/login");
-              }
-            } catch (err) {
-              console.error("Error handling response:", err);
+            if ((error as AxiosError)?.response?.status === 401) {
+              toast.error(t("sessionExpired"));
+
+              useStore.setState({ user: null });
+
+              // Redirection après un tick pour laisser le composant se réévaluer
+              Promise.resolve().then(() => router.push("/auth/login"));
             }
           }
 

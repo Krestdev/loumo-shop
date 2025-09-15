@@ -66,7 +66,7 @@ const Header = () => {
         <div className="flex items-center md:gap-4">
           <img
             onClick={() => router.push("/")}
-            src="/Images/Logo.png"
+            src="/Images/logo.png"
             alt="logo"
             className="sm:h-7 sm:max-w-[102px] w-full object-cover cursor-pointer hover:opacity-80 transition-opacity"
           />

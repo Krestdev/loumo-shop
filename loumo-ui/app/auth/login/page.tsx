@@ -6,13 +6,20 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 const Page = () => {
-  const user = new UserQuery();
+  const users = new UserQuery();
   const userData = useMutation({
     mutationKey: ["login"],
-    mutationFn: (data: { email: string; password: string }) => user.login(data),
+    mutationFn: (data: { email: string; password: string }) => users.login(data),
   });
 
-  const { setUser } = useStore();
+  const { setUser, user, logout } = useStore();
+
+  useEffect(() => {
+    if (user) {
+      localStorage.removeItem("token");
+      logout();
+    }
+  }, [user, setUser, logout]);
 
   useEffect(() => {
     const setToken = () => {
@@ -26,7 +33,6 @@ const Page = () => {
       setToken();
     };
   }, [userData.data, setUser, userData.isSuccess]);
-
   return (
     <div>
       <LoginForm />

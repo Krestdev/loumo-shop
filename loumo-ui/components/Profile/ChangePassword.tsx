@@ -69,16 +69,11 @@ export function ChangePassword({ children, user }: Props) {
     async function onSubmit(values: z.infer<typeof passwordSchema>) {
         const isValid = await bcrypt.compare(values.currentPassword, user.password); 
 
-        console.log(bcrypt.compare(values.currentPassword, user.password));
-        
-
         if (isValid) {
             passwordMutation.mutate({
                 password: values.newPassword,
             });
-        } else {
-            console.log("L'ancien mot de passe est erroné");
-        }
+        };
     }
 
     return (

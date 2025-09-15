@@ -28,7 +28,7 @@ interface Props {
 }
 
 export function AddToCard({ children, product, variant, setVariant, initialQuantity = 1, promotions }: Props) {
-  const { addOrderItem, currentOrderItems } = useStore();
+  const { addOrderItem } = useStore();
   const t = useTranslations("Catalog.Cart");
   const [quantity, setQuantity] = useState(initialQuantity);
   const env = process.env.NEXT_PUBLIC_API_BASE_URL
@@ -42,7 +42,6 @@ export function AddToCard({ children, product, variant, setVariant, initialQuant
         variant, note: "",
         promotions: promotions!
       }, quantity);
-      console.log(currentOrderItems)
     }
   };
 
