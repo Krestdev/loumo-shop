@@ -300,10 +300,12 @@ const ProductDetails = ({ slug }: { slug: string }) => {
               <p className="text-secondary text-[16px] font-semibold">{t("weight")}:</p>
               <p className="text-gray-700 text-[14px] font-normal">{productItem?.weight} Kg</p>
             </span>
-            <span className="flex flex-col gap-1">
-              <p className="text-secondary text-[16px] font-semibold capitalize">{t("description")}:</p>
-              <p className="text-gray-700 text-[14px] font-normal first-letter:uppercase">{productData.data?.description}</p>
-            </span>
+            {
+              productData.data?.description && productData.data?.description.length > 5 && <span className="flex flex-col gap-1">
+                <p className="text-secondary text-[16px] font-semibold capitalize">{t("description")}:</p>
+                <p className="text-gray-700 text-[14px] font-normal first-letter:uppercase">{productData.data?.description}</p>
+              </span>
+            }
           </div>
         </div>
       </div>
