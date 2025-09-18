@@ -21,7 +21,7 @@ const Loading = ({ status }: { status?: "failed" | "loading" }) => {
   }, [status, t]);
 
   return (
-    <div className="h-screen w-full flex items-center justify-center flex-col gap-4 font-bold rounded-lg px-12 py-4 border border-gray-500">
+    <div className="h-screen w-full flex items-center justify-center flex-col gap-4 font-bold rounded-lg px-12 py-4">
       <img
         src={status === "loading" ? "/loading.gif" : "/error.gif"}
         alt={t("loading")}
