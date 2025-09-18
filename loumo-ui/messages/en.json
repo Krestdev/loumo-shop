@@ -91,7 +91,8 @@
       "addToCart": "ADD",
       "new": "New",
       "outOfStock": "Out of Stock",
-      "noProduct": "No products found"
+      "noProduct": "No products found",
+      "lastAdded": "Last Products Added"
     },
     "Step": {
       "step": "Step",

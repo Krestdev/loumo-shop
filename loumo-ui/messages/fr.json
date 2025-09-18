@@ -91,7 +91,8 @@
       "addToCart": "ADD",
       "new": "Nouveau",
       "outOfStock": "En rupture",
-      "noProduct": "Aucun produit trouvé"
+      "noProduct": "Aucun produit trouvé",
+      "lastAdded": "Derniers produits ajoutés"
     },
     "Step": {
       "step": "Étape",

@@ -11,8 +11,9 @@ import HowStep from './HowStep';
 // import ReviewsGrid from './ReviewsGrid';
 import { CategoryMenu } from '../CategoryMenu';
 import { useStore } from '@/providers/datastore';
+import CategoryQuery from '@/queries/category';
+import OrderQuery from '@/queries/order';
 import Redaction from '../redaction';
-import { LucidePowerOff } from 'lucide-react';
 
 const Home = () => {
   const t = useTranslations("HomePage.GridProducts");
@@ -21,6 +22,20 @@ const Home = () => {
 
   const promotion = new PromotionQuery();
   const product = new ProductQuery();
+  const category = new CategoryQuery();
+  const orders = new OrderQuery();
+
+  const ordersData = useQuery({
+    queryKey: ["ordersFetchAll"],
+    queryFn: () => {
+      return orders.getAll();
+    },
+  });
+
+  const categoryData = useQuery({
+    queryKey: ["categoryFetchAll"],
+    queryFn: () => category.getAll(),
+  });
 
   // 🔄 Récupération des produits
   const productData = useQuery({
@@ -52,36 +67,45 @@ const Home = () => {
         )
       )
     );
-  }, [productData.data, addressId]) ;
+  }, [productData.data, addressId]);
 
   return (
+    filteredProducts.length > 0 ?
     <div className="w-full flex flex-col items-center overflow-clip">
       <HeroSection />
       <CategoryMenu />
 
-      {filteredProducts.length > 0
-        ? <GridProduct
+      {/* Maintenant je vais calculer et affiche la grille des produits les plus commandés sur le site */}
+      {ordersData.data && ordersData.data.length > 0 ? (
+        <GridProduct
           title={t("star")}
-          products={filteredProducts.filter(x => x.status === true)}
+          products={ordersData.data
+            .flatMap(order => order.orderItems)
+            .map(orderItem => filteredProducts.find(product => product.id === orderItem?.productVariant?.productId))
+            .filter(Boolean)}
+          isLoading={ordersData.isLoading}
+          isSuccess={ordersData.isSuccess}
+          promotions={promotionData.data}
+        />
+      ) : null}
+
+      {/* Maintenant je vais afficher la grille des produits des catégorie dont display est vrai */}
+      {categoryData.data && categoryData.data.length > 0 && categoryData.data?.filter(x => x.display === true).length > 0 ?
+       categoryData.data?.filter(x => x.display === true).map((category) => (
+        <GridProduct
+          key={category.id}
+          title={category.name}
+          products={filteredProducts.filter(x => x.categoryId === category.id)}
           isLoading={productData.isLoading}
           isSuccess={productData.isSuccess}
           promotions={promotionData.data}
         />
-        : <Redaction show={false} message={t1("emptyProduct")} className={"text-primary text-[24px] font-bold text-center"} icon={<LucidePowerOff size={40} className={"text-primary text-[22px] font-bold text-center"} />} />
-      }
-
-      {filteredProducts.filter(x => x.variants.some(x => x.stock.some(x => x.promotionId))).length > 0
-        && <GridProduct
-          title={t("promotions")}
-          products={filteredProducts.filter(x => x.status === true).filter(x => x.variants.some(x => x.stock.some(x => x.promotionId)))}
-          isLoading={productData.isLoading}
-          isSuccess={productData.isSuccess}
-          promotions={promotionData.data}
-        />}
+      )): null}
 
       <HowStep />
       {/* <ReviewsGrid /> */}
-    </div>
+    </div> :
+    <Redaction message={t1("emptyProduct")} />
   );
 };
 
