@@ -104,7 +104,7 @@ export const OrderInvoice = ({
     <Document>
       <Page size="A5" style={styles.page}>
         <View style={styles.header}>
-          <Image src={"/logo.png"} style={styles.logo} />
+          <Image src={"/Logo.png"} style={styles.logo} />
           <Text style={styles.title}>{translations.title}</Text>
           <Text>{`${translations.order} ${order?.ref} ${translations.of} ${order?.createdAt ? format(
             order.createdAt,
