@@ -10,7 +10,7 @@
   },
   "Header": {
     "noResult": "No results found.",
-    "search": "Search",
+    "search": "What do you want to search for?",
     "address": "Your delivery address:",
     "login": "Log In",
     "register": "Create an account",
@@ -30,7 +30,8 @@
     "title": "Empty the cart?",
     "description": "To change your address, you must empty your current cart. Do you want to continue?",
     "cancel": "Cancel",
-    "clearCart": "Empty Cart"
+    "clearCart": "Empty Cart",
+    "NoResult": "No results found."
   },
   "Address": {
     "address": "Please select your delivery address",

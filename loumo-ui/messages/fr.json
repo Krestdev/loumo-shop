@@ -10,7 +10,7 @@
   },
   "Header": {
     "noResult": "Aucun résultat trouvé.",
-    "search": "Rechercher",
+    "search": "Que voulez-vous rechercher ?",
     "address": "Votre adresse de livraison :",
     "login": "Se Connecter",
     "register": "Créer un compte",
@@ -30,7 +30,8 @@
     "title": "Vider le panier?",
     "description": "Pour changer d'adresse vous devez vider votre panier actuel. Voulez-vous continuer?",
     "cancel": "Annuler",
-    "clearCart": "Vider le panier"
+    "clearCart": "Vider le panier",
+    "NoResult": "Aucun resultat trouvé"
   },
   "Address": {
     "address": "veuillez sélectionner votre adresse de livraison",

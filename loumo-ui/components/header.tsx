@@ -71,16 +71,6 @@ const Header = () => {
           />
           <SearchComp />
 
-          {/* <div className="hidden md:flex w-full">
-            <div className="relative flex-row items-center max-w-[640px] w-full">
-              <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <Input
-                type="search"
-                placeholder={t("search")}
-                className="max-w-[640px] w-full pl-3 pr-8"
-              />
-            </div>
-          </div> */}
         </div>
 
         <div className="flex flex-row items-center gap-1 md:gap-4">

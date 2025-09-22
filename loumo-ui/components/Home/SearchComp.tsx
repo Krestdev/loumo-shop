@@ -76,7 +76,7 @@ function SearchComp() {
     return (
         <form className='relative hidden lg:block' onSubmit={Submit} ref={formRef}>
             <Input type='search'
-                placeholder={t("Search")}
+                placeholder={t("search")}
                 className="w-[300px] flex-shrink-0"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)} />
@@ -92,7 +92,7 @@ function SearchComp() {
                                         {product.name.toLocaleLowerCase()}
                                     </Link>
                                 ) :
-                                <span className='w-full italic text-slate-700 py-2 px-4 bg-white'>Aucun plat ne correspond à votre recherche.</span>
+                                <span className='w-full italic text-slate-700 py-2 px-4 bg-white'>{t("NoResult")}</span>
                         }
                     </div>
                 </div>
