@@ -79,6 +79,8 @@
     "products": "Produits",
     "title": "Boutique Loumo",
     "reviews": "Avis",
+    "emptyCategories": "Aucune catégorie disponible dans votre zone de livraison",
+    "noCategorie": "Les produit de cette catégorie ne sont pas disponible dans votre zone de livraison",
     "Hero": {
       "notification": "Livraison gratuite dès votre première commande ! Inscrivez-vous maintenant.",
       "title": "À un clic de votre magasin local.",
@@ -132,7 +134,8 @@
       "dans": "Dans ",
       "reviews": "Avis",
       "leaveReview": "Laisser un avis",
-      "submit": "Soumis par"
+      "submit": "Soumis par",
+      "onlyAvailable": "Ce produit n'est pas disponible dans votre zone de livraison"
     }
   },
   "Cart": {

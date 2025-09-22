@@ -7,7 +7,6 @@ import {
   LucideMenu,
   LucideShoppingCart,
   LucideUserCircle,
-  Search,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -16,7 +15,6 @@ import CategoriesNav from "./CategoriesNav";
 import LocalSwitcher from "./localSwitcher";
 import { Menu } from "./menu";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 import { Skeleton } from "./ui/skeleton";
 import {
   DropdownMenu,
@@ -36,6 +34,7 @@ import {
 } from "@/components/ui/popover";
 import { AddAddress } from "./select-address";
 import { useMediaQuery } from "usehooks-ts"
+import SearchComp from "./Home/SearchComp";
 
 const Header = () => {
   const t = useTranslations("Header");
@@ -70,8 +69,9 @@ const Header = () => {
             alt="logo"
             className="sm:h-7 sm:max-w-[102px] w-full object-cover cursor-pointer hover:opacity-80 transition-opacity"
           />
+          <SearchComp />
 
-          <div className="hidden md:flex w-full">
+          {/* <div className="hidden md:flex w-full">
             <div className="relative flex-row items-center max-w-[640px] w-full">
               <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
@@ -80,7 +80,7 @@ const Header = () => {
                 className="max-w-[640px] w-full pl-3 pr-8"
               />
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="flex flex-row items-center gap-1 md:gap-4">

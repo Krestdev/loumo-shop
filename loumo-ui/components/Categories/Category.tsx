@@ -10,11 +10,13 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { ChevronRight } from 'lucide-react';
 import PromotionQuery from '@/queries/promotion';
+import { useStore } from '@/providers/datastore';
 
 const CategoryComp = ({ slug }: { slug: string }) => {
 
     const [categ, setCateg] = useState<Category>()
     const t = useTranslations("HomePage");
+    const { address } = useStore();
 
     const category = new CategoryQuery();
     const promotion = new PromotionQuery();
@@ -43,6 +45,18 @@ const CategoryComp = ({ slug }: { slug: string }) => {
         return <Loading status={"failed"} />;
     }
 
+    // On va maintenant calculer les produits de cette catégorie ayant des variantes et disponible dans la zone de livraison ayant l'adresse selectionnée
+    const filteredProducts =
+        address === null ?
+            categ?.products?.filter(x => x.status === true && x.variants && x.variants.length > 0) :
+            categ?.products?.filter(x => x.status === true 
+                && x.variants && x.variants.length > 0 
+                && x.status === true 
+                && x.variants.some(y => y.stock?.some(z => z.shop?.address?.zoneId === address?.zoneId)));
+
+                console.log(filteredProducts);
+                
+
     return (
         <div className='w-full flex justify-center'>
             <div className='flex flex-col gap-5 px-4 md:px-7 py-5 md:py-8 max-w-[1400px] w-full'>
@@ -55,11 +69,13 @@ const CategoryComp = ({ slug }: { slug: string }) => {
                 </div>
                 <div className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5'>
                     {
-                        categ?.products?.filter(x => x.status === true).map((x, i) => {
+                        filteredProducts && filteredProducts?.length > 0 ?
+                        filteredProducts?.map((x, i) => {
                             return (
                                 <ProductComp key={i} product={x} promotions={promotionData.data} />
                             )
-                        })
+                        }):
+                        <p className='col-span-4'>{t("noCategorie")}</p>
                     }
                 </div>
             </div>

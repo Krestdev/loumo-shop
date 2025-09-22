@@ -47,7 +47,7 @@ const GridProduct = ({
   ) ?? [];
 
   // Limiter selon le breakpoint
-  const visibleCount = breakpoint === "xl" ? 5 : breakpoint === "md" ? 4 : filteredProducts.length;
+  const visibleCount = breakpoint === "xl" ? 5 : breakpoint === "md" ? 4 : 6;
   const visibleProducts = filteredProducts.slice(0, visibleCount);
 
   return (

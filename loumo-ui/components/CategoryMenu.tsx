@@ -46,7 +46,6 @@ export function CategoryMenu() {
           )
         )
       )
-      .slice(0, 6);
   }, [categoryData.data, addressZoneId]).filter(category => category.products && category.products?.length > 0);
 
   // Auto-scroll du carousel

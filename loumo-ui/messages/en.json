@@ -79,6 +79,8 @@
     "products": "Products",
     "title": "Loumo Store",
     "reviews": "Reviews",
+    "emptyCategories": "No category available in your delivery area",
+    "noCategorie": "The products of this category are not available in your delivery area",
     "Hero": {
       "notification": "Free delivery on your first order! Sign up now.",
       "title": "One click away from your local store.",
@@ -132,7 +134,8 @@
       "dans": "In ",
       "reviews": "Reviews",
       "leaveReview": "Leave a review",
-      "submit": "Submitted by"
+      "submit": "Submitted by",
+      "onlyAvailable": "This product is not available in your delivery address"
     }
   },
   "Cart": {

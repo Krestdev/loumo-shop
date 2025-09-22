@@ -19,6 +19,11 @@ import { LucideDatabase, LucideHeart, LucideShoppingCart } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const ProductDetails = ({ slug }: { slug: string }) => {
   const product = new ProductQuery();
@@ -264,12 +269,28 @@ const ProductDetails = ({ slug }: { slug: string }) => {
                   //     {t("addToCart")}
                   //   </Button>
                   // </AddToCard>
-                  <Button
-                    onClick={addToCart}
-                    disabled={available} className="h-9 md:h-12 rounded-[24px]">
-                    <LucideShoppingCart />
-                    {t("addToCart")}
-                  </Button>
+                  available ?
+                    <Tooltip>
+                      <TooltipTrigger className="w-full cursor-pointer">
+                        <Button
+                          onClick={addToCart}
+                          disabled
+                          className="h-9 md:h-12 w-full rounded-[24px]">
+                          <LucideShoppingCart />
+                          {t("addToCart")}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p className="w-[150px]">{t("onlyAvailable")}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    :
+                    <Button
+                      onClick={addToCart}
+                      disabled={available} className="h-9 md:h-12 rounded-[24px] w-full">
+                      <LucideShoppingCart />
+                      {t("addToCart")}
+                    </Button>
                 ) : (
                   <AddAddress>
                     <Button className="h-9 md:h-12 rounded-[24px] ">{t("addToCart")}</Button>

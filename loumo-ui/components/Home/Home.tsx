@@ -105,7 +105,7 @@ const Home = () => {
       <HowStep />
       {/* <ReviewsGrid /> */}
     </div> :
-    <Redaction message={t1("emptyProduct")} />
+    <Redaction show={false} message={t1("emptyProduct")} />
   );
 };
 
