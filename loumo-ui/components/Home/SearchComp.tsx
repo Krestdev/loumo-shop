@@ -87,7 +87,7 @@ function SearchComp() {
                         {
                             products.length > 0 ?
                                 products.map((product, index) =>
-                                    <Link key={index} href={`/catalog/${product.name}`}
+                                    <Link key={index} href={`/catalog/${product.slug}`}
                                         className='px-5 h-9 flex items-center hover:bg-slate-100'>
                                         {product.name.toLocaleLowerCase()}
                                     </Link>
