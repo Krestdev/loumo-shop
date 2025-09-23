@@ -95,7 +95,8 @@
       "new": "Nouveau",
       "outOfStock": "En rupture",
       "noProduct": "Aucun produit trouvé",
-      "lastAdded": "Derniers produits ajoutés"
+      "lastAdded": "Derniers produits ajoutés",
+      "searchResult": "Résultats de recherche"
     },
     "Step": {
       "step": "Étape",

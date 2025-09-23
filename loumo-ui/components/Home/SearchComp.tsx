@@ -49,7 +49,7 @@ function SearchComp() {
         e.preventDefault();
         setOpen(false);
         setSearch('')
-        router.push('/plats?' + createQueryString('nom', encodeURIComponent(search)))
+        router.push('/search?' + createQueryString('nom', encodeURIComponent(search)))
     };
 
     useEffect(() => {
