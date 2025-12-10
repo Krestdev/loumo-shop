@@ -17,7 +17,7 @@ const Page = () => {
   // Vérifier si l'utilisateur est connecté
   useEffect(() => {
     if (!user) {
-      router.push("/"); // Redirection vers la page d'accueil
+      router.push("/"); 
     }
   }, [user, router]);
 

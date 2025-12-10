@@ -27,6 +27,7 @@ import { useMutation } from "@tanstack/react-query";
 import UserQuery from "@/queries/user";
 import { User } from "@/types/types";
 import bcrypt from "bcryptjs";
+import { toast } from "react-toastify";
 
 const passwordSchema = z
     .object({
@@ -63,6 +64,7 @@ export function ChangePassword({ children, user }: Props) {
         },
         onSuccess: () => {
             form.reset();
+            toast.success("Mot de passe mis à jour");
         },
     });
 
