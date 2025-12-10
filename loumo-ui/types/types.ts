@@ -75,12 +75,19 @@ export type Order = {
   note: string;
   address: Address;
   addressId: number;
-  orderItems?: (Partial<OrderItem>&{shopId?: number})[];
+  orderItems?: (Partial<OrderItem> & { shopId?: number })[];
   payment?: Payment;
   delivery?: Delivery[];
   createdAt: Date;
   total: number;
-  status: "FAILED" | "COMPLETED" | "PROCESSING" | "REJECTED" | "ACCEPTED" | "PENDING" | "CANCELED";
+  status:
+    | "FAILED"
+    | "COMPLETED"
+    | "PROCESSING"
+    | "REJECTED"
+    | "ACCEPTED"
+    | "PENDING"
+    | "CANCELED";
   weight: number;
   deliveryFee: number;
   user: User;
@@ -102,7 +109,13 @@ export type OrderItem = {
 export type Payment = {
   name: string;
   id: number;
-  status: "FAILED" | "COMPLETED" | "PROCESSING" | "REJECTED" | "ACCEPTED" | "PENDING";
+  status:
+    | "FAILED"
+    | "COMPLETED"
+    | "PROCESSING"
+    | "REJECTED"
+    | "ACCEPTED"
+    | "PENDING";
   orderId: number;
   order?: Order[];
   total: number;
@@ -119,7 +132,7 @@ export type Permission = {
 
 export type Product = {
   name: string;
-  slug: string,
+  slug: string;
   id: number;
   createdAt: Date;
   updatedAt: Date;
@@ -233,6 +246,6 @@ export type Setting = {
   content?: string;
   value?: number;
   note?: string;
-  section: String;
+  section: string;
   date?: Date;
 };
