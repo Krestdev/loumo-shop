@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
 } from "@react-pdf/renderer";
 import { format } from "date-fns";
 
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  products?: Product[]
+  products?: Product[];
   order?: Order;
   variants: ProductVariant[];
   zones?: Zone;
@@ -95,21 +95,21 @@ export const OrderInvoice = ({
   zones,
   translations,
 }: Props) => {
-
   const zoneName = zones?.name || "-";
-  const frais = zones?.price ?? 0
-  const subtotal = (order?.total ?? 0) - frais
-  
+  const frais = zones?.price ?? 0;
+  const subtotal = (order?.total ?? 0) - frais;
+
   return (
     <Document>
       <Page size="A5" style={styles.page}>
         <View style={styles.header}>
           <Image src={"/Logo.png"} style={styles.logo} />
           <Text style={styles.title}>{translations.title}</Text>
-          <Text>{`${translations.order} ${order?.ref} ${translations.of} ${order?.createdAt ? format(
-            order.createdAt,
-            "dd/MM/yyyy - HH:mm"
-          ) : "-"}`}</Text>
+          <Text>{`${translations.order} ${order?.ref} ${translations.of} ${
+            order?.createdAt
+              ? format(order.createdAt, "dd/MM/yyyy - HH:mm")
+              : "-"
+          }`}</Text>
         </View>
 
         <View style={styles.section}>
@@ -141,13 +141,15 @@ export const OrderInvoice = ({
           <Text
             style={{
               color:
-                order?.payment?.status !== "COMPLETED" || order?.payment?.status === null
+                order?.payment?.status !== "COMPLETED" ||
+                order?.payment?.status === null
                   ? "red"
                   : "green",
             }}
           >
             {translations.status} :{" "}
-            {order?.payment?.status !== "COMPLETED" || order?.payment?.status === null
+            {order?.payment?.status !== "COMPLETED" ||
+            order?.payment?.status === null
               ? "Non Payé"
               : "Payé"}
           </Text>
@@ -166,22 +168,23 @@ export const OrderInvoice = ({
             const variant = variants.find(
               (v) => v.id === item.productVariantId
             );
-            const product = products?.find(p => p.variants.some(v => v.id === variant?.id))
+            const product = products?.find((p) =>
+              p.variants.some((v) => v.id === variant?.id)
+            );
 
             return (
               <View style={styles.tableRow} key={i}>
                 <Text style={[styles.cell, { flex: 2 }]}>
-                  {product?.name && variant?.name && variant?.quantity && variant?.unit
+                  {product?.name &&
+                  variant?.name &&
+                  variant?.quantity &&
+                  variant?.unit
                     ? `${product.name} (${variant.name}${variant.quantity}${variant.unit})`
                     : translations.unknownP}
                 </Text>
                 <Text style={styles.cell}>{item.quantity}</Text>
-                <Text style={styles.cell}>
-                  {variant?.price ?? "-"} FCFA
-                </Text>
-                <Text style={styles.cell}>
-                  {item.total} FCFA
-                </Text>
+                <Text style={styles.cell}>{variant?.price ?? "-"} FCFA</Text>
+                <Text style={styles.cell}>{item.total} FCFA</Text>
               </View>
             );
           })}
@@ -198,17 +201,22 @@ export const OrderInvoice = ({
           </View>
           <View style={styles.row}>
             <Text style={styles.bold}>{translations.total} :</Text>
-            <Text style={styles.bold}>
-              {(order?.total ?? 0)} FCFA
-            </Text>
+            <Text style={styles.bold}>{order?.total ?? 0} FCFA</Text>
           </View>
         </View>
-        <View style={{ marginTop: 30, textAlign: "center", alignItems: "center", maxWidth: "100%", justifyContent: "center" }}>
+        <View
+          style={{
+            marginTop: 30,
+            textAlign: "center",
+            alignItems: "center",
+            maxWidth: "100%",
+            justifyContent: "center",
+          }}
+        >
           <Text style={{ fontStyle: "italic", maxWidth: "75%" }}>
             {translations.conditions}
           </Text>
         </View>
-
       </Page>
     </Document>
   );

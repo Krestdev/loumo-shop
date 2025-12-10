@@ -1,6 +1,5 @@
 import api from "@/providers/axios";
 import { Agent } from "@/types/types";
-import { toast } from "react-toastify";
 
 export default class AgentQuery {
   route = "/agents";
