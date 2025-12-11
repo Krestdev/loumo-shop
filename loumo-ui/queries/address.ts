@@ -1,6 +1,5 @@
 import api from "@/providers/axios";
 import { Address } from "@/types/types";
-import { toast } from "react-toastify";
 
 export default class AddressQuery {
   route = "/address";

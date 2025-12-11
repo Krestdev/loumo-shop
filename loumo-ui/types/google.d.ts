@@ -19,7 +19,7 @@ declare global {
         callback: (response: CredentialResponse) => void
         auto_select?: boolean
         login_uri?: string
-        native_callback?: Function
+        native_callback?: () => void // Changé de Function à () => void
         cancel_on_tap_outside?: boolean
         prompt_parent_id?: string
         nonce?: string

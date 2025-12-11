@@ -1,22 +1,19 @@
 "use client";
 import { useTranslations } from "next-intl";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 const Loading = ({ status }: { status?: "failed" | "loading" }) => {
-  const [message, setMessage] = useState("");
   const t = useTranslations("Loading");
 
-  useEffect(() => {
+  // Déterminer le message directement sans état
+  const message = React.useMemo(() => {
     switch (status) {
       case "loading":
-        setMessage(t("loading"));
-        break;
+        return t("loading");
       case "failed":
-        setMessage(t("error"));
-        break;
+        return t("error");
       default:
-        setMessage(t("loading"));
-        break;
+        return t("loading");
     }
   }, [status, t]);
 

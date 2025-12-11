@@ -8,7 +8,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SignUpDialog from "./RegisterDialog";
 import SignInDialog from "./SignInDialog";
 
@@ -21,12 +21,16 @@ export function AuthDialog({ children }: Props) {
     const [page, setPage] = useState<"login" | "register">("login");
     const [open, setOpen] = useState(false);
 
-    useEffect(() => {
-        setPage("login");
-    }, [open]);
+    const handleOpenChange = (isOpen: boolean) => {
+        if (isOpen) {
+            // Réinitialiser à "login" quand on ouvre le dialogue
+            setPage("login");
+        }
+        setOpen(isOpen);
+    };
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogTrigger className="w-full" asChild>
                 {children}
             </DialogTrigger>

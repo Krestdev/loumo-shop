@@ -1,5 +1,5 @@
 // lib/axios.ts
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { toast } from "react-toastify";
 
 const api = axios.create({
@@ -27,22 +27,22 @@ api.interceptors.request.use(
 );
 
 // Response Interceptor: Global error handling
-api.interceptors.response.use((response: AxiosResponse) => {
-  const { method, url } = response.config;
-  // const successMessageFromBackend = (response.data as any)?.message;
+// api.interceptors.response.use((response: AxiosResponse) => {
+//   const { method, url } = response.config;
+//   // const successMessageFromBackend = (response.data as any)?.message;
 
-  const isMutation = ["POST", "PUT", "PATCH", "DELETE"].includes(
-    method?.toUpperCase() || ""
-  );
+//   // const isMutation = ["POST", "PUT", "PATCH", "DELETE"].includes(
+//   //   method?.toUpperCase() || ""
+//   // );
 
-  if (isMutation && url) {
-    const match = url.match(/\/api\/([^\/\?]+)/);
-    let entity = match?.[1] || "Entity";
+//   // if (isMutation && url) {
+//   //   const match = url.match(/\/api\/([^\/\?]+)/);
+//   //   let entity = match?.[1] || "Entity";
 
-    // Capitalize and singularize
-    entity = entity.charAt(0).toUpperCase() + entity.slice(1).replace(/s$/, "");
-  }
-  return response;
-});
+//   //   // Capitalize and singularize
+//   //   entity = entity.charAt(0).toUpperCase() + entity.slice(1).replace(/s$/, "");
+//   // }
+//   return response;
+// });
 
 export default api;

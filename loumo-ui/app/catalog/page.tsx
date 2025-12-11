@@ -145,7 +145,7 @@ const Page = () => {
     enrichedProducts,
     selectedCategories,
     availableOnly,
-    address?.zoneId,
+    address,  // Utiliser address directement au lieu de address?.zoneId
     searchTerm,
     priceRange
   ]);

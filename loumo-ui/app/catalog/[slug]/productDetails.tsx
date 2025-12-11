@@ -17,8 +17,7 @@ import { ProductVariant } from "@/types/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { LucideDatabase, LucideHeart, LucideShoppingCart } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -36,13 +35,10 @@ const ProductDetails = ({ slug }: { slug: string }) => {
   const { user, address, addOrderItem } = useStore();
   const addressId = address?.zoneId;
 
-  const router = useRouter();
   const t = useTranslations("Catalog.ProductDetail");
   const env = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-  const [currentvar, setCurrentvar] = useState<number>();
   const [quantity, setQuantity] = useState(1);
-  const [available, setAvailable] = useState(true);
 
   const userData = useMutation({
     mutationKey: ["favorite"],
@@ -83,51 +79,67 @@ const ProductDetails = ({ slug }: { slug: string }) => {
     queryFn: () => shop.getAll(),
   });
 
+  // Déterminer le variant courant initial
+  const initialVariantId = useMemo(() => {
+    return productData.data?.variants?.[0]?.id;
+  }, [productData.data?.variants]);
+
+  const [currentvar, setCurrentvar] = useState<number | undefined>(initialVariantId);
+
+  // Mettre à jour currentvar lorsque initialVariantId change
+  React.useEffect(() => {
+    if (initialVariantId && initialVariantId !== currentvar) {
+      setCurrentvar(initialVariantId);
+    }
+  }, [initialVariantId, currentvar]);
+
   const productItem = productData.data?.variants?.find((x) => x.id === currentvar);
 
-  useEffect(() => {
-    if (!stockData.data || !shopData.data || !currentvar || !addressId) return;
-
-    // On filtre les stocks liés au variant courant
+  // Calcul de la disponibilité avec useMemo
+  const isAvailableInZone = useMemo(() => {
+    if (!stockData.data || !shopData.data || !currentvar || !addressId) return false;
+    
     const currentVariantStocks = stockData.data.filter(
       (stock) => stock.productVariantId === currentvar
     );
 
-    const isAvailableInZone = currentVariantStocks.some((stock) => {
+    return currentVariantStocks.some((stock) => {
       const shop = shopData.data.find((s) => s.id === stock.shopId);
       return shop?.address?.zoneId === addressId;
     });
+  }, [stockData.data, shopData.data, currentvar, addressId]);
 
-    setAvailable(!isAvailableInZone);
-
-    // if (!isAvailableInZone) {
-    //   router.push("/");
-    // }
-  }, [setAvailable, stockData.data, shopData.data, currentvar, addressId, router, available]);
-
-  const [localFavorite, setLocalFavorite] = useState(false);
-
-  useEffect(() => {
-    if (usersData.data) {
-      setLocalFavorite(!!usersData.data?.favorite?.some((fav) => fav.id === productData.data?.id));
-    }
+  // Calcul du statut favori avec useMemo
+  const isFavoriteFromServer = useMemo(() => {
+    return !!usersData.data?.favorite?.some((fav) => fav.id === productData.data?.id);
   }, [usersData.data, productData.data?.id]);
 
+  // Gestion optimiste du statut favori
+  const [optimisticFavorite, setOptimisticFavorite] = useState<boolean | null>(null);
+  
+  // Déterminer l'état final du favori
+  const finalFavorite = optimisticFavorite !== null ? optimisticFavorite : isFavoriteFromServer;
+
   const toggleFavorite = (id: number) => {
-    setLocalFavorite(!localFavorite);
+    const newFavoriteState = !finalFavorite;
+    
+    // Mise à jour optimiste immédiate
+    setOptimisticFavorite(newFavoriteState);
+    
+    // Appel API
     userData.mutate([id], {
       onError: () => {
-        setLocalFavorite((prev) => !prev);
+        // Revert en cas d'erreur
+        setOptimisticFavorite(!newFavoriteState);
+      },
+      onSuccess: () => {
+        // Réinitialiser l'état optimiste après succès
+        setOptimisticFavorite(null);
+        // Forcer le refetch des données utilisateur
+        usersData.refetch();
       }
     });
   };
-
-  useEffect(() => {
-    if (productData.data?.variants?.length) {
-      const first = productData.data.variants[0];
-      setCurrentvar(first.id);
-    }
-  }, [productData.data]);
 
   if (productData.isLoading) return <Loading status="loading" />;
   if (productData.isError) return <Loading status="failed" />;
@@ -153,7 +165,8 @@ const ProductDetails = ({ slug }: { slug: string }) => {
   const addToCart = () => {
     if (productItem) {
       addOrderItem({
-        variant: productItem, note: "",
+        variant: productItem, 
+        note: "",
         promotions: promotionData.data!
       }, quantity);
     }
@@ -249,27 +262,7 @@ const ProductDetails = ({ slug }: { slug: string }) => {
 
               <div className="w-full grid grid-cols-2 items-center gap-4">
                 {address ? (
-                  // <AddToCard
-                  //   promotions={promotionData.data}
-                  //   product={productData.data}
-                  //   variant={productItem}
-                  //   setVariant={(v) => {
-                  //     if (typeof v === "function") {
-                  //       const current = productData.data?.variants?.find((x) => x.id === currentvar);
-                  //       const result = v(current);
-                  //       if (result?.id) setCurrentvar(result.id);
-                  //     } else if (v?.id) {
-                  //       setCurrentvar(v.id);
-                  //     }
-                  //   }}
-                  //   initialQuantity={quantity}
-                  // >
-                  //   <Button disabled={available} className="h-9 md:h-12 rounded-[24px]">
-                  //     <LucideShoppingCart />
-                  //     {t("addToCart")}
-                  //   </Button>
-                  // </AddToCard>
-                  available ?
+                  !isAvailableInZone ?
                     <Tooltip>
                       <TooltipTrigger className="w-full cursor-pointer">
                         <Button
@@ -287,7 +280,8 @@ const ProductDetails = ({ slug }: { slug: string }) => {
                     :
                     <Button
                       onClick={addToCart}
-                      disabled={available} className="h-9 md:h-12 rounded-[24px] w-full">
+                      disabled={!isAvailableInZone} 
+                      className="h-9 md:h-12 rounded-[24px] w-full">
                       <LucideShoppingCart />
                       {t("addToCart")}
                     </Button>
@@ -300,18 +294,18 @@ const ProductDetails = ({ slug }: { slug: string }) => {
 
                 <Button
                   variant="outline"
-                  className={`h-9 md:h-12 rounded-[24px] ${localFavorite ? "bg-red-500 hover:bg-red-500/80 text-white" : "bg-white/50 text-gray-600"
+                  className={`h-9 md:h-12 rounded-[24px] ${finalFavorite ? "bg-red-500 hover:bg-red-500/80 text-white" : "bg-white/50 text-gray-600"
                     }`}
                   onClick={() => toggleFavorite(productData.data!.id)}
+                  disabled={userData.isPending}
                 >
                   <LucideHeart size={12} />
-                  {t("addToWishlist")}
+                  {userData.isPending ? t("loading") : t("addToWishlist")}
                 </Button>
               </div>
             </div>
           </div>
 
-          {/* <p className="font-semibold text-secondary text-[20px]">{t("about")}{' '}<span className="shadow px-1 py-1 text-[14px]">{`${productItem?.name + " " + productItem?.quantity + " " + productItem?.unit}`}</span></p> */}
           <div className="flex flex-col">
             <span className="flex items-center gap-1">
               <p className="text-secondary text-[16px] font-semibold">{t("categories")}:</p>

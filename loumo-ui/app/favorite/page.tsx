@@ -5,10 +5,9 @@ import { useStore } from '@/providers/datastore';
 import ProductQuery from '@/queries/product';
 import PromotionQuery from '@/queries/promotion';
 import UserQuery from '@/queries/user';
-import { Product } from '@/types/types';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 
 const Page = () => {
     const { user } = useStore();
@@ -17,9 +16,6 @@ const Page = () => {
     const userQuery = new UserQuery();
     const promotion = new PromotionQuery();
     const product = new ProductQuery();
-
-
-    const [favorite, setFavorite] = useState<Product[]>()
 
     const userData = useQuery({
         queryKey: ["userData"],
@@ -36,13 +32,22 @@ const Page = () => {
         queryFn: () => product.getAll(),
     });
 
-    useEffect(() => {
+    // Utiliser useMemo pour dériver les favoris des données utilisateur
+    const favorite = useMemo(() => {
         if (userData.isSuccess && userData.data?.favorite) {
-            setFavorite(userData.data?.favorite)
+            return userData.data.favorite;
         }
-    }, [userData.data, userData.data?.favorite, userData.isSuccess])
+        return undefined;
+    }, [userData.isSuccess, userData.data?.favorite]);
 
-    const items = productData.data?.filter(x => favorite?.find(y => y.id === x.id))
+    // Utiliser useMemo pour filtrer les produits favoris
+    const items = useMemo(() => {
+        if (!productData.data || !favorite) return undefined;
+        
+        return productData.data.filter(x => 
+            favorite.find(y => y.id === x.id)
+        );
+    }, [productData.data, favorite]);
 
     return (
         <div className='w-full flex justify-center'>
