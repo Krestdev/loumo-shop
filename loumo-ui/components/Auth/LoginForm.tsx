@@ -22,6 +22,7 @@ import { useStore } from "@/providers/datastore";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader } from "lucide-react";
+import { toast } from "react-toastify";
 // import GoogleLogin from "./GoogleLogin"
 
 const phoneSchema = z.object({
@@ -62,9 +63,12 @@ export default function LoginForm() {
     mutationFn: (data: { email: string; password: string }) => user.login(data),
     onSuccess: () => {
       router.push("/");
+      toast.success("Connexion reussie");
+      form.reset();
     },
     onError: (error) => {
       console.error("Échec de connexion :", error);
+      toast.error("Échec de connexion");
     },
   });
 

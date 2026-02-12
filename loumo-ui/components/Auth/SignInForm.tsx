@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { Loader } from "lucide-react";
 import { RegisterPayload } from "@/types/types";
+import { toast } from "react-toastify";
 // import GoogleLogin from "./GoogleLogin"
 
 const formSchema = z
@@ -66,9 +67,12 @@ export default function SignUpForm() {
     mutationKey: ["register"],
     mutationFn: (data: RegisterPayload) => user.register(data),
     onSuccess: () => {
+      toast.success("Inscription reussie");
       router.push("/auth/login");
+      form.reset();
     },
     onError: (err) => {
+      toast.error("Erreur d'inscription");
       console.error("Erreur d'inscription", err);
     },
   });
@@ -208,28 +212,25 @@ export default function SignUpForm() {
                   ))}
                 {t("signUp")}
               </Button>
-              <div className="flex items-center justify-between w-full">
-                <Link
-                  href={"/auth/restore-password"}
-                  className="px-0 text-[14px] text-primary underline font-semibold"
+              <p>
+                {/* <span
+                  onClick={() => router.push("/auth/restore-password")}
+                  className="px-0 text-[14px] text-primary underline font-semibold hover:cursor-pointer"
                 >
-                  {t("forgot")}
-                </Link>
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant={"link"}
-                    className="px-0 cursor-default text-black hover:no-underline"
-                  >
-                    {t("alreaddy")}
-                  </Button>
-                  <Link
-                    href={"/auth/login"}
-                    className="px-0 text-[14px] text-primary underline font-semibold"
-                  >
-                    {t("login")}
-                  </Link>
-                </div>
-              </div>
+                  {` ${t("forgot")}`}
+                </span> */}
+                <span
+                  className="px-0 cursor-default text-black hover:no-underline"
+                >
+                  {t("alreaddy")}
+                </span>
+                <span
+                  onClick={() => router.push("/auth/login")}
+                  className="px-0 text-[14px] text-primary underline font-semibold hover:cursor-pointer"
+                >
+                  {` ${t("login")}`}
+                </span>
+              </p>
             </div>
           </div>
         </div>
