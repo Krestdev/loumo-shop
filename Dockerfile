@@ -39,4 +39,4 @@ COPY --from=builder /app/tsconfig.json ./tsconfig.json
 EXPOSE 3000
 
 # Start Next.js in production
-CMD ["npm", "run", "start"]
+CMD ["sh", "-c","npm run start"]
