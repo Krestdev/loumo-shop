@@ -34,22 +34,13 @@ const ConditionsPrivacyPage = () => {
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-8 md:py-12 bg-gray-50 min-h-screen">
-            {/* Header */}
-            <div className="text-center mb-8">
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
-                    Legal Information
-                </h1>
-                <p className="text-gray-500">
-                    Please read our terms and conditions carefully
-                </p>
-            </div>
 
             {/* Tabs */}
             <div className="flex gap-2 md:gap-4 mb-8 border-b border-gray-200">
                 <button
                     className={`px-4 md:px-6 py-2 md:py-3 font-semibold transition-all duration-300 ${activeTab === "terms"
-                            ? "text-blue-600 border-b-2 border-blue-600"
-                            : "text-gray-500 hover:text-blue-500"
+                        ? "text-blue-600 border-b-2 border-blue-600"
+                        : "text-gray-500 hover:text-blue-500"
                         }`}
                     onClick={() => setActiveTab("terms")}
                 >
@@ -57,8 +48,8 @@ const ConditionsPrivacyPage = () => {
                 </button>
                 <button
                     className={`px-4 md:px-6 py-2 md:py-3 font-semibold transition-all duration-300 ${activeTab === "privacy"
-                            ? "text-blue-600 border-b-2 border-blue-600"
-                            : "text-gray-500 hover:text-blue-500"
+                        ? "text-blue-600 border-b-2 border-blue-600"
+                        : "text-gray-500 hover:text-blue-500"
                         }`}
                     onClick={() => setActiveTab("privacy")}
                 >
