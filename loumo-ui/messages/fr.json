@@ -167,7 +167,7 @@
     "total": "Total",
     "addAddress": "Ajouter une adresse",
     "clearCart": "Vider le panier",
-    "outOfStock":"En rupture",
+    "outOfStock": "En rupture",
     "Awaiting": {
       "title1": "Creation de la commande en cours",
       "title": "Paiement en attente",
@@ -352,6 +352,80 @@
         "notPaid": "Non payé",
         "pending": "En attente",
         "accepted": "Accepté"
+      }
+    }
+  },
+  "legal": {
+    "terms": {
+      "title": "Termes et Conditions",
+      "intro": "Bienvenue sur Loumoshop, votre plateforme de vente en ligne accessible à l’adresse www.loumoshop.com. En utilisant notre site, vous acceptez sans réserve les présentes Conditions Générales d’Utilisation et de Vente (CGUV). Nous vous invitons à les lire attentivement avant toute commande.",
+      "sections": {
+        "object": {
+          "title": "1. Objet",
+          "text": "Les présentes conditions ont pour objet de définir les modalités de vente entre Loumoshop et tout utilisateur effectuant un achat sur la plateforme."
+        },
+        "products": {
+          "title": "2. Produits",
+          "text": "Les produits proposés à la vente sont décrits et présentés avec la plus grande exactitude possible. Toutefois, de légères différences peuvent exister (couleur, emballage, disponibilité...)."
+        },
+        "order": {
+          "title": "3. Commande",
+          "text": "Pour passer une commande, le client choisit ses produits et sa zone de livraison. En fonction de la zone sélectionnée, la disponibilité et les frais peuvent varier. La commande est confirmée une fois validée par le client."
+        },
+        "payment": {
+          "title": "4. Paiement",
+          "text": "Loumoshop propose plusieurs modes de paiement : MTN Money, Orange Money, et paiement en espèces à la livraison. Les paiements mobiles sont sécurisés par les services des opérateurs concernés."
+        },
+        "delivery": {
+          "title": "5. Livraison",
+          "text": "Les livraisons sont effectuées à l’adresse indiquée par le client lors de la commande. Les délais et frais varient selon la zone de livraison."
+        },
+        "returns": {
+          "title": "6. Retours et remboursements",
+          "text": "Le client dispose d’un délai de 48 heures après réception pour signaler tout produit défectueux ou non conforme. Le remboursement ou l’échange est alors traité après vérification par notre service client."
+        },
+        "responsibility": {
+          "title": "7. Responsabilités",
+          "text": "Loumoshop ne peut être tenu responsable des retards de livraison dus à des causes indépendantes de sa volonté (grèves, intempéries, problèmes de réseau mobile…)."
+        },
+        "data": {
+          "title": "8. Données personnelles",
+          "text": "Les données collectées sont utilisées uniquement pour le traitement des commandes et ne sont jamais revendues à des tiers. Consultez notre Politique de confidentialité pour plus de détails."
+        },
+        "law": {
+          "title": "9. Droit applicable",
+          "text": "Les présentes conditions sont régies par la législation en vigueur au Cameroun. Tout litige sera porté devant les juridictions compétentes du ressort du siège de Loumoshop."
+        }
+      }
+    },
+    "privacy": {
+      "title": "Politique de Confidentialité",
+      "intro": "Chez Loumoshop, nous respectons votre vie privée et nous nous engageons à protéger vos données personnelles.",
+      "sections": {
+        "data_collected": {
+          "title": "1. Données collectées",
+          "text": "Nous collectons les informations suivantes : nom, prénom, adresse, numéro de téléphone, zone de livraison, historique de commandes et informations de paiement (via MTN/Orange Money)."
+        },
+        "use": {
+          "title": "2. Utilisation des données",
+          "text": "Les données collectées servent à traiter et livrer vos commandes, à vous informer du suivi de livraison, à améliorer nos services et à vous envoyer (avec votre accord) des offres promotionnelles."
+        },
+        "security": {
+          "title": "3. Sécurité",
+          "text": "Nous mettons en place des mesures techniques et organisationnelles pour protéger vos données contre tout accès non autorisé, perte ou divulgation."
+        },
+        "sharing": {
+          "title": "4. Partage des données",
+          "text": "Loumoshop ne vend ni ne loue vos données. Elles peuvent être partagées uniquement avec nos prestataires de livraison et les opérateurs de paiement mobile (MTN, Orange) pour le traitement sécurisé des transactions."
+        },
+        "rights": {
+          "title": "5. Vos droits",
+          "text": "Vous avez le droit d’accéder à vos données, de les modifier ou de les supprimer, et de retirer votre consentement au traitement. Pour exercer ces droits, contactez-nous à contact@loumoshop.com."
+        },
+        "retention": {
+          "title": "6. Conservation",
+          "text": "Vos données sont conservées uniquement le temps nécessaire à la gestion de la relation commerciale et au respect des obligations légales."
+        }
       }
     }
   }

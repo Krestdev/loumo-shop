@@ -354,5 +354,79 @@
         "accepted": "Accepted"
       }
     }
+  },
+  "legal": {
+    "terms": {
+      "title": "Terms and Conditions",
+      "intro": "Welcome to Loumoshop, your online sales platform accessible at www.loumoshop.com. By using our site, you fully and unreservedly accept these General Terms and Conditions of Use and Sale (GTC). We invite you to read them carefully before placing any order.",
+      "sections": {
+        "object": {
+          "title": "1. Purpose",
+          "text": "The purpose of these terms is to define the terms of sale between Loumoshop and any user making a purchase on the platform."
+        },
+        "products": {
+          "title": "2. Products",
+          "text": "The products offered for sale are described and presented as accurately as possible. However, slight differences may exist (color, packaging, availability, etc.)."
+        },
+        "order": {
+          "title": "3. Order",
+          "text": "To place an order, the customer selects their products and delivery zone. Depending on the selected zone, availability and fees may vary. The order is confirmed once validated by the customer."
+        },
+        "payment": {
+          "title": "4. Payment",
+          "text": "Loumoshop offers several payment methods: MTN Money, Orange Money, and cash on delivery. Mobile payments are secured by the services of the respective operators."
+        },
+        "delivery": {
+          "title": "5. Delivery",
+          "text": "Deliveries are made to the address provided by the customer when placing the order. Delivery times and costs vary according to the delivery zone."
+        },
+        "returns": {
+          "title": "6. Returns and Refunds",
+          "text": "The customer has 48 hours after receipt to report any defective or non-conforming product. A refund or exchange will then be processed after verification by our customer service."
+        },
+        "responsibility": {
+          "title": "7. Responsibilities",
+          "text": "Loumoshop cannot be held responsible for delivery delays due to causes beyond its control (strikes, adverse weather, mobile network issues, etc.)."
+        },
+        "data": {
+          "title": "8. Personal Data",
+          "text": "The data collected is used solely for order processing and is never resold to third parties. See our Privacy Policy for more details."
+        },
+        "law": {
+          "title": "9. Applicable Law",
+          "text": "These terms are governed by the legislation in force in Cameroon. Any dispute will be brought before the competent courts within the jurisdiction of Loumoshop's registered office."
+        }
+      }
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "intro": "At Loumoshop, we respect your privacy and are committed to protecting your personal data.",
+      "sections": {
+        "data_collected": {
+          "title": "1. Data Collected",
+          "text": "We collect the following information: first name, last name, address, phone number, delivery zone, order history, and payment information (via MTN/Orange Money)."
+        },
+        "use": {
+          "title": "2. Use of Data",
+          "text": "The data collected is used to process and deliver your orders, inform you of delivery status, improve our services, and (with your consent) send you promotional offers."
+        },
+        "security": {
+          "title": "3. Security",
+          "text": "We implement technical and organizational measures to protect your data against unauthorized access, loss, or disclosure."
+        },
+        "sharing": {
+          "title": "4. Data Sharing",
+          "text": "Loumoshop does not sell or rent your data. Data may be shared only with our delivery providers and mobile payment operators (MTN, Orange) for secure transaction processing."
+        },
+        "rights": {
+          "title": "5. Your Rights",
+          "text": "You have the right to access, modify, or delete your data, and to withdraw your consent to processing. To exercise these rights, contact us at contact@loumoshop.com."
+        },
+        "retention": {
+          "title": "6. Retention",
+          "text": "Your data is retained only for as long as necessary to manage the business relationship and comply with legal obligations."
+        }
+      }
+    }
   }
 }
